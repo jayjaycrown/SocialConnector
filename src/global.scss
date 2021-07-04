@@ -16,7 +16,7 @@
 @import "~@ionic/angular/css/normalize.css";
 @import "~@ionic/angular/css/structure.css";
 @import "~@ionic/angular/css/typography.css";
-@import '~@ionic/angular/css/display.css';
+@import "~@ionic/angular/css/display.css";
 
 /* Optional CSS utils that can be commented out */
 @import "~@ionic/angular/css/padding.css";
@@ -24,3 +24,28 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+a {
+  text-decoration: none !important;
+}
+ion-toolbar {
+  --min-height: 10vh !important;
+  // background: #ffffff !important;
+  // --background: #ffffff !important;
+  padding: 0 10px;
+}
+
+ion-tabs {
+  --backgound: var(--ion-background-color) !important;
+  background: var(--ion-background-color) !important;
+}
+
+ion-segment.data > ion-segment-button.segment-button-checked {
+  border-width: 2px !important;
+  border-style: solid !important;
+  border-color: var(--ion-color-primary) !important;
+}
+.mt0 {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}

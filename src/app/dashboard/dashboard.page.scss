@@ -1,0 +1,33 @@
+.newsDiv {
+  display: block;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: rgb(197, 235, 194) !important;
+}
+.coloredCard {
+  background-color: var(--ion-color-primary);
+  padding: 60px !important;
+  border-radius: 20px;
+}
+
+.toolscard {
+  text-align: center !important;
+  padding: 30px 20px !important;
+  border-radius: 20px;
+}
+.clear {
+  clear: both;
+}
+
+.tabbar {
+  width: 70% !important;
+  float: left;
+}
+.right {
+  float: right !important;
+}
+.moreButton {
+  font-size: 0.8em;
+  color: var(--ion-color-dark);
+}

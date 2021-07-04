@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'SocialConnector',
+  appId: 'com.jayjaycrown.socialconnector',
+  appName: 'Social Connector',
   webDir: 'www',
   bundledWebRuntime: false
 };
