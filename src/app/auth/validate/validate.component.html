@@ -1,0 +1,56 @@
+<ion-content class="ion-padding">
+  <div style="height: 3vh; margin: 2vh auto;"></div>
+  <ion-card >
+    <ion-card-header>
+      <ion-card-title>We need your Clubhouse username in order to verify it's really you.</ion-card-title>
+      <ion-card-subtitle>Please Follow the following steps</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-icon slot="start" name="arrow-forward-circle-outline"></ion-icon>
+          <ion-label>
+            <h3 class="ion-text-wrap">Open your Clubhouse app</h3>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-icon slot="start" name="arrow-forward-circle-outline"></ion-icon>
+          <ion-label>
+            <h3 class="ion-text-wrap">Enter the code below this line and paste it anywhere in your Clubhouse bio*</h3>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-icon slot="start" name="arrow-forward-circle-outline"></ion-icon>
+          <ion-label>
+            <h1> {{ ch_token }} </h1>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-icon slot="start" name="arrow-forward-circle-outline"></ion-icon>
+          <ion-label>
+            <h3 class="ion-text-wrap">After saving your bio*, click the "I DID IT" button below:* After completing the verification process,
+              you can remove the code from your bio.</h3>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+      <br>
+      <form name="form" #validateForm="ngForm" (ngSubmit)="validateForm.valid && onSubmit()">
+        <ion-item>
+          <ion-label position="floating">Clubhouse Username</ion-label>
+          <ion-input type="text" name="ch_username"
+           [(ngModel)]="model.ch_username"
+           #ch_username="ngModel"
+           [ngClass]="{ 'is-invalid': validateForm.submitted && ch_username.invalid }"
+           required></ion-input>
+        </ion-item>
+        <br>
+        <ion-button type="submit" [disabled]="!validateForm.valid" expand="full" color="primary">i Did It</ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
+  <h5 class="ion-text-center">
+    <ion-button color="secondary" (click)="logOut()" expand="full">
+      <ion-icon slot="start" name="log-out-outline" ></ion-icon>Log Out
+    </ion-button>
+  </h5>
+</ion-content>

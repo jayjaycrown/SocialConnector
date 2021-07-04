@@ -1,0 +1,193 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button autoHide="false"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      CH TOOLS
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" [routerLink]="['/home/profile']" routerLinkActive="router-link-active">
+        <ion-icon name="person-circle-outline" slot="icon-only"
+          style="width: 36px !important; height: 36px !important;"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <ion-item  (click)="openAreaModal('Club 1')" style="margin-bottom: 16px;">
+        <ion-label>
+          <p>Club 1</p>
+          <h3>{{club1Name}}</h3>
+        </ion-label>
+      </ion-item>
+
+      <ion-item  (click)="dropoffModal('Club 2')" style="margin-bottom: 16px;">
+        <ion-label>
+          <p>Club 2</p>
+          <h3>{{club2Name}}</h3>
+        </ion-label>
+      </ion-item>
+
+      <form name="form" #historyForm="ngForm" (ngSubmit)="historyForm.valid && onSubmit()">
+        <ion-item>
+          <ion-label position="floating">MM/DD/YYYY</ion-label>
+          <ion-datetime name="date" [(ngModel)]="model.date" #email="ngModel" displayFormat="MM/DD/YYYY"
+            min="2016-01-01" max="2022-12-31" required>
+          </ion-datetime>
+        </ion-item>
+        <ion-button type="submit" [disabled]="!historyForm.valid" expand="full" color="primary">Compare</ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
+
+
+  <ion-card *ngIf="status">
+    <ion-card-header class="ion-text-center">
+      <ion-card-title>Weekly Comparison</ion-card-title>
+      <ion-card-subtitle>{{date}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="6">
+            <ion-item  lines="none" class="ion-text-center">
+              <ion-label>
+                <h3>{{ club1Details.name }}</h3>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col size="6">
+            <ion-item  lines="none" class="ion-text-center">
+              <ion-label>
+                <h3>{{ club2Details.name }}</h3>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12">
+            <ion-item lines="none" class="ion-text-center">
+              <ion-label>
+                <h3>Average Listened</h3>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col size="6">
+            <ion-item lines="none" class="ion-text-center">
+              <ion-label>
+                <h3>{{ club1Details.avg }} m</h3>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col size="6">
+            <ion-item lines="none" class="ion-text-center">
+              <ion-label>
+                <h3>{{ club2Details.avg }} m</h3>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col size="12">
+            <ion-item lines="none" class="ion-text-center">
+              <ion-label>
+                <h3>Average Max Listeners</h3>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col size="6">
+            <ion-item lines="none" class="ion-text-center">
+              <ion-label>
+                <h3>{{ club1Details.avg_max_listeners }} </h3>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col size="6">
+            <ion-item lines="none" class="ion-text-center">
+              <ion-label>
+                <h3>{{ club2Details.avg_max_listeners }} </h3>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col size="12">
+            <ion-item lines="none" class="ion-text-center">
+              <ion-label>
+                <h3>Total Listened Time</h3>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col size="6">
+            <ion-item lines="none" class="ion-text-center">
+              <ion-label>
+                <h3 class="ion-text-wrap">{{transformMinute(club1Details.total_listened)}} </h3>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col size="6">
+            <ion-item lines="none" class="ion-text-center">
+              <ion-label>
+                <h3 class="ion-text-wrap"> {{transformMinute(club2Details.total_listened)}} </h3>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col size="12">
+            <ion-item lines="none" class="ion-text-center">
+              <ion-label>
+                <h3>Total Listeners</h3>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col size="6">
+            <ion-item lines="none" class="ion-text-center">
+              <ion-label>
+                <h3>{{ club1Details.total_listeners || 0 }} </h3>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col size="6">
+            <ion-item lines="none" class="ion-text-center">
+              <ion-label>
+                <h3>{{ club2Details.total_listeners || 0 }} </h3>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col size="12">
+            <ion-item lines="none" class="ion-text-center">
+              <ion-label>
+                <h3>Total Rooms</h3>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col size="6">
+            <ion-item lines="none" class="ion-text-center">
+              <ion-label>
+                <h3>{{ club1Details.total_rooms }} </h3>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col size="6">
+            <ion-item lines="none" class="ion-text-center">
+              <ion-label>
+                <h3>{{ club2Details.total_rooms }} </h3>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

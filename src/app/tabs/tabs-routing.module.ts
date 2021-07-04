@@ -4,7 +4,7 @@ import { TabsPage } from './tabs.page';
 
 const routes: Routes = [
   {
-    path: 'tabs',
+    path: '',
     component: TabsPage,
     children: [
       {
@@ -58,17 +58,26 @@ const routes: Routes = [
         redirectTo: '/tabs/dashboard',
         pathMatch: 'full',
       },
-      {
-        path: '**',
-        redirectTo: '/tabs/dashboard',
-      },
+      // {
+      //   path: '**',
+      //   redirectTo: '/tabs/dashboard',
+      // },
     ],
   },
+
   {
-    path: '',
-    redirectTo: '/tabs/dashboard',
-    pathMatch: 'full',
+    path: 'home',
+    loadChildren: () =>
+      import('../chtools/home/home.module').then(
+        (m) => m.HomePageModule
+      ),
   },
+
+  // {
+  //   path: '',
+  //   redirectTo: '/tabs/dashboard',
+  //   pathMatch: 'full',
+  // },
 ];
 
 @NgModule({

@@ -1,0 +1,160 @@
+<ion-header class="ion-no-border" mode="ios">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button autoHide="false"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      CH TOOLS
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" [routerLink]="['/home/profile']" routerLinkActive="router-link-active">
+        <ion-icon name="person-circle-outline" slot="icon-only"
+          style="width: 36px !important; height: 36px !important;"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <form name="form" #historyForm="ngForm" (ngSubmit)="historyForm.valid && onSubmit()">
+        <ion-item  lines="none"  lines="none" >
+          <ion-label position="floating">MM/DD/YYYY</ion-label>
+          <ion-datetime name="date" [(ngModel)]="model.date" #email="ngModel" displayFormat="MM/DD/YYYY"
+            min="2016-01-01" max="2022-12-31" required>
+          </ion-datetime>
+        </ion-item>
+        <ion-button type="submit" [disabled]="!historyForm.valid" expand="full" color="primary">Get Report
+        </ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-button expand="full" color="primary" (click)="export()">Export to csv</ion-button>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item  class="ion-text-center">
+          <ion-label>
+            <p>Average max listeners</p>
+            <h2>{{ avg_max_listeners }}</h2>
+          </ion-label>
+        </ion-item>
+        <ion-item  lines="full" class="ion-text-center">
+          <ion-label>
+            <p>Total listener</p>
+            <h2>{{ roomDetail.total_listeners }}</h2>
+          </ion-label>
+        </ion-item>
+        <ion-item lines="full" class="ion-text-center">
+          <ion-label>
+            <p>Total listened</p>
+            <h2>{{transformMinute(roomDetail.total_listened)}}</h2>
+          </ion-label>
+        </ion-item>
+        <ion-item lines="full" class="ion-text-center">
+          <ion-label>
+            <p>Avg listened time</p>
+            <h2>{{ roomDetail.avg }}m</h2>
+          </ion-label>
+        </ion-item>
+        <ion-item lines="full" class="ion-text-center">
+          <ion-label>
+            <p>Total Rooms</p>
+            <h2>{{ roomDetail.total_rooms }}</h2>
+          </ion-label>
+        </ion-item>
+        <ion-item lines="full" class="ion-text-center">
+          <ion-label>
+            <p>New Followers</p>
+            <h2><span *ngIf="roomDetail.new > 0" >+</span>{{ roomDetail.new }}</h2>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <div class="ion-padding" *ngIf="roomDetail.rooms?.length <= 0">
+    <ion-item-divider>
+      <ion-label>
+        <h2>No room available</h2>
+      </ion-label>
+    </ion-item-divider>
+  </div>
+
+  <div class="ion-padding">
+    <ion-card class="" *ngIf="roomDetail.rooms?.length > 0">
+      <ion-card-header class="ion-text-center">
+        <ion-card-title>All Rooms</ion-card-title>
+      </ion-card-header>
+    </ion-card>
+  </div>
+  <ion-item *ngFor="let allRoom of roomDetail.rooms" lines="none">
+    <ion-card (click)="analyze(allRoom.channel)" class="test">
+      <ion-card-header class="ion-text-center">
+        <ion-card-title>{{ allRoom.topic }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content class="ion-text-center">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="6">
+              <ion-item lines="none" class="ion-text-center">
+                <ion-label>
+                  <p>Total Listeners</p>
+                  <h2>{{ allRoom.end_total_listeners }}</h2>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+            <ion-col size="6">
+              <ion-item lines="none" class="ion-text-center">
+                <ion-label>
+                  <p>Total Speakers</p>
+                  <h2>{{ allRoom.end_total_speakers }}</h2>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="12">
+              <ion-item lines="none" class="ion-text-center">
+                <div *ngIf="allRoom.date_ended;else templateName">
+                  <ion-label>
+                    <h3>Room Status: Ended</h3>
+                  </ion-label>
+                </div>
+                <ng-template #templateName>
+                  <ion-label>
+                    <h3>Room Status: Active</h3>
+                  </ion-label>
+                </ng-template>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+
+
+      </ion-card-content>
+    </ion-card>
+  </ion-item>
+
+  <ion-item *ngIf="allRooms?.length > 0">
+    <ion-grid class="ion-text-center" style="background:#fff !important">
+      <ion-row>
+        <ion-col size="3"></ion-col>
+        <ion-col size="3">
+          <ion-button fill="clear" (click)="next('back')">
+            <ion-icon slot="icon-only" name="play-back-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+        <ion-col size="3">
+          <ion-button fill="clear" (click)="next('forward')">
+            <ion-icon slot="icon-only" name="play-forward-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+        <ion-col size="3"></ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-item>
+</ion-content>

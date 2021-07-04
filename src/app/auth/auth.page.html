@@ -1,0 +1,54 @@
+<ion-content class="ion-padding">
+
+  <div class="logo">
+
+  </div>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Welcome</ion-card-title>
+      <ion-card-subtitle>Please Sign in with credentials</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <form name="form" #loginForm="ngForm" (ngSubmit)="loginForm.valid && onSubmit()">
+        <ion-item>
+          <ion-label position="floating">Email</ion-label>
+          <ion-input name="email"
+          [(ngModel)]="model.email"
+          #email="ngModel"
+          pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+          [ngClass]="{ 'is-invalid': loginForm.submitted && email.invalid }"
+          required></ion-input>
+        </ion-item>
+        <div *ngIf="email.invalid && (email.dirty || email.touched)" class="errors">
+          <span *ngIf="email.errors?.required">Email is required</span>
+          <span *ngIf="email.errors?.pattern">Email is invalid</span>
+        </div>
+        <ion-item>
+          <ion-label position="floating">Password</ion-label>
+          <ion-input
+          minlength="6" name="password"
+          [(ngModel)]="model.password"
+          #password="ngModel"
+          [ngClass]="{ 'is-invalid': loginForm.submitted && password.invalid }"
+          required
+          type="{{showPass ? 'text' : 'password'}}"></ion-input>
+          <ion-icon size="large" style="margin-top: 16px;" item-end slot="end" name="{{showPass ? 'eye-off' : 'eye'}}"
+            (click)="showPass=!showPass"></ion-icon>
+        </ion-item>
+        <div *ngIf="password.invalid && (password.dirty || password.touched)" class="errors">
+          <span *ngIf="password.errors?.minlength">Password cannot be less than 6 characters</span>
+          <span *ngIf="password.errors?.required">Password is required</span>
+        </div>
+        <br>
+        <ngx-recaptcha2 #captchaElem [siteKey]="'6Lfmwq0aAAAAAESadMQxlzNREQ6LCqbrUCmWWDDd'"
+          (success)="handleSuccess($event)" [useGlobalDomain]="false" [size]="size" [hl]="lang" [theme]="theme"
+          [type]="type" name="gresponse" [(ngModel)]="model.gresponse" #gresponse="ngModel" required>
+        </ngx-recaptcha2>
+        <ion-button type="submit" [disabled]="!loginForm.valid" expand="full" color="primary">Login</ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
+  <h5 class="ion-text-center">
+    <a  [routerLink]="['/auth/register']" routerLinkActive="router-link-active" >Create new Account</a>
+  </h5>
+</ion-content>

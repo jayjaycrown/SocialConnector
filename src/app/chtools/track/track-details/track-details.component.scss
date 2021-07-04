@@ -1,0 +1,26 @@
+.image {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+}
+.creators {
+  margin-right: 10px !important;
+  width: 50px !important;
+  height: 50px !important;
+  border-radius: 50%;
+}
+.clear {
+  clear: both;
+}
+
+ion-item {
+  --background: var(--ion-color-light);
+}
+
+ion-item {
+  // --background: #f1eee3;
+  // --border-color: var(--ion-border-color);
+  --border-radius: 0 !important;
+  margin-bottom: 5px;
+  // --border-width: 1px;
+}

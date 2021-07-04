@@ -1,0 +1,88 @@
+<ion-header>
+  <ion-toolbar mode="ios">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home/profile"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      CH TOOLS
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+    <ion-card-header>
+      <div *ngIf="freeTrial" >
+        <ion-button expand="full" color="primary" (click)="freetrial()">Start free Trial</ion-button>
+        </div>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-icon slot="end" name="bar-chart-sharp"></ion-icon>
+        <ion-label>
+          <p>Premium Plan</p>
+          <h2>$37.00/month</h2>
+        </ion-label>
+      </ion-item>
+
+      <div class="ion-text-right">
+      <ion-button color="primary" (click)="setAmount('premium')">Select Plan</ion-button>
+      </div>
+
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-content>
+      <ion-item>
+        <ion-icon slot="end" name="pie-chart-sharp"></ion-icon>
+        <ion-label>
+          <p>Founders Package</p>
+          <h2>$247.00/year</h2>
+        </ion-label>
+      </ion-item>
+      <div class="ion-text-right">
+        <ion-button color="primary" (click)="setAmount('founders')">Select Plan</ion-button>
+      </div>
+
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-content>
+      <ion-item>
+        <ion-icon slot="end" name="pie-chart-outline"></ion-icon>
+        <ion-label>
+          <p>50 $GARY Access</p>
+          <h2>Own 50 $GARY Coin</h2>
+        </ion-label>
+      </ion-item>
+      <div class="ion-text-right">
+        <ion-button color="primary" (click)="garyAccess()">Select Plan</ion-button>
+      </div>
+
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="priceSet">
+    <ion-card-header class="ion-text-center">
+      <ion-card-title>{{title | titlecase}} Plan</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ngx-stripe-card-group [formGroup]="stripeTest" [elementsOptions]="elementsOptions">
+        <ion-item style="margin-bottom: 16px;">
+          <ion-label position="floating">Card Holder's Name</ion-label>
+          <ion-input minlength="6" formControlName="name" placeholder="Card Name"></ion-input>
+        </ion-item>
+        <ngx-stripe-card [options]="cardOptions" class=""></ngx-stripe-card>
+        <!-- </ngx-stripe-card> -->
+      </ngx-stripe-card-group>
+      <div class="ion-text-right">
+        <ion-button color="primary" [disabled]="!stripeTest.valid" type="submit" (click)="pay()">
+          Upgrade Plan
+        </ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

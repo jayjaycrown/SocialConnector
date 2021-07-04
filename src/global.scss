@@ -25,13 +25,22 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
+ion-item,
+ion-list {
+  // --background: #f1eee3;
+  // --border-color: var(--ion-border-color);
+  --border-radius: 10px 10px 0 0 !important;
+  // --border-width: 1px;
+}
+ion-item.nocolor {
+  --background: #fff;
+  --border-radius: 0 0 !important;
+}
 a {
   text-decoration: none !important;
 }
 ion-toolbar {
   --min-height: 10vh !important;
-  // background: #ffffff !important;
-  // --background: #ffffff !important;
   padding: 0 10px;
 }
 
@@ -48,4 +57,17 @@ ion-segment.data > ion-segment-button.segment-button-checked {
 .mt0 {
   margin-top: 0 !important;
   padding-top: 0 !important;
+}
+
+ion-loading.custom-loading {
+  .loading-wrapper {
+    background: url("./assets/test.gif") no-repeat center;
+    // background: transparent !important;
+    box-shadow: none !important;
+
+    background-size: 50px 50px; /* to change dimension of background */
+    padding-top: 36px; /* padding top of white square */
+    padding-bottom: 36px; /* padding bottom of white square */
+    border-radius: 0.8rem; /* border-radius white square */
+  }
 }

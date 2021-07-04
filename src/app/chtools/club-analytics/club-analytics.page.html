@@ -1,0 +1,86 @@
+<ion-header class="ion-no-border" mode="ios">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button autoHide="false"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      CH TOOLS
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" [routerLink]="['/home/profile']" routerLinkActive="router-link-active">
+        <ion-icon name="person-circle-outline" slot="icon-only"
+          style="width: 36px !important; height: 36px !important;"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form name="form" (ngSubmit)="clubForm.form.valid && onSubmit()" #clubForm="ngForm">
+    <ion-card>
+      <ion-card-content>
+        <ion-item>
+          <ion-label position="floating">Club Name</ion-label>
+          <ion-input type='text' minlength="3" name="club" class="form-control" placeholder="Enter Club Name" [(ngModel)]="model.club"
+            #club="ngModel" [ngClass]="{ 'is-invalid': clubForm.submitted && club.invalid }" required></ion-input>
+        </ion-item>
+        <ion-button type="submit" [disabled]="!clubForm.valid" expand="full" color="primary">Search Club
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </form>
+
+  <br>
+  <ion-list lines="none">
+    <ion-list-header *ngIf="allRooms?.length <= 0">
+      <ion-label>No data available</ion-label>
+    </ion-list-header>
+    <ion-list-header *ngIf="allRooms?.length > 0">
+      <ion-label>Clubs List</ion-label>
+    </ion-list-header>
+    <ion-item *ngFor="let allRoom of allRooms">
+      <ion-card class="test ion-text-center" >
+        <ion-img [src]="allRoom.photo_url"></ion-img>
+        <ion-card-header (click)="analyze(allRoom.club_id)">
+          <ion-card-title>{{ allRoom.name }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content (click)="analyze(allRoom.club_id)">
+          <ion-text class="ion-text-justify">
+            {{ allRoom.description }}
+          </ion-text>
+          <ion-grid>
+            <ion-row>
+              <ion-col size="6">
+                <ion-item class=" ion-text-center">
+                  <ion-label>
+                    <p>No of Members</p>
+                    <h2> {{ allRoom.num_members }} </h2>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+              <ion-col size="6">
+                <ion-item class=" ion-text-center">
+                  <ion-label>
+                    <p>No of Followers</p>
+                    <h2> {{ allRoom.num_followers }} </h2>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+
+          </ion-grid>
+        </ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-button expand="full" color="primary" (click)="claimRoom(allRoom.club_id)">Claim</ion-button>
+            </ion-col>
+            <ion-col>
+              <ion-button expand="full" color="secondary" (click)="redirect(allRoom.club_id)">Download Pass</ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card>
+    </ion-item>
+  </ion-list>
+</ion-content>
