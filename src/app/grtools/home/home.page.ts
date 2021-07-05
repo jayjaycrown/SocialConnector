@@ -15,42 +15,30 @@ export class HomePage  {
   Pages = [
     {
       title: 'Track',
-      url: '/tabs/chtools/track',
+      url: '/tabs/grtools/track',
       icon: 'analytics'
     },
     {
       title: 'Room History',
-      url: '/tabs/chtools/room-history',
+      url: '/tabs/grtools/room-history',
       icon: 'options'
     },
-    {
-      title: 'Club Analytics',
-      url: '/tabs/chtools/club-analytics',
-      icon: 'bar-chart'
-    },
+
     {
       title: 'Weekly Report',
-      url: '/tabs/chtools/weekly-report',
+      url: '/tabs/grtools/weekly-report',
       icon: 'stats-chart'
     },
     {
       title: 'Weekly Comparison',
-      url: '/tabs/chtools/weekly-comparison',
+      url: '/tabs/grtools/weekly-comparison',
       icon: 'repeat'
     },
-    {
-      title: 'Club Comparison',
-      url: '/tabs/chtools/club-comparison',
-      icon: 'copy'
-    },
-    {
-      title: 'Announcements',
-      url: '/tabs/chtools/announcements',
-      icon: 'mic'
-    },
+
+
     {
       title: 'Account Stats',
-      url: '/tabs/chtools/account-stat',
+      url: '/tabs/grtools/account-stat',
       icon: 'pie-chart'
     },
 

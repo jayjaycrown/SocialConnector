@@ -66,9 +66,16 @@ const routes: Routes = [
   },
 
   {
-    path: 'home',
+    path: 'chtools',
     loadChildren: () =>
       import('../chtools/home/home.module').then(
+        (m) => m.HomePageModule
+      ),
+  },
+  {
+    path: 'grtools',
+    loadChildren: () =>
+      import('../grtools/home/home.module').then(
         (m) => m.HomePageModule
       ),
   },

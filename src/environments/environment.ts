@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://monitor.clubhousetools.xyz/api'
+  apiUrl: 'https://monitor.clubhousetools.xyz/api',
+  grUrl: ' https://greenroomtools.xyz/api'
 };
 
 /*

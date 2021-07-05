@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { LoadingController, ToastController, AlertController } from '@ionic/angular';
 import { AppService } from '../../_services/app.service';
 import {format} from 'date-fns';
+import { GrServiceService } from 'src/app/_services/gr-service.service';
 
 @Component({
   selector: 'app-room-history',
@@ -25,18 +26,22 @@ export class RoomHistoryPage implements OnInit {
   disable = false;
   setDisplay = false;
   constructor(
-    private app: AppService,
+    private app: GrServiceService,
     private router: Router,
     private loadingController: LoadingController,
     private toastController: ToastController,
     private alertController: AlertController
   ) { }
 
-  async ngOnInit() {
+  async ionViewWillEnter(){
     const user: any = await JSON.parse(localStorage.getItem('user'));
 	   const result = user.result;
     this.api_token = result.api_token;
     this.getRoomHistory();
+  }
+
+  async ngOnInit() {
+
   }
 
   async presentToast(color, message) {
@@ -64,7 +69,7 @@ export class RoomHistoryPage implements OnInit {
 
   analyze(roomId) {
 		// alert(roomId);
-		this.router.navigateByUrl('/tabs/chtools/track/' + roomId);
+		this.router.navigateByUrl('/tabs/grtools/track/' + roomId);
   }
 
   next(fastForward) {
@@ -105,7 +110,7 @@ export class RoomHistoryPage implements OnInit {
           const color = 'danger';
           this.presentToast(color, res.message);
 				// this.alertService.danger(res.message);
-				      this.router.navigateByUrl('/tabs/chtools/upgrade');
+				      this.router.navigateByUrl('/home/upgrade');
         } else if (res.status === 'validate') {
           await loading.dismiss();
           const color = 'danger';

@@ -12,6 +12,7 @@ import { format } from 'date-fns';
 import { File } from '@ionic-native/file/ngx';
 import { Papa } from 'ngx-papaparse';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import { GrServiceService } from 'src/app/_services/gr-service.service';
 
 @Component({
   selector: 'app-weekly-report',
@@ -33,7 +34,7 @@ export class WeeklyReportPage implements OnInit {
   roomDetail: any = {};
   	exportedData: any = [];
   constructor(
-    private app: AppService,
+    private app: GrServiceService,
     private router: Router,
     private loadingController: LoadingController,
     private toastController: ToastController,
@@ -110,7 +111,7 @@ export class WeeklyReportPage implements OnInit {
   }
   analyze(roomId) {
     // alert(roomId);
-    this.router.navigateByUrl('/tabs/chtools/track/' + roomId);
+    this.router.navigateByUrl('/tabs/grtools/track/' + roomId);
   }
 
   async onSubmit() {

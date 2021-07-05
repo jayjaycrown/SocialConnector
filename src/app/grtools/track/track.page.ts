@@ -4,6 +4,7 @@ import { AlertController, LoadingController, ToastController } from '@ionic/angu
 import { AppService } from '../../_services/app.service';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
+import { GrServiceService } from 'src/app/_services/gr-service.service';
 @Component({
   selector: 'app-track',
   templateUrl: './track.page.html',
@@ -23,7 +24,7 @@ export class TrackPage implements OnInit {
     private loadingController: LoadingController,
     private toastController: ToastController,
     private alertController: AlertController,
-    private app: AppService,
+    private app: GrServiceService,
     private router: Router
   ) { }
 
@@ -70,7 +71,7 @@ export class TrackPage implements OnInit {
         const color = 'danger';
         this.presentToast(color, res.message);
 				// this.alertService.danger(res.message);
-				    this.router.navigateByUrl('/tabs/chtools/upgrade');
+				    this.router.navigateByUrl('/home/upgrade');
 			}	else if (res.status === 'validate') {
         // this.alertService.danger(res.message);
         const color = 'danger';
@@ -88,7 +89,7 @@ export class TrackPage implements OnInit {
 
   analyze(roomId) {
 		// alert(roomId);
-		this.router.navigateByUrl('/tabs/chtools/track/' + roomId);
+		this.router.navigateByUrl('/tabs/grtools/track/' + roomId);
 	}
 
   onSubmit() {

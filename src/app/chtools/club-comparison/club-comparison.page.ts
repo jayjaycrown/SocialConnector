@@ -112,7 +112,7 @@ export class ClubComparisonPage implements OnInit {
         } else if (res.status === 'upgrade') {
         // this.alertService.danger(res.message);
           this.presentToast(color, res.message);
-          this.router.navigateByUrl('/home/upgrade');
+          this.router.navigateByUrl('/tabs/chtools/upgrade');
         } else {
           this.presentToast(color, res.message);
           this.status = false;

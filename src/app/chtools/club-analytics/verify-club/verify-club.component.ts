@@ -62,7 +62,7 @@ export class VerifyClubComponent implements OnInit {
 			     if (res.status === 'success') {
         // this.alertService.success(res.message);
         this.presentToast('success', res.message);
-				    this.router.navigateByUrl('/app/home/clubs');
+				    this.router.navigateByUrl('/tabs/chtools/clubs');
 				// this.code = res.result.code;
       } else {
         this.presentToast('danger', res.message);

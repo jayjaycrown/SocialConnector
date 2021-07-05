@@ -23,6 +23,7 @@ import { File } from '@ionic-native/file/ngx';
 // import { HTTP } from '@ionic-native/http/ngx';
 import { Papa } from 'ngx-papaparse';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import { GrServiceService } from 'src/app/_services/gr-service.service';
 
 @Component({
   selector: 'app-track-details',
@@ -250,7 +251,7 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
 	showSpd: boolean;
   constructor(
     private router: Router,
-    private app: AppService,
+    private app: GrServiceService,
     private auth: AuthService,
     private route: ActivatedRoute,
     private loadingController: LoadingController,
@@ -962,7 +963,7 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
         const color = 'danger';
         this.presentToast(color, res.message);
         // this.alertService.danger(res.message);
-        this.router.navigateByUrl('/tabs/chtools/upgrade');
+        this.router.navigateByUrl('/home/upgrade');
       } else if (res.status === 'validate') {
         // this.alertService.danger(res.message);
         const color = 'danger';
@@ -1020,7 +1021,7 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
 				this.presentToast('success', res.message);
 			}else if (res.status === 'upgrade') {
 				this.presentToast('danger', res.message);
-				this.router.navigateByUrl('/tabs/chtools/upgrade');
+				this.router.navigateByUrl('/app/home/upgrade');
 			} else if (res.status === 'validate') {
 				this.presentToast('danger', res.message);
 				this.router.navigateByUrl('/app/auth/validate/ ' + this.api_token);

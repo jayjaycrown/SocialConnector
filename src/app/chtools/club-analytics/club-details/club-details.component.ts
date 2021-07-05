@@ -62,7 +62,7 @@ export class ClubDetailsComponent implements OnInit {
         // this.alertService.danger(res.message);
         const color = 'danger';
         this.presentToast(color, res.message);
-				    this.router.navigateByUrl('/home/upgrade');
+				    this.router.navigateByUrl('/tabs/chtools/upgrade');
 			}	else {
             // this.alertService.danger(res.message);
         const color = 'danger';
@@ -75,7 +75,7 @@ export class ClubDetailsComponent implements OnInit {
 
   analyze(roomId) {
 		// alert(roomId);
-		this.router.navigateByUrl('/home/track/' + roomId);
+		this.router.navigateByUrl('/tabs/chtools/track/' + roomId);
   }
 
   async onSubmit() {
@@ -98,7 +98,7 @@ export class ClubDetailsComponent implements OnInit {
         // this.alertService.danger(res.message);
         const color = 'danger';
         this.presentToast(color, res.message);
-				    this.router.navigateByUrl('/home/upgrade');
+				    this.router.navigateByUrl('/tabs/chtools/upgrade');
 			}	else {
             // this.alertService.danger(res.message);
         const color = 'danger';

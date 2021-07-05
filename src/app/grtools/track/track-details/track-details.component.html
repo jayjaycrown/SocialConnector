@@ -1,10 +1,10 @@
 <ion-header class="ion-no-border" mode="ios">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/tabs/chtools/track"></ion-back-button>
+      <ion-back-button defaultHref="/tabs/grtools/track"></ion-back-button>
     </ion-buttons>
-    <ion-title [routerLink]="['/tabs/chtools/track']" routerLinkActive="router-link-active" >
-      CH TOOLS
+    <ion-title [routerLink]="['/tabs/grtools/track']" routerLinkActive="router-link-active" >
+      GR TOOLS
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -140,7 +140,7 @@
   </div>
 
   <div *ngIf="loadMore">
-    <ion-card  *ngIf="!hideSkintone">
+    <!-- <ion-card  *ngIf="!hideSkintone">
       <ion-card-header class="ion-text-center">
         <ion-card-title>
           Listeners Percentage distribution [Party Hat/Non-Party Hat]
@@ -191,7 +191,7 @@
           [options]="pieChartOptions" [colors]="pieChartColors2" [plugins]="pieChartPlugins2" [legend]="pieChartLegend">
         </canvas>
       </ion-card-content>
-    </ion-card>
+    </ion-card> -->
 
     <ion-card *ngIf="!hideSkintone">
       <ion-card-content>
@@ -231,7 +231,7 @@
       </ion-card-content>
     </ion-card>
 
-    <ion-card *ngIf="!hideSkintone">
+    <!-- <ion-card *ngIf="!hideSkintone">
       <ion-card-header class="ion-text-center">
         <ion-card-title>
           Party Hat/Non-party Hat Statistics
@@ -335,10 +335,10 @@
 
 
       </ion-card-content>
-    </ion-card>
+    </ion-card> -->
 
 
-    <ion-card *ngIf="!hideSkintone">
+    <!-- <ion-card *ngIf="!hideSkintone">
       <ion-card-header class="ion-text-center">
         <ion-card-title>
           Listeners based on Skintone
@@ -388,10 +388,10 @@
           [options]="pieChartOptions" [colors]="pieChartColors2" [plugins]="pieChartPlugins2" [legend]="pieChartLegend">
         </canvas>
       </ion-card-content>
-    </ion-card>
+    </ion-card> -->
 
     <!-- Party Hats skintone progressbar -->
-    <ion-card *ngIf="!hideSkintone">
+    <!-- <ion-card *ngIf="!hideSkintone">
       <ion-card-header class="ion-text-center">
         <ion-card-title>Listeners based on Skintone (Party Hat Members)</ion-card-title>
       </ion-card-header>
@@ -571,11 +571,11 @@
         </ion-item>
 
       </ion-card-content>
-    </ion-card>
+    </ion-card> -->
 
     <!-- Non-Party Hats skintone progressbar -->
 
-    <ion-card *ngIf="!hideSkintone">
+    <!-- <ion-card *ngIf="!hideSkintone">
       <ion-card-header class="ion-text-center">
         <ion-card-title>Listeners based on Skintone (Non-Party Hat Members)</ion-card-title>
       </ion-card-header>
@@ -757,7 +757,7 @@
         </ion-item>
 
       </ion-card-content>
-    </ion-card>
+    </ion-card> -->
 
     <ion-card *ngIf="top.length > 0">
       <ion-card-header>
