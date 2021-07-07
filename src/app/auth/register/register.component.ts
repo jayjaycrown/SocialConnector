@@ -41,7 +41,7 @@ export class RegisterComponent implements OnInit {
     const toast = await this.toastController.create({
       message,
       color,
-      duration: 3000,
+      duration: 1000,
     });
     toast.present();
   }
@@ -64,7 +64,7 @@ export class RegisterComponent implements OnInit {
             this.presentToast(color, res.message);
             // eslint-disable-next-line @typescript-eslint/naming-convention
             // const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/app/home';
-            this.router.navigateByUrl('/home');
+            this.router.navigateByUrl('/tabs');
           } else {
             // this.alertService.danger(res.message);
             const color = 'danger';

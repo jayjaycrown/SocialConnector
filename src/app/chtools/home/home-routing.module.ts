@@ -64,12 +64,12 @@ const routes: Routes = [
           ),
         canLoad: [AuthGuard],
       },
-      {
-        path: 'profile',
-        loadChildren: () =>
-          import('../profile/profile.module').then((m) => m.ProfilePageModule),
-        canLoad: [AuthGuard],
-      },
+      // {
+      //   path: 'profile',
+      //   loadChildren: () =>
+      //     import('../profile/profile.module').then((m) => m.ProfilePageModule),
+      //   canLoad: [AuthGuard],
+      // },
       {
         path: 'track',
         loadChildren: () =>
@@ -79,12 +79,6 @@ const routes: Routes = [
       {
         path: 'track/:id',
         component: TrackDetailsComponent,
-      },
-      {
-        path: 'upgrade',
-        loadChildren: () =>
-          import('../upgrade/upgrade.module').then((m) => m.UpgradePageModule),
-        canLoad: [AuthGuard],
       },
       {
         path: 'announcements',

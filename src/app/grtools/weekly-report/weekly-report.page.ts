@@ -101,7 +101,7 @@ export class WeeklyReportPage implements OnInit {
           const color = 'danger';
           this.presentToast(color, res.message);
           // this.alertService.danger(res.message);
-          this.router.navigateByUrl('/auth/validate/ ' + this.api_token);
+          this.router.navigateByUrl('/auth/validategr/ ' + this.api_token);
         } else {
           // this.alertService.danger(res.message);
         }
@@ -157,7 +157,7 @@ export class WeeklyReportPage implements OnInit {
           const color = 'danger';
           this.presentToast(color, res.message);
           // this.alertService.danger(res.message);
-          this.router.navigateByUrl('/auth/validate/ ' + this.api_token);
+          this.router.navigateByUrl('/auth/validategr/ ' + this.api_token);
         } else {
           // this.alertService.danger(res.message);
           const color = 'warning';

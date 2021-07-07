@@ -36,6 +36,7 @@
     "cordova-plugin-inappbrowser": "^5.0.0",
     "cordova-plugin-x-socialsharing": "^6.0.3",
     "date-fns": "^2.22.1",
+    "es6-promise-plugin": "^4.2.2",
     "i": "^0.3.6",
     "ng2-charts": "^2.2.3",
     "ng2-search-filter": "^0.5.1",

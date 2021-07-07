@@ -962,7 +962,7 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
         const color = 'danger';
         this.presentToast(color, res.message);
         // this.alertService.danger(res.message);
-        this.router.navigateByUrl('/tabs/chtools/upgrade');
+        this.router.navigateByUrl('/tabs/upgrade');
       } else if (res.status === 'validate') {
         // this.alertService.danger(res.message);
         const color = 'danger';
@@ -1020,7 +1020,7 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
 				this.presentToast('success', res.message);
 			}else if (res.status === 'upgrade') {
 				this.presentToast('danger', res.message);
-				this.router.navigateByUrl('/tabs/chtools/upgrade');
+				this.router.navigateByUrl('/tabs/upgrade');
 			} else if (res.status === 'validate') {
 				this.presentToast('danger', res.message);
 				this.router.navigateByUrl('/app/auth/validate/ ' + this.api_token);

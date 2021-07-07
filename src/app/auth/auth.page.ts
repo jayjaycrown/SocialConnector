@@ -48,7 +48,7 @@ export class AuthPage implements OnInit {
     const toast = await this.toastController.create({
       message,
       color,
-      duration: 3000
+      duration: 1000
     });
     toast.present();
   }

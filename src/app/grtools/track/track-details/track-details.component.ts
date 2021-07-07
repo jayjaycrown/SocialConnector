@@ -968,7 +968,7 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
         // this.alertService.danger(res.message);
         const color = 'danger';
         this.presentToast(color, res.message);
-        this.router.navigateByUrl('/auth/validate/ ' + this.api_token);
+        this.router.navigateByUrl('/auth/validategr/ ' + this.api_token);
       } else {
         this.setDisplay = false;
         const color = 'danger';
@@ -1024,7 +1024,7 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
 				this.router.navigateByUrl('/app/home/upgrade');
 			} else if (res.status === 'validate') {
 				this.presentToast('danger', res.message);
-				this.router.navigateByUrl('/app/auth/validate/ ' + this.api_token);
+				this.router.navigateByUrl('/app/auth/validategr/ ' + this.api_token);
 			} else {
 				this.presentToast('danger', res.message);
 				}

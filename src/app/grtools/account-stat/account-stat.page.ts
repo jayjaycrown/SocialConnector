@@ -73,7 +73,7 @@ export class AccountStatPage implements OnInit {
         // this.alertService.danger(res.message);
         const color = 'danger';
         this.presentToast(color, res.message);
-        this.router.navigateByUrl('/auth/validate/ ' + this.api_token);
+        this.router.navigateByUrl('/auth/validategr/ ' + this.api_token);
       } else {
         // this.alertService.danger(res.message);
         const color = 'danger';

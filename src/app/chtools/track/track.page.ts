@@ -70,7 +70,7 @@ export class TrackPage implements OnInit {
         const color = 'danger';
         this.presentToast(color, res.message);
 				// this.alertService.danger(res.message);
-				    this.router.navigateByUrl('/tabs/chtools/upgrade');
+				    this.router.navigateByUrl('/tabs/upgrade');
 			}	else if (res.status === 'validate') {
         // this.alertService.danger(res.message);
         const color = 'danger';

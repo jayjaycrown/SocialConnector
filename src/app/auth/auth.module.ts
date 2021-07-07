@@ -1,3 +1,4 @@
+import { GrValidateComponent } from './gr-validate/gr-validate.component';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -20,7 +21,7 @@ import { AuthPage } from './auth.page';
     AuthPageRoutingModule,
     NgxCaptchaModule
   ],
-  declarations: [AuthPage, RegisterComponent, ValidateComponent],
+  declarations: [AuthPage, RegisterComponent, ValidateComponent, GrValidateComponent],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 
 })

@@ -61,7 +61,7 @@ export class ClubAnalyticsPage implements OnInit {
         const color = 'danger';
         this.presentToast(color, res.message);
 				// this.alertService.danger(res.message);
-				    this.router.navigateByUrl('/home/upgrade');
+				    this.router.navigateByUrl('/tabs/upgrade');
 			}	else {
         // this.alertService.danger(res.message)
         const color = 'danger';

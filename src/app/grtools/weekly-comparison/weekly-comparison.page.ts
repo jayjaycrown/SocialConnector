@@ -94,7 +94,7 @@ export class WeeklyComparisonPage implements OnInit {
 			} else if (res.status === 'validate') {
         // this.alertService.danger(res.message);
           this.presentToast(color, res.message);
-				      this.router.navigateByUrl('/auth/validate/ ' + this.api_token);
+				      this.router.navigateByUrl('/auth/validategr/ ' + this.api_token);
 			}	else {
 					this.status = false;
 					this.error = res.message;

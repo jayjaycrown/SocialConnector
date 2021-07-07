@@ -7,18 +7,17 @@
       CH TOOLS
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button fill="clear" [routerLink]="['/home/profile']" routerLinkActive="router-link-active">
-        <ion-icon name="person-circle-outline" slot="icon-only"
-          style="width: 36px !important; height: 36px !important;"></ion-icon>
+      <ion-button fill="clear" [routerLink]="['/tabs']" routerLinkActive="router-link-active" routerDirection="back">
+        <ion-icon name="close" slot="icon-only" style="width: 36px !important; height: 36px !important;"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="!setDisplay">
+<!-- <ion-content *ngIf="!setDisplay">
   <ion-progress-bar [type]="'indeterminate'"></ion-progress-bar>
-</ion-content>
-<ion-content *ngIf="setDisplay">
+</ion-content> -->
+<ion-content>
   <div class="ion-padding">
     <ion-card>
       <ion-card-content>

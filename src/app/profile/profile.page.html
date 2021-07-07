@@ -1,9 +1,92 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title>profile</ion-title>
+    <ion-title>
+      Profile
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onClick()" color="dark">
+        <ion-icon slot="start" name="log-out"> </ion-icon> Log out
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-card>
+    <ion-card-content>
+      <ion-item >
+        <ion-icon slot="start" name="person-outline"></ion-icon>
+        <ion-label>
+          <p>Name</p>
+          <h2>{{ result.name | titlecase }}</h2>
+        </ion-label>
+      </ion-item>
+      <ion-item >
+        <ion-icon slot="start" name="mail-outline"></ion-icon>
+        <ion-label>
+          <p>Email</p>
+          <h2>{{ result.email  }}</h2>
+        </ion-label>
+      </ion-item>
 
+      <ion-item >
+        <ion-icon slot="start" name="cash-outline"></ion-icon>
+        <ion-label>
+          <p>Current Plan</p>
+          <h2>{{result.package | titlecase}} <span *ngIf="upgrade">(Expired)</span></h2>
+        </ion-label>
+      </ion-item>
+      <ion-item *ngIf="upgrade">
+        <ion-label  class="ion-padding-left">
+          <ion-button expand="full" color="primary" [routerLink]="['/tabs/upgrade']">Upgrade</ion-button>
+        </ion-label>
+      </ion-item>
+      <ion-item *ngIf="freeTrial">
+        <ion-label class="ion-padding-left">
+          <p></p>
+          <ion-button expand="full" color="primary" (click)="freetrial()">Start free Trial</ion-button>
+        </ion-label>
+      </ion-item>
+      <ion-item *ngIf="!upgrade" >
+        <ion-icon slot="start" name="timer-outline"></ion-icon>
+        <ion-label >
+          <p>Expires on</p>
+          <h2>{{result.subscription_expiry}} </h2>
+        </ion-label>
+      </ion-item>
+
+      <ion-item  *ngIf="showLinkCh">
+        <ion-label>
+          <ion-button (click)="linkCH()" expand="block" color="light" fill="clear" >
+            Link Clubhouse
+          </ion-button>
+        </ion-label>
+      </ion-item>
+
+      <ion-item *ngIf="showLinkGr">
+        <ion-label>
+          <ion-button (click)="linkGR()" expand="block" color="success" >
+            Link Greenroom
+          </ion-button>
+        </ion-label>
+      </ion-item>
+
+      <ion-item *ngIf="showLinkRally">
+        <ion-label>
+          <ion-button (click)="linkRally()" expand="block" color="secondary" >
+            Link Rally
+          </ion-button>
+        </ion-label>
+      </ion-item>
+
+
+
+
+
+
+
+
+    </ion-card-content>
+  </ion-card>
 </ion-content>
+

@@ -151,7 +151,7 @@ export class WeeklyReportPage implements OnInit {
           const color = 'danger';
           this.presentToast(color, res.message);
           // this.alertService.danger(res.message);
-          this.router.navigateByUrl('/home/upgrade');
+          this.router.navigateByUrl('/tabs/upgrade');
         } else if (res.status === 'validate') {
           const color = 'danger';
           this.presentToast(color, res.message);

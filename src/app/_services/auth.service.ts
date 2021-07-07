@@ -78,11 +78,15 @@ export class AuthService {
     //   console.log(key + ' , ' + value);
     // });
     return this.http.post<any>(`${environment.apiUrl}/register`, formData).pipe(
-      map((data: any) => {
-        const result = data.result;
-        localStorage.setItem('ch_token', JSON.stringify(result.ch_token));
-        localStorage.setItem('data', JSON.stringify(data));
-        return data;
+      map((user: any) => {
+        const result = user.result;
+        if (result.length !== 0) {
+          localStorage.setItem('ch_token', JSON.stringify(result.ch_token));
+          localStorage.setItem('greenroom_token', JSON.stringify(result.greenroom_token));
+          localStorage.setItem('user', JSON.stringify(user));
+        }
+        this.userSubject.next(user);
+        return user;
       })
     );
   }
@@ -99,6 +103,21 @@ export class AuthService {
     // 		console.log(data);
     // 	});
   }
+  validategr(api_token, firstname, lastname, greenroom_username) {
+    const formData = new FormData();
+    formData.append('api_token', api_token);
+    formData.append('firstname', firstname);
+    formData.append('lastname', lastname);
+    formData.append('greenroom_username', greenroom_username);
+    return this.http
+      .post<any>(`${environment.grUrl}/validate_gr`, formData)
+      .pipe();
+    // .subscribe((data: any) => {
+    // 		console.log(data);
+    // 	});
+  }
+
+
   // tslint:disable-next-line: variable-name
   getDetails(api_token) {
     const formData = new FormData();
@@ -126,6 +145,7 @@ export class AuthService {
         const result = user.result;
         if (result.length !== 0) {
           localStorage.setItem('ch_token', JSON.stringify(result.ch_token));
+          localStorage.setItem('greenroom_token', JSON.stringify(result.greenroom_token));
           localStorage.setItem('user', JSON.stringify(user));
         }
         this.userSubject.next(user);

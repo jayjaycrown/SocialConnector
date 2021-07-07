@@ -62,7 +62,7 @@ export class ClubDetailsComponent implements OnInit {
         // this.alertService.danger(res.message);
         const color = 'danger';
         this.presentToast(color, res.message);
-				    this.router.navigateByUrl('/tabs/chtools/upgrade');
+				    this.router.navigateByUrl('/tabs/upgrade');
 			}	else {
             // this.alertService.danger(res.message);
         const color = 'danger';
@@ -98,7 +98,7 @@ export class ClubDetailsComponent implements OnInit {
         // this.alertService.danger(res.message);
         const color = 'danger';
         this.presentToast(color, res.message);
-				    this.router.navigateByUrl('/tabs/chtools/upgrade');
+				    this.router.navigateByUrl('/tabs/upgrade');
 			}	else {
             // this.alertService.danger(res.message);
         const color = 'danger';

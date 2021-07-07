@@ -11,9 +11,9 @@ import {
   PaymentIntent,
 } from '@stripe/stripe-js';
 import { Router } from '@angular/router';
-import { environment as env } from '../../../environments/environment';
+import { environment as env } from '../../environments/environment';
 import { ToastController, LoadingController } from '@ionic/angular';
-import { AuthService } from '../../_services/auth.service';
+import { AuthService } from '../_services/auth.service';
 
 @Component({
   selector: 'app-upgrade',
@@ -79,8 +79,13 @@ export class UpgradePage implements OnInit {
     this.getDetails();
   }
 
-  pay(): void {
+  async pay(): Promise<void> {
 		this.loading = true;
+    const loading = await this.loadingController.create({
+      spinner: null,
+      cssClass: 'custom-loading',
+    });
+    await loading.present();
   if (this.stripeTest.valid) {
       this.createPaymentIntent(this.api_token, this.amountinit)
         .pipe(
@@ -95,7 +100,8 @@ export class UpgradePage implements OnInit {
             })
           )
         )
-				.subscribe((result) => {
+				.subscribe(async (result) => {
+          await loading.dismiss();
 					this.loading = false;
      if (result.error) {
             // Show error to your customer (e.g., insufficient funds)
@@ -119,6 +125,7 @@ export class UpgradePage implements OnInit {
 			});
     } else {
 			console.log(this.stripeTest);
+      await loading.dismiss();
    this.loading = false;
    this.presentToast(this.color, 'Please complete the form');
 			// this.alertService.danger('Please complete the form');

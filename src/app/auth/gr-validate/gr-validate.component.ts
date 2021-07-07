@@ -6,16 +6,16 @@ import { first } from 'rxjs/operators';
 import { AuthService } from 'src/app/_services/auth.service';
 
 @Component({
-  selector: 'app-validate',
-  templateUrl: './validate.component.html',
-  styleUrls: ['./validate.component.scss'],
+  selector: 'app-gr-validate',
+  templateUrl: './gr-validate.component.html',
+  styleUrls: ['./gr-validate.component.scss'],
 })
-export class ValidateComponent implements OnInit {
+export class GrValidateComponent implements OnInit {
 
   validateForm;
   model: any = {};
   // tslint:disable-next-line: variable-name
-  ch_token: string;
+  greenroom_token: string;
   // tslint:disable-next-line: variable-name
   api_token: string;
   error: any;
@@ -28,8 +28,8 @@ export class ValidateComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    const data = await localStorage.getItem('ch_token');
-    this.ch_token = data;
+    const data = await localStorage.getItem('greenroom_token');
+    this.greenroom_token = data;
 		// alert(this.ch_token);
 		  this.api_token = this.route.snapshot.paramMap.get('id');
   }
@@ -50,7 +50,7 @@ export class ValidateComponent implements OnInit {
       });
     await loading.present();
     this.authenticationService
-			.validate(this.api_token, this.model.ch_username)
+			.validategr(this.api_token, this.model.firstname, this.model.lastname, this.model.ch_username)
 			.pipe(first())
 			.subscribe(
         async (res: any) => {
@@ -86,4 +86,6 @@ export class ValidateComponent implements OnInit {
     // alert(1);
     this.authenticationService.logout();
   }
+
+
 }

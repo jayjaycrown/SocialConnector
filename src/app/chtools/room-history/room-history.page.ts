@@ -32,11 +32,14 @@ export class RoomHistoryPage implements OnInit {
     private alertController: AlertController
   ) { }
 
-  async ngOnInit() {
+  async ionViewWillEnter() {
     const user: any = await JSON.parse(localStorage.getItem('user'));
 	   const result = user.result;
     this.api_token = result.api_token;
     this.getRoomHistory();
+  }
+
+  async ngOnInit() {
   }
 
   async presentToast(color, message) {
@@ -48,16 +51,21 @@ export class RoomHistoryPage implements OnInit {
     toast.present();
   }
 
-  getRoomHistory() {
-    this.app.getRoomHistory(this.page, this.api_token).subscribe((res: any) => {
+  async getRoomHistory() {
+    const loading = await this.loadingController.create({
+      spinner: null,
+      cssClass: 'custom-loading'
+    });
+    await loading.present();
+    this.app.getRoomHistory(this.page, this.api_token).subscribe(async (res: any) => {
+      await loading.dismiss();
       if (res.status === 'success') {
         this.setDisplay = true;
         this.allRooms = res.result;
         // console.log(this.allRooms);
       } else {
         const color = 'danger';
-        this.setDisplay = false;
-						  this.presentToast(color, res.message);
+				this.presentToast(color, res.message);
 					}
     });
   }
@@ -70,10 +78,12 @@ export class RoomHistoryPage implements OnInit {
   next(fastForward) {
 		if (fastForward === 'forward') {
 			this.page += 1;
+      this.setDisplay = false;
 			this.getRoomHistory();
 		} else {
 			if (this.page > 1) {
 				this.page -= 1;
+        this.setDisplay = false;
 				this.getRoomHistory();
 			} else {
 				this.page = 1;
@@ -105,7 +115,7 @@ export class RoomHistoryPage implements OnInit {
           const color = 'danger';
           this.presentToast(color, res.message);
 				// this.alertService.danger(res.message);
-				      this.router.navigateByUrl('/tabs/chtools/upgrade');
+				      this.router.navigateByUrl('/tabs/upgrade');
         } else if (res.status === 'validate') {
           await loading.dismiss();
           const color = 'danger';
