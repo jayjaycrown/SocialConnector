@@ -13,7 +13,7 @@
 
 .toolscard {
   text-align: center !important;
-  padding: 30px 20px !important;
+  // padding: 30px 20px !important;
   border-radius: 20px;
 }
 .clear {
@@ -46,3 +46,24 @@
 //   margin: 0 !important;
 //   padding: 0 !important;
 // }
+
+.selectFilter {
+  --border-width: 1px !important;
+  --border-color: var(--ion-color-light);
+  // --border: 1px solid var(--ion-color-medum) !important;
+  --border-radius: 5px !important;
+}
+
+.bgCh {
+  height: 19vh !important;
+  background: url("../../assets/img/ch.jpg") 0 0/ 100% 100%;
+  background-size: cover;
+  background-position-x: unset;
+}
+
+.bgGr {
+  height: 19vh !important;
+  background: url("../../assets/img/gr.jpg") 0 0/ 100% 100%;
+  background-size: cover;
+  background-position-x: unset;
+}

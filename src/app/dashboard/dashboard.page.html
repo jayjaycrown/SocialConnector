@@ -57,10 +57,10 @@
                   <p>No of Rooms</p>
                   <h1>{{ current.total_rooms }}</h1>
                   <ion-button expand="full" fill="clear">
-                    <span [class]="totalColor[0]"
-                      ><ion-icon [name]="totalColor[1]"></ion-icon>{{ percTotal
-                      }}%</span
-                    >
+                    <span [class]="totalColor[0]">
+                      <ion-icon [name]="totalColor[1]"></ion-icon>{{ percTotal
+                      }}%
+                    </span>
                   </ion-button>
                 </ion-label>
               </ion-item>
@@ -73,10 +73,10 @@
                   <h1>{{ current.total_listeners | number}}</h1>
                   <!-- <h2><span class="red"><ion-icon name="arrow-down-outline"></ion-icon>34%</span></h2> -->
                   <ion-button expand="full" fill="clear">
-                    <span [class]="listenerColor[0]"
-                      ><ion-icon [name]="listenerColor[1]"></ion-icon>{{
-                      total_listeners }}%</span
-                    >
+                    <span [class]="listenerColor[0]">
+                      <ion-icon [name]="listenerColor[1]"></ion-icon>{{
+                      total_listeners }}%
+                    </span>
                   </ion-button>
                 </ion-label>
               </ion-item>
@@ -90,10 +90,9 @@
                   <p>Avg Listened time</p>
                   <h1>{{ convert(current.avg) }}</h1>
                   <ion-button expand="block" fill="clear" shape="round">
-                    <span [class]="avgColor[0]"
-                      ><ion-icon [name]="avgColor[1]"></ion-icon>{{ avg
-                      }}%</span
-                    >
+                    <span [class]="avgColor[0]">
+                      <ion-icon [name]="avgColor[1]"></ion-icon>{{ avg }}%
+                    </span>
                   </ion-button>
                 </ion-label>
               </ion-item>
@@ -106,10 +105,9 @@
                   <h1>{{ current.new || 0 | number}}</h1>
                   <h2>
                     <ion-button expand="block" fill="clear" shape="round">
-                      <span [class]="newColor[0]"
-                        ><ion-icon [name]="newColor[1]"></ion-icon>{{
-                        new}}%</span
-                      >
+                      <span [class]="newColor[0]">
+                        <ion-icon [name]="newColor[1]"></ion-icon>{{ new}}%
+                      </span>
                     </ion-button>
                   </h2>
                 </ion-label>
@@ -128,10 +126,10 @@
                   <p>No of Rooms</p>
                   <h1>{{ current.total_rooms }}</h1>
                   <ion-button expand="full" fill="clear">
-                    <span [class]="totalColor[0]"
-                      ><ion-icon [name]="totalColor[1]"></ion-icon>{{ percTotal
-                      }}%</span
-                    >
+                    <span [class]="totalColor[0]">
+                      <ion-icon [name]="totalColor[1]"></ion-icon>{{ percTotal
+                      }}%
+                    </span>
                   </ion-button>
                 </ion-label>
               </ion-item>
@@ -144,10 +142,10 @@
                   <h1>{{ current.total_listeners | number}}</h1>
                   <!-- <h2><span class="red"><ion-icon name="arrow-down-outline"></ion-icon>34%</span></h2> -->
                   <ion-button expand="full" fill="clear">
-                    <span [class]="listenerColor[0]"
-                      ><ion-icon [name]="listenerColor[1]"></ion-icon>{{
-                      total_listeners }}%</span
-                    >
+                    <span [class]="listenerColor[0]">
+                      <ion-icon [name]="listenerColor[1]"></ion-icon>{{
+                      total_listeners }}%
+                    </span>
                   </ion-button>
                 </ion-label>
               </ion-item>
@@ -161,10 +159,9 @@
                   <p>Avg Listened time</p>
                   <h1>{{ convert(current.avg) }}</h1>
                   <ion-button expand="block" fill="clear" shape="round">
-                    <span [class]="avgColor[0]"
-                      ><ion-icon [name]="avgColor[1]"></ion-icon>{{ avg
-                      }}%</span
-                    >
+                    <span [class]="avgColor[0]">
+                      <ion-icon [name]="avgColor[1]"></ion-icon>{{ avg }}%
+                    </span>
                   </ion-button>
                 </ion-label>
               </ion-item>
@@ -177,10 +174,9 @@
                   <h1>{{ current.new || 0 | number}}</h1>
                   <h2>
                     <ion-button expand="block" fill="clear" shape="round">
-                      <span [class]="newColor[0]"
-                        ><ion-icon [name]="newColor[1]"></ion-icon>{{
-                        new}}%</span
-                      >
+                      <span [class]="newColor[0]">
+                        <ion-icon [name]="newColor[1]"></ion-icon>{{ new}}%
+                      </span>
                     </ion-button>
                   </h2>
                 </ion-label>
@@ -195,31 +191,31 @@
   <!-- tools -->
   <div style="margin-top: 4vh">
     <ion-text color="primary">
-      <h4 style="margin-bottom: 0">TOOLS</h4>
+      <h4 style="margin-bottom: 0, margin" class="ion-margin-start">TOOLS</h4>
     </ion-text>
     <ion-grid fixed>
       <ion-row class="mt0">
         <ion-col size="6">
           <ion-card
             color="light"
-            class="toolscard"
+            class="toolscard bgCh"
             [routerLink]="['/tabs/chtools']"
             routerLinkActive="router-link-active"
           >
             <ion-card-content>
-              <h2>CH TOOLS</h2>
+              <!-- <h2>CH TOOLS</h2> -->
             </ion-card-content>
           </ion-card>
         </ion-col>
         <ion-col size="6">
           <ion-card
             color="success"
-            class="toolscard"
+            class="toolscard bgGr"
             [routerLink]="['/tabs/grtools']"
             routerLinkActive="router-link-active"
           >
             <ion-card-content>
-              <h2>GR TOOLS</h2>
+              <!-- <h2>GR TOOLS</h2> -->
             </ion-card-content>
           </ion-card>
         </ion-col>
@@ -231,35 +227,144 @@
   <ion-card>
     <ion-card-header>
       <ion-card-subtitle>
-        <ion-item>
-          <ion-label>Data</ion-label>
-          <ion-select value="peperoni" placeholder="Select Pizza">
-            <ion-select-option value="total_rooms"
-              >Total Rooms</ion-select-option
-            >
-            <ion-select-option value="total_listeners"
-              >Total Listeners</ion-select-option
-            >
-            <ion-select-option value="total_listened"
-              >Total Listened Time</ion-select-option
-            >
-            <ion-select-option value="avg_max_listeners"
-              >Avg Max Listeners</ion-select-option
-            >
-            <ion-select-option value="avg">Avg Listened Time</ion-select-option>
-            <ion-select-option value="new">New Followers</ion-select-option>
-          </ion-select>
-        </ion-item>
+        <p>Weekly Report for {{ month1 }}</p>
+        <ion-grid fixed>
+          <ion-row>
+            <ion-col size="6">
+              <ion-item lines="none" class="selectFilter">
+                <ion-select
+                  mode="ios"
+                  value="month"
+                  [interfaceOptions]="customActionSheetOptions"
+                  interface="action-sheet"
+                  placeholder="Select Month"
+                  ngModel="month1"
+                  (ngModelChange)="selectAMonth($event)"
+                >
+                  <ion-select-option
+                    *ngFor="let item of selectMonth"
+                    [value]="item.value"
+                  >
+                    {{ item.name }}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+            <ion-col size="6">
+              <ion-item lines="none" class="selectFilter">
+                <ion-select
+                  mode="md"
+                  [interfaceOptions]="customPopoverOptions"
+                  interface="popover"
+                  value="selectedData"
+                  placeholder="Filter"
+                  [(ngModel)]="selectedData"
+                  (ngModelChange)="changedData($event)"
+                >
+                  <ion-select-option value="total_rooms" selected="true"
+                    >Total Rooms</ion-select-option
+                  >
+                  <ion-select-option value="total_listeners"
+                    >Total Listeners</ion-select-option
+                  >
+                  <ion-select-option value="total_listened"
+                    >Total Listened Time</ion-select-option
+                  >
+                  <ion-select-option value="avg_max_listeners"
+                    >Avg Max Listeners</ion-select-option
+                  >
+
+                  <ion-select-option value="avg"
+                    >Avg Listened Time</ion-select-option
+                  >
+                  <ion-select-option value="new"
+                    >New Followers</ion-select-option
+                  >
+                </ion-select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
       </ion-card-subtitle>
     </ion-card-header>
-    <div>
+
+    <div *ngIf="showData === 'total_rooms'">
       <canvas
         baseChart
-        height="400"
+        height="300"
         [datasets]="lineChartData"
         [labels]="lineChartLabels"
         [options]="lineChartOptions"
         [colors]="lineChartColors"
+        [legend]="lineChartLegend"
+        [chartType]="lineChartType"
+        [plugins]="lineChartPlugins"
+      ></canvas>
+    </div>
+    <div *ngIf="showData === 'total_listeners'">
+      <canvas
+        baseChart
+        height="300"
+        [datasets]="lineChartData2"
+        [labels]="lineChartLabels"
+        [options]="lineChartOptions"
+        [colors]="lineChartColors2"
+        [legend]="lineChartLegend"
+        [chartType]="lineChartType"
+        [plugins]="lineChartPlugins"
+      ></canvas>
+    </div>
+
+    <div *ngIf="showData === 'total_listened'">
+      <canvas
+        baseChart
+        height="300"
+        [datasets]="lineChartData3"
+        [labels]="lineChartLabels"
+        [options]="lineChartOptions"
+        [colors]="lineChartColors3"
+        [legend]="lineChartLegend"
+        [chartType]="lineChartType"
+        [plugins]="lineChartPlugins"
+      ></canvas>
+    </div>
+
+    <div *ngIf="showData === 'avg_max_listeners'">
+      <canvas
+        baseChart
+        height="300"
+        [datasets]="lineChartData4"
+        [labels]="lineChartLabels"
+        [options]="lineChartOptions"
+        [colors]="lineChartColors4"
+        [legend]="lineChartLegend"
+        [chartType]="lineChartType"
+        [plugins]="lineChartPlugins"
+      ></canvas>
+    </div>
+
+    <div *ngIf="showData === 'avg'">
+      <canvas
+        baseChart
+        height="300"
+        [datasets]="lineChartData5"
+        [labels]="lineChartLabels"
+        [options]="lineChartOptions"
+        [colors]="lineChartColors2"
+        [legend]="lineChartLegend"
+        [chartType]="lineChartType"
+        [plugins]="lineChartPlugins"
+      ></canvas>
+    </div>
+
+    <div *ngIf="showData === 'new'">
+      <canvas
+        baseChart
+        height="300"
+        [datasets]="lineChartData6"
+        [labels]="lineChartLabels"
+        [options]="lineChartOptions"
+        [colors]="lineChartColors3"
         [legend]="lineChartLegend"
         [chartType]="lineChartType"
         [plugins]="lineChartPlugins"

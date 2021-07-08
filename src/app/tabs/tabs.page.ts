@@ -4,13 +4,14 @@ import { IonTabs } from '@ionic/angular';
 @Component({
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
-  styleUrls: ['tabs.page.scss']
+  styleUrls: ['tabs.page.scss'],
 })
 export class TabsPage {
-
   @ViewChild('tabs', { static: false }) tabs: IonTabs;
   selectedTab: string;
   showLabel: boolean;
+  myCustomIcon = '/assets/logo.svg';
+
   constructor() {}
 
   setCurrentTab() {
@@ -18,7 +19,8 @@ export class TabsPage {
     // console.log(this.selectedTab);
     if (this.selectedTab === 'dashboard') {
       this.showLabel = false;
-    }else {this.showLabel = true;}
+    } else {
+      this.showLabel = true;
+    }
   }
-
 }

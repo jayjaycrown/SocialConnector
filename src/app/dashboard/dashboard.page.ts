@@ -18,6 +18,8 @@ import { Color, BaseChartDirective, Label } from 'ng2-charts';
   styleUrls: ['./dashboard.page.scss'],
 })
 export class DashboardPage implements OnInit {
+  selectedData = 'total_rooms';
+  showData = 'total_rooms';
   type = 'ch';
   type2 = 'ch';
   api_token: any;
@@ -72,31 +74,39 @@ export class DashboardPage implements OnInit {
   new_2: number;
   new_3: number;
   new_4: number;
-
-  public lineChartData: ChartDataSets[] = [
-    { data: this.total_roomsData, label: 'No of Rooms' },
-  ];
-  public lineChartLabels: Label[] = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
-
-  public lineChartData2: ChartDataSets[] = [
-    { data: this.total_listenersData, label: 'Total Listeners' },
-  ];
-
-  public lineChartData3: ChartDataSets[] = [
-    { data: this.total_listened, label: 'Total Listened Time' },
-  ];
-
-  public lineChartData4: ChartDataSets[] = [
-    { data: this.avg_max_listeners, label: 'Avg max Listeners' },
+  public selectMonth: any = [
+    { name: 'January', value: 1 },
+    { name: 'February', value: 2 },
+    { name: 'March', value: 3 },
+    { name: 'April', value: 4 },
+    { name: 'May', value: 5 },
+    { name: 'June', value: 6 },
+    { name: 'July', value: 7 },
+    { name: 'August', value: 8 },
+    { name: 'September', value: 9 },
+    { name: 'October', value: 10 },
+    { name: 'November', value: 11 },
+    { name: 'December', value: 12 },
   ];
 
-  public lineChartData5: ChartDataSets[] = [
-    { data: this.avgData, label: 'Average Listened Time' },
+  public lineChartData: ChartDataSets[] = [{ data: this.total_roomsData }];
+  public lineChartLabels: Label[] = [
+    'Week 1',
+    'Week 2',
+    'Week 3',
+    'Week 4',
+    'Week 5',
   ];
 
-  public lineChartData6: ChartDataSets[] = [
-    { data: this.newData, label: 'Daily New Followers' },
-  ];
+  public lineChartData2: ChartDataSets[] = [{ data: this.total_listenersData }];
+
+  public lineChartData3: ChartDataSets[] = [{ data: this.total_listened }];
+
+  public lineChartData4: ChartDataSets[] = [{ data: this.avg_max_listeners }];
+
+  public lineChartData5: ChartDataSets[] = [{ data: this.avgData }];
+
+  public lineChartData6: ChartDataSets[] = [{ data: this.newData }];
 
   public lineChartOptions: ChartOptions = {
     responsive: true,
@@ -147,6 +157,20 @@ export class DashboardPage implements OnInit {
   public lineChartLegend = true;
   public lineChartType: ChartType = 'line';
   public lineChartPlugins = [];
+  month1: any = '';
+  total_roomsWk5: number;
+  total_listenersData_5: number;
+  total_listened_5: number;
+  avg_max_listeners_5: number;
+  avg_5: number;
+  new_5: number;
+  customPopoverOptions: any = {
+    subHeader: ' Filter by',
+  };
+
+  customActionSheetOptions: any = {
+    header: 'Select Month',
+  };
 
   constructor(
     private router: Router,
@@ -156,26 +180,16 @@ export class DashboardPage implements OnInit {
   ) {}
 
   async ngOnInit() {
-    const loading = await this.loadingController.create({
-      spinner: null,
-      cssClass: 'custom-loading',
-    });
-    await loading.present();
-    this.show = false;
-    this.getPerformanceStats();
-    this.getWeeklyStats();
-    await loading.dismiss();
-  }
-
-  async ionViewWillEnter() {
     const user: any = await JSON.parse(localStorage.getItem('user'));
     const result = user.result;
     this.api_token = result.api_token;
     this.date = moment().format('YYYY-MM-DD');
     this.month = moment().format('MM');
+    this.month1 = moment().format('MMMM');
+    // alert(this.month1);
     // alert(this.month);
     this.getPerformanceStats();
-    this.getWeeklyStats();
+    this.getWeeklyStats(this.month);
   }
 
   async getPerformanceStats() {
@@ -225,11 +239,22 @@ export class DashboardPage implements OnInit {
     );
   }
 
-  async getWeeklyStats() {
-    // this.date = '2021-04-07';
-    this.app.weeklyStats(this.api_token, this.month, this.page).subscribe(
+  async getWeeklyStats(month) {
+    const loading = await this.loadingController.create({
+      spinner: null,
+      cssClass: 'custom-loading',
+    });
+    await loading.present();
+    this.total_roomsData.length = 0;
+    this.total_listenersData.length = 0;
+    this.total_listened.length = 0;
+    this.avgData.length = 0;
+    this.avg_max_listeners.length = 0;
+    this.newData.length = 0;
+    this.app.weeklyStats(this.api_token, month, this.page).subscribe(
       async (res: any) => {
-        // console.log(res);
+        await loading.dismiss();
+        console.log(res);
         if (res.status === 'success') {
           // console.log(res);
           const sata = res.result;
@@ -237,12 +262,13 @@ export class DashboardPage implements OnInit {
           this.total_roomsWk2 = parseFloat(sata.week2.total_rooms);
           this.total_roomsWk3 = parseFloat(sata.week3.total_rooms);
           this.total_roomsWk4 = parseFloat(sata.week4.total_rooms);
-          this.total_roomsData.length = 0;
+          this.total_roomsWk5 = parseFloat(sata.week5.total_rooms) || 0;
           this.total_roomsData.push(
             this.total_roomsWk1,
             this.total_roomsWk2,
             this.total_roomsWk3,
-            this.total_roomsWk4
+            this.total_roomsWk4,
+            this.total_roomsWk5
           );
           console.log(this.total_roomsData);
 
@@ -251,28 +277,82 @@ export class DashboardPage implements OnInit {
           this.total_listenersData_2 = parseFloat(sata.week2.total_listeners);
           this.total_listenersData_3 = parseFloat(sata.week3.total_listeners);
           this.total_listenersData_4 = parseFloat(sata.week4.total_listeners);
-          this.total_listenersData.length = 0;
+          this.total_listenersData_5 =
+            parseFloat(sata.week5.total_listeners) || 0;
+
           this.total_listenersData.push(
             this.total_listenersData_1,
             this.total_listenersData_2,
             this.total_listenersData_3,
-            this.total_listenersData_4
+            this.total_listenersData_4,
+            this.total_listenersData_5
           );
           console.log(this.total_listenersData);
 
           // total_listened
-          this.total_listened_1 = parseFloat(sata.week1.total_listeners);
-          this.total_listened_2 = parseFloat(sata.week2.total_listeners);
-          this.total_listened_3 = parseFloat(sata.week3.total_listeners);
-          this.total_listened_4 = parseFloat(sata.week4.total_listeners);
-          this.total_listened.length = 0;
+          this.total_listened_1 = parseFloat(sata.week1.total_listened);
+          this.total_listened_2 = parseFloat(sata.week2.total_listened);
+          this.total_listened_3 = parseFloat(sata.week3.total_listened);
+          this.total_listened_4 = parseFloat(sata.week4.total_listened);
+          this.total_listened_5 = parseFloat(sata.week4.total_listened) || 0;
+
           this.total_listened.push(
             this.total_listened_1,
             this.total_listened_2,
             this.total_listened_3,
-            this.total_listened_4
+            this.total_listened_4,
+            this.total_listened_5
           );
           console.log(this.total_listened);
+
+          // avg_max_listeners
+          this.avg_max_listeners_1 = parseFloat(sata.week1.avg_max_listeners);
+          this.avg_max_listeners_2 = parseFloat(sata.week2.avg_max_listeners);
+          this.avg_max_listeners_3 = parseFloat(sata.week3.avg_max_listeners);
+          this.avg_max_listeners_4 = parseFloat(sata.week4.avg_max_listeners);
+          this.avg_max_listeners_5 =
+            parseFloat(sata.week4.avg_max_listeners) || 0;
+
+          this.avg_max_listeners.push(
+            this.avg_max_listeners_1,
+            this.avg_max_listeners_2,
+            this.avg_max_listeners_3,
+            this.avg_max_listeners_4,
+            this.avg_max_listeners_5
+          );
+          console.log(this.avg_max_listeners);
+
+          // avgData
+          this.avg_1 = parseFloat(sata.week1.avg);
+          this.avg_2 = parseFloat(sata.week2.avg);
+          this.avg_3 = parseFloat(sata.week3.avg);
+          this.avg_4 = parseFloat(sata.week4.avg);
+          this.avg_5 = parseFloat(sata.week4.avg) || 0;
+
+          this.avgData.push(
+            this.avg_1,
+            this.avg_2,
+            this.avg_3,
+            this.avg_4,
+            this.avg_5
+          );
+          console.log(this.avgData);
+
+          // newData
+          this.new_1 = parseFloat(sata.week1.new) || 0;
+          this.new_2 = parseFloat(sata.week2.new) || 0;
+          this.new_3 = parseFloat(sata.week3.new) || 0;
+          this.new_4 = parseFloat(sata.week4.new) || 0;
+          this.new_5 = parseFloat(sata.week4.new) || 0;
+
+          this.newData.push(
+            this.new_1,
+            this.new_2,
+            this.new_3,
+            this.new_4,
+            this.new_5
+          );
+          console.log(this.newData);
         } else if (res.status === 'upgrade') {
           const color = 'danger';
           this.presentToast(color, res.message);
@@ -294,6 +374,12 @@ export class DashboardPage implements OnInit {
         // console.log(err);
       }
     );
+  }
+
+  changedData(event) {
+    console.log(this.selectedData);
+    console.log(event);
+    this.showData = this.selectedData;
   }
   // transformMinute(value: number): string {
   //   const hours = Math.floor(value / 60);
@@ -355,5 +441,11 @@ export class DashboardPage implements OnInit {
       duration: 1500,
     });
     toast.present();
+  }
+
+  async selectAMonth(ev: any) {
+    const num = ev - 1;
+    this.month1 = moment().month(num).format('MMMM');
+    this.getWeeklyStats(ev);
   }
 }
