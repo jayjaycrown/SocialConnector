@@ -165,6 +165,7 @@ export class AuthService {
     localStorage.removeItem('user');
     localStorage.removeItem('data');
     localStorage.removeItem('ch_token');
+    localStorage.removeItem('greenroom_token');
 		  this.userSubject.next(false);
 		  this.router.navigate(['/auth']);
 	}
