@@ -72,6 +72,14 @@ ion-loading.custom-loading {
   }
 }
 
+.ion-border-radius {
+  border-radius: 10px !important;
+}
+.noMargin {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
 /* Set the width to the full container and center the content */
 ion-select {
   width: 100%;

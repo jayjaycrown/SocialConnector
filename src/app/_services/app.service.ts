@@ -281,6 +281,50 @@ export class AppService {
     );
   }
 
+  // https://monitor.clubhousetools.xyz/api/room_stats?api_token=dfdfdfdf&channel=ffefe
+  roomStats(api_token, channel) {
+    const formData = new FormData();
+    formData.append('api_token', api_token);
+    formData.append('channel', channel);
+    // formData.append('page', page);
+    return this.http
+      .post(this.url + '/room_stats', formData)
+      .pipe(catchError(this.handleError('roomStats')));
+  }
+
+  // https://monitor.clubhousetools.xyz/api/top_rooms_week?api_token=apRCOa9jBmJvgr7X7C0Y6EzHcgCSv66hrVT39AWAnjoWJlKGxm&date=2021-07-11
+
+  WeeklyTopRooms(api_token, date) {
+    const formData = new FormData();
+    formData.append('api_token', api_token);
+    formData.append('date', date);
+    // formData.append('page', page);
+    return this.http
+      .post(this.url + '/top_rooms_week', formData)
+      .pipe(catchError(this.handleError('WeeklyTopRooms')));
+  }
+
+  // https://monitor.clubhousetools.xyz/api/my_clubs?api_token=apRCOa9jBmJvgr7X7C0Y6EzHcgCSv66hrVT39AWAnjoWJlKGxm
+
+  myClubs(api_token) {
+    const formData = new FormData();
+    formData.append('api_token', api_token);
+    // formData.append('page', page);
+    return this.http
+      .post(this.url + '/my_clubs', formData)
+      .pipe(catchError(this.handleError('myClubs')));
+  }
+
+  // https://monitor.clubhousetools.xyz/api/club_stats?api_token=apRCOa9jBmJvgr7X7C0Y6EzHcgCSv66hrVT39AWAnjoWJlKGxm&club_id=622875898
+  myClubDetails(api_token, club_id) {
+    const formData = new FormData();
+    formData.append('api_token', api_token);
+    formData.append('club_id', club_id);
+    return this.http
+      .post(this.url + '/club_stats', formData)
+      .pipe(catchError(this.handleError('myClubDetails')));
+  }
+
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);

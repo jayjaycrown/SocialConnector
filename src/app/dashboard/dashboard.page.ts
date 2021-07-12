@@ -74,6 +74,7 @@ export class DashboardPage implements OnInit {
   new_2: number;
   new_3: number;
   new_4: number;
+  allmoderators: any[];
   public selectMonth: any = [
     { name: 'January', value: 1 },
     { name: 'February', value: 2 },
@@ -114,22 +115,24 @@ export class DashboardPage implements OnInit {
   public lineChartColors: Color[] = [
     {
       // grey
-      backgroundColor: 'rgba(148,159,177,0.2)',
-      borderColor: 'rgba(148,159,177,1)',
-      pointBackgroundColor: 'rgba(148,159,177,1)',
-      pointBorderColor: '#fff',
+      backgroundColor: 'rgba(9, 175, 252, 0.2)',
+      borderColor: 'rgba(9, 175, 252,1)',
+      pointBackgroundColor: '#fff',
+      pointBorderColor: 'rgba(9, 175, 252,1)',
       pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(148,159,177,0.8)',
+      pointHoverBorderColor: 'rgba(148,159,177, 0.8)',
+      pointBorderWidth: 3,
     },
   ];
   public lineChartColors2: Color[] = [
     {
-      backgroundColor: 'rgba(255,0,0,0.3)',
-      borderColor: 'red',
-      pointBackgroundColor: 'rgba(148,159,177,1)',
-      pointBorderColor: '#fff',
+      backgroundColor: 'rgba(20, 128, 0, 0.3)',
+      borderColor: 'green',
+      pointBackgroundColor: '#fff',
+      pointBorderColor: 'green',
       pointHoverBackgroundColor: '#fff',
       pointHoverBorderColor: 'rgba(148,159,177,0.8)',
+      pointBorderWidth: 3,
     },
   ];
   public lineChartColors3: Color[] = [
@@ -137,10 +140,11 @@ export class DashboardPage implements OnInit {
       // dark grey
       backgroundColor: 'rgba(77,83,96,0.2)',
       borderColor: 'rgba(77,83,96,1)',
-      pointBackgroundColor: 'rgba(77,83,96,1)',
-      pointBorderColor: '#fff',
+      pointBackgroundColor: 'white',
+      pointBorderColor: 'rgba(77,83,96,1)',
       pointHoverBackgroundColor: '#fff',
       pointHoverBorderColor: 'rgba(77,83,96,1)',
+      pointBorderWidth: 3,
     },
   ];
   public lineChartColors4: Color[] = [
@@ -148,13 +152,14 @@ export class DashboardPage implements OnInit {
       // grey
       backgroundColor: 'rgba(148,159,177,0.2)',
       borderColor: 'rgba(148,159,177,1)',
-      pointBackgroundColor: 'rgba(148,159,177,1)',
-      pointBorderColor: '#fff',
+      pointBackgroundColor: 'white',
+      pointBorderColor: 'rgba(148,159,177,1)',
       pointHoverBackgroundColor: '#fff',
       pointHoverBorderColor: 'rgba(148,159,177,0.8)',
+      pointBorderWidth: 3,
     },
   ];
-  public lineChartLegend = true;
+  public lineChartLegend = false;
   public lineChartType: ChartType = 'line';
   public lineChartPlugins = [];
   month1: any = '';
@@ -171,6 +176,11 @@ export class DashboardPage implements OnInit {
   customActionSheetOptions: any = {
     header: 'Select Month',
   };
+  moderators: any;
+  modLength: any;
+  fullData: any = [];
+  thisDay: Date;
+  durationDays: string;
 
   constructor(
     private router: Router,
@@ -190,6 +200,7 @@ export class DashboardPage implements OnInit {
     // alert(this.month);
     this.getPerformanceStats();
     this.getWeeklyStats(this.month);
+    this.getWeeklyTopRooms();
   }
 
   async getPerformanceStats() {
@@ -254,7 +265,7 @@ export class DashboardPage implements OnInit {
     this.app.weeklyStats(this.api_token, month, this.page).subscribe(
       async (res: any) => {
         await loading.dismiss();
-        console.log(res);
+        // console.log(res);
         if (res.status === 'success') {
           // console.log(res);
           const sata = res.result;
@@ -270,7 +281,7 @@ export class DashboardPage implements OnInit {
             this.total_roomsWk4,
             this.total_roomsWk5
           );
-          console.log(this.total_roomsData);
+          // console.log(this.total_roomsData);
 
           // total listeners
           this.total_listenersData_1 = parseFloat(sata.week1.total_listeners);
@@ -287,7 +298,7 @@ export class DashboardPage implements OnInit {
             this.total_listenersData_4,
             this.total_listenersData_5
           );
-          console.log(this.total_listenersData);
+          // console.log(this.total_listenersData);
 
           // total_listened
           this.total_listened_1 = parseFloat(sata.week1.total_listened);
@@ -303,7 +314,7 @@ export class DashboardPage implements OnInit {
             this.total_listened_4,
             this.total_listened_5
           );
-          console.log(this.total_listened);
+          // console.log(this.total_listened);
 
           // avg_max_listeners
           this.avg_max_listeners_1 = parseFloat(sata.week1.avg_max_listeners);
@@ -320,7 +331,7 @@ export class DashboardPage implements OnInit {
             this.avg_max_listeners_4,
             this.avg_max_listeners_5
           );
-          console.log(this.avg_max_listeners);
+          // console.log(this.avg_max_listeners);
 
           // avgData
           this.avg_1 = parseFloat(sata.week1.avg);
@@ -336,7 +347,7 @@ export class DashboardPage implements OnInit {
             this.avg_4,
             this.avg_5
           );
-          console.log(this.avgData);
+          // console.log(this.avgData);
 
           // newData
           this.new_1 = parseFloat(sata.week1.new) || 0;
@@ -352,7 +363,7 @@ export class DashboardPage implements OnInit {
             this.new_4,
             this.new_5
           );
-          console.log(this.newData);
+          // console.log(this.newData);
         } else if (res.status === 'upgrade') {
           const color = 'danger';
           this.presentToast(color, res.message);
@@ -374,6 +385,49 @@ export class DashboardPage implements OnInit {
         // console.log(err);
       }
     );
+  }
+  async getWeeklyTopRooms() {
+    this.app
+      .WeeklyTopRooms(this.api_token, this.date)
+      .subscribe(async (res: any) => {
+        if (res.status === 'success') {
+          const arr = res.result;
+          this.fullData = arr.slice(Math.max(arr.length - 3, 0));
+          //           date_ended: "2021-07-03 16:07:56"
+          // date_started: "2021-07-03 10:11:01"
+          // alert(this.thisDay);
+        } else {
+        }
+      });
+  }
+
+  public randomize(): void {
+    this.lineChartType = this.lineChartType === 'line' ? 'bar' : 'line';
+  }
+
+  onClick(channel) {
+    this.router.navigateByUrl('/tabs/chtools/track/' + channel);
+  }
+
+  getDateDiff(now, end) {
+    // console.log(now, end);
+    // const now = moment(new Date()); //todays date
+    // const end = moment('2015-12-1'); // another date
+    const data = now.split();
+    const testing = data[0].replace(/-/g, '/');
+    const data2 = end.split();
+    const testing2 = data2[0].replace(/-/g, '/');
+    // const datta2 = dattta[0].replace(/T/g, ' ');
+    const duration = moment(testing2, 'YYYY/MM/DD HH:mm:ss').diff(
+      moment(testing, 'YYYY/MM/DD HH:mm:ss')
+    );
+    // const days = duration.asHours();
+    const secssss = moment.duration(duration).seconds();
+    const minsss = moment.duration(duration).minutes();
+    const hrsss = Math.trunc(moment.duration(duration).asHours());
+    this.durationDays = hrsss + ':' + minsss + ':' + secssss;
+    // console.log(this.durationDays);
+    return this.durationDays;
   }
 
   changedData(event) {

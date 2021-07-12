@@ -1,194 +1,316 @@
-<ion-header class="ion-no-border" mode="ios">
+<ion-header class="ion-no-border" mode="md">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/tabs/chtools/track"></ion-back-button>
     </ion-buttons>
-    <ion-title [routerLink]="['/tabs/chtools/track']" routerLinkActive="router-link-active" >
+    <ion-title
+      [routerLink]="['/tabs/chtools/track']"
+      routerLinkActive="router-link-active"
+    >
       CH TOOLS
     </ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content *ngIf="!setDisplay">
-  <ion-progress-bar [type]="'indeterminate'"></ion-progress-bar>
-</ion-content>
-
+<ion-content *ngIf="!setDisplay"></ion-content>
 <ion-content *ngIf="setDisplay">
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content pullingIcon="chevron-down-circle-outline" pullingText="Pull to refresh"
-      refreshingSpinner="circles" refreshingText="Refreshing...">
+    <ion-refresher-content
+      pullingIcon="chevron-down-circle-outline"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+      refreshingText="Refreshing..."
+    >
     </ion-refresher-content>
   </ion-refresher>
   <ion-card>
     <ion-card-header class="ion-text-center">
       <ion-card-title>{{ fullData.topic }}</ion-card-title>
     </ion-card-header>
+
     <ion-card-content class="ion-text-center">
       <div class="image">
         <span *ngFor="let moderator of allmoderators">
           <img [src]="moderator.photo_url" class="creators" alt="" srcset="" />
         </span>
+        <!-- <span
+          style="
+            float: right;
+            color: #fff !important;
+            background-color: rgb(122, 121, 121);
+            border-radius: 50%;
+            margin-top: 12px;
+            padding: 5px;
+          "
+          *ngIf="modLength > 5"
+          >+{{ modLength - 5 }}
+        </span> -->
         <div class="clear"></div>
       </div>
-      <p class="ml-2 mr-2">w/ <span *ngFor="let moderator of allmoderators"> {{ moderator.name }},</span>
-        <span span class="badge badge-primary bg-primary" *ngIf="modLength > 5">+{{modLength - 5}}
+      <p class="ml-2 mr-2">
+        w/
+        <span *ngFor="let moderator of allmoderators">
+          {{ moderator.name }},</span
+        >
+        <span *ngIf="modLength > 5">
+          and
+          <span
+            style="
+              color: #fff !important;
+              background-color: rgb(122, 121, 121);
+              border-radius: 50%;
+              padding: 3px 5px 3px 5px;
+            "
+            >{{ modLength - 5 }}</span
+          >
+          &nbsp;others
         </span>
       </p>
-      <ion-item class="ion-text-center">
-        <ion-avatar slot="end" *ngIf="imageLight">
-          <img [src]="imageLight">
-        </ion-avatar>
-        <ion-label>
-          <h2>Room Status: {{ fullData.room_status }} </h2>
-        </ion-label>
-      </ion-item>
 
-      <ion-item class="ion-text-center">
+      <ion-grid fixed>
+        <ion-row>
+          <ion-col size="12">
+            <ion-item class="ion-text-center ion-border-radius" lines="none">
+              <ion-avatar slot="end" *ngIf="imageLight">
+                <img [src]="imageLight" />
+              </ion-avatar>
+              <ion-label>
+                <h2>Room Status: {{ fullData.room_status }}</h2>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6">
+            <ion-item class="ion-text-center ion-border-radius" lines="none">
+              <ion-label>
+                <p>Max Listeners</p>
+                <h2>{{ fullData.total_listeners | number }}</h2>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col size="6">
+            <ion-item class="ion-text-center ion-border-radius" lines="none">
+              <ion-label>
+                <p>Max Speakers</p>
+                <h2>{{ fullData.total_speakers | number }}</h2>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
 
-        <ion-label>
-          <p>Max Listeners</p>
-          <h2>{{ fullData.total_listeners | number }}</h2>
-        </ion-label>
-      </ion-item>
+        <ion-row>
+          <ion-col size="6">
+            <ion-item class="ion-text-center ion-border-radius" lines="none">
+              <ion-label>
+                <p>Total Moderators</p>
+                <h2>{{ fullData.total_moderators }}</h2>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col size="6">
+            <ion-item class="ion-text-center ion-border-radius" lines="none">
+              <ion-label>
+                <p>Duration</p>
+                <h2>
+                  {{ durationDays }}
+                </h2>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
 
-      <ion-item class="ion-text-center">
-        <ion-label>
-          <p>Max Speakers</p>
-          <h2>{{ fullData.total_speakers | number }}</h2>
-        </ion-label>
-      </ion-item>
+        <ion-row>
+          <ion-col size="6">
+            <ion-item class="ion-text-center ion-border-radius" lines="none">
+              <ion-label>
+                <p>Total Active Listeners</p>
+                <h2>{{ fullData.total_active | number }}</h2>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col size="6">
+            <ion-item class="ion-text-center ion-border-radius" lines="none">
+              <ion-label>
+                <p>Total Listened Time</p>
+                <h2>{{ avgListend1 }}</h2>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
 
-      <ion-item class="ion-text-center">
-        <ion-label>
-          <p>Total Moderators</p>
-          <h2>{{ fullData.total_moderators }}</h2>
-        </ion-label>
-      </ion-item>
+        <ion-row>
+          <ion-col size="6">
+            <ion-item class="ion-text-center ion-border-radius" lines="none">
+              <ion-label>
+                <p>Avg Listened Time</p>
+                <h2>{{ avgListend }}</h2>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col size="6">
+            <ion-item class="ion-text-center ion-border-radius" lines="none">
+              <ion-label>
+                <p>Tracking Duration</p>
+                <h2>
+                  {{ durationDays1 }}
+                </h2>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
 
-      <ion-item class="ion-text-center">
-        <ion-label>
-          <p>Duration</p>
-          <h2><span *ngIf="durationMonth >0">{{ durationMonth }}M,</span> {{ durationDays }}D,
-            {{ durationhrs }} H, {{ durationMins }}M, {{ durationSecs }}S</h2>
-        </ion-label>
-      </ion-item>
+        <ion-row>
+          <ion-col size="6">
+            <ion-item
+              class="ion-text-center ion-border-radius"
+              lines="none"
+              *ngIf="fullData.avg_speaker"
+            >
+              <ion-label>
+                <p>Avg Speaker</p>
+                <h2>{{ fullData.avg_speaker }}</h2>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col size="6">
+            <ion-item
+              class="ion-text-center ion-border-radius"
+              lines="none"
+              *ngIf="fullData.total_speak_time"
+            >
+              <ion-label>
+                <p>Total Speak Time</p>
+                <h2>{{ fullData.total_speak_time }}</h2>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
 
-      <ion-item class="ion-text-center" *ngIf="fullData.total_active">
-        <ion-label>
-          <p>Total Active Listeners</p>
-          <h2>{{ fullData.total_active | number }}</h2>
-        </ion-label>
-      </ion-item>
+        <ion-row>
+          <ion-col size="12" *ngIf="fullData.total_speak_time">
+            <ion-item class="ion-text-center ion-border-radius" lines="none">
+              <ion-label>
+                <p>Total Speak Time</p>
+                <h2>{{ fullData.total_speak_time }}</h2>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
 
-      <ion-item class="ion-text-center">
-        <ion-label>
-          <p>Total Listened Time</p>
-          <h2>{{ avgListend1 }}</h2>
-        </ion-label>
-      </ion-item>
-
-      <ion-item class="ion-text-center">
-        <ion-label>
-          <p>Avg Listened Time</p>
-          <h2>{{ avgListend  }}</h2>
-        </ion-label>
-      </ion-item>
-
-      <ion-item class="ion-text-center">
-        <ion-label>
-          <p>Tracking Duration</p>
-          <h2><span *ngIf="durationMonth1 >0">{{ durationMonth1 }}M,</span> {{ durationDays1 }}D, {{ durationhrs1 }}
-            H, {{ durationMins1 }}M,
-            {{ durationSecs1 }}S</h2>
-        </ion-label>
-      </ion-item>
-
-      <ion-item class="ion-text-center" *ngIf="fullData.avg_speaker">
-        <ion-label>
-          <p>Avg Speaker</p>
-          <h2>{{ fullData.avg_speaker   }}</h2>
-        </ion-label>
-      </ion-item>
-
-      <ion-item class="ion-text-center" *ngIf="fullData.total_speak_time">
-        <ion-label>
-          <p>Total Speak Time</p>
-          <h2>{{ fullData.total_speak_time  }}</h2>
-        </ion-label>
-      </ion-item>
-
-      <ion-item class="ion-text-center" *ngIf="fullData.total_speak_time">
-        <ion-label>
-          <p>Total Speak Time</p>
-          <h2>{{ fullData.total_speak_time  }}</h2>
-        </ion-label>
-      </ion-item>
+      <div *ngIf="showChart">
+        <canvas
+          baseChart
+          height="300"
+          [datasets]="lineChartData"
+          [labels]="lineChartLabels"
+          [options]="lineChartOptions"
+          [colors]="lineChartColors"
+          [legend]="lineChartLegend"
+          [chartType]="lineChartType"
+          [plugins]="lineChartPlugins"
+        ></canvas>
+      </div>
 
       <div *ngIf="exportToHs">
         <ion-button (click)="exportToHS()" expand="block" color="primary">
           Export To HubSpot
         </ion-button>
       </div>
-
-
     </ion-card-content>
   </ion-card>
 
-  <div class="ion-text-center ion-margin-top ion-margin-bottom" *ngIf="!loadMore">
+  <div
+    class="ion-text-center ion-margin-top ion-margin-bottom"
+    *ngIf="!loadMore"
+  >
     <ion-button fill="clear" (click)="onClick()">
       <ion-icon slot="start" name="reload-outline"></ion-icon> Load more
     </ion-button>
   </div>
 
   <div *ngIf="loadMore">
-    <ion-card  *ngIf="!hideSkintone">
+    <ion-card *ngIf="!hideSkintone">
       <ion-card-header class="ion-text-center">
         <ion-card-title>
           Listeners Percentage distribution [Party Hat/Non-Party Hat]
         </ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <canvas baseChart attr.data="{{pieChartDataL}}" [data]="pieChartDataL" [labels]="pieChartLabels"
-          [chartType]="pieChartType" [options]="pieChartOptions" [colors]="pieChartColors" [plugins]="pieChartPlugins"
-          [legend]="pieChartLegend">
+        <canvas
+          baseChart
+          attr.data="{{ pieChartDataL }}"
+          [data]="pieChartDataL"
+          [labels]="pieChartLabels"
+          [chartType]="pieChartType"
+          [options]="pieChartOptions"
+          [colors]="pieChartColors"
+          [plugins]="pieChartPlugins"
+          [legend]="pieChartLegend"
+        >
         </canvas>
       </ion-card-content>
     </ion-card>
 
-    <ion-card  *ngIf="!hideSkintone">
+    <ion-card *ngIf="!hideSkintone">
       <ion-card-header class="ion-text-center">
         <ion-card-title>
           Speakers Percentage distribution [Party Hat/Non-Party Hat]
         </ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <canvas baseChart [data]="pieChartDataS" [labels]="pieChartLabels" [chartType]="pieChartType"
-          [options]="pieChartOptions" [colors]="pieChartColors" [plugins]="pieChartPlugins" [legend]="pieChartLegend">
+        <canvas
+          baseChart
+          [data]="pieChartDataS"
+          [labels]="pieChartLabels"
+          [chartType]="pieChartType"
+          [options]="pieChartOptions"
+          [colors]="pieChartColors"
+          [plugins]="pieChartPlugins"
+          [legend]="pieChartLegend"
+        >
         </canvas>
       </ion-card-content>
     </ion-card>
 
-    <ion-card  *ngIf="!hideSkintone">
+    <ion-card *ngIf="!hideSkintone">
       <ion-card-header class="ion-text-center">
         <ion-card-title>
           Moderators Percentage distribution [Party Hat/Non-Party Hat]
         </ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <canvas baseChart [data]="pieChartDataM" [labels]="pieChartLabels" [chartType]="pieChartType"
-          [options]="pieChartOptions" [colors]="pieChartColors" [plugins]="pieChartPlugins" [legend]="pieChartLegend">
+        <canvas
+          baseChart
+          [data]="pieChartDataM"
+          [labels]="pieChartLabels"
+          [chartType]="pieChartType"
+          [options]="pieChartOptions"
+          [colors]="pieChartColors"
+          [plugins]="pieChartPlugins"
+          [legend]="pieChartLegend"
+        >
         </canvas>
       </ion-card-content>
     </ion-card>
 
-    <ion-card  *ngIf="!hideSkintone">
+    <ion-card *ngIf="!hideSkintone">
       <ion-card-header class="ion-text-center">
         <ion-card-title>
           Listeners Percentage Based On Skintone
         </ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <canvas baseChart [data]="pieChartDataSkin" [labels]="piechatLabels2" [chartType]="pieChartType2"
-          [options]="pieChartOptions" [colors]="pieChartColors2" [plugins]="pieChartPlugins2" [legend]="pieChartLegend">
+        <canvas
+          baseChart
+          [data]="pieChartDataSkin"
+          [labels]="piechatLabels2"
+          [chartType]="pieChartType2"
+          [options]="pieChartOptions"
+          [colors]="pieChartColors2"
+          [plugins]="pieChartPlugins2"
+          [legend]="pieChartLegend"
+        >
         </canvas>
       </ion-card-content>
     </ion-card>
@@ -200,7 +322,7 @@
             <h2>Total Listeners</h2>
           </ion-label>
           <ion-label>
-            <h2>{{ fullData.total_listeners| number }}</h2>
+            <h2>{{ fullData.total_listeners | number }}</h2>
           </ion-label>
         </ion-item>
         <ion-item>
@@ -208,7 +330,7 @@
             <h2>Total Speakers</h2>
           </ion-label>
           <ion-label>
-            <h2>{{ fullData.total_speakers| number }}</h2>
+            <h2>{{ fullData.total_speakers | number }}</h2>
           </ion-label>
         </ion-item>
         <ion-item>
@@ -216,7 +338,7 @@
             <h2>Total Moderators</h2>
           </ion-label>
           <ion-label>
-            <h2>{{ fullData.total_moderators| number }}</h2>
+            <h2>{{ fullData.total_moderators | number }}</h2>
           </ion-label>
         </ion-item>
         <ion-item>
@@ -227,15 +349,12 @@
             <h2>{{ avgListend }}</h2>
           </ion-label>
         </ion-item>
-
       </ion-card-content>
     </ion-card>
 
     <ion-card *ngIf="!hideSkintone">
       <ion-card-header class="ion-text-center">
-        <ion-card-title>
-          Party Hat/Non-party Hat Statistics
-        </ion-card-title>
+        <ion-card-title> Party Hat/Non-party Hat Statistics </ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <ion-grid>
@@ -317,7 +436,7 @@
             <ion-col size="6">
               <ion-item>
                 <ion-label>
-                  <p>Avg Listened (Mins) </p>
+                  <p>Avg Listened (Mins)</p>
                   <h2>{{ fullData.avg_listened_new }}</h2>
                 </ion-label>
               </ion-item>
@@ -325,67 +444,88 @@
             <ion-col size="6">
               <ion-item>
                 <ion-label>
-                  <p>Avg Listened (Mins) </p>
+                  <p>Avg Listened (Mins)</p>
                   <h2>{{ fullData.avg_listened_old }}</h2>
                 </ion-label>
               </ion-item>
             </ion-col>
           </ion-row>
         </ion-grid>
-
-
       </ion-card-content>
     </ion-card>
 
-
     <ion-card *ngIf="!hideSkintone">
       <ion-card-header class="ion-text-center">
-        <ion-card-title>
-          Listeners based on Skintone
-        </ion-card-title>
+        <ion-card-title> Listeners based on Skintone </ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <canvas baseChart [data]="pieChartDataSkin" [labels]="piechatLabels2" [chartType]="pieChartType"
-          [options]="pieChartOptions" [colors]="pieChartColors2" [plugins]="pieChartPlugins2" [legend]="pieChartLegend">
+        <canvas
+          baseChart
+          [data]="pieChartDataSkin"
+          [labels]="piechatLabels2"
+          [chartType]="pieChartType"
+          [options]="pieChartOptions"
+          [colors]="pieChartColors2"
+          [plugins]="pieChartPlugins2"
+          [legend]="pieChartLegend"
+        >
         </canvas>
       </ion-card-content>
     </ion-card>
 
     <ion-card *ngIf="!hideSkintone">
       <ion-card-header class="ion-text-center">
-        <ion-card-title>
-          Speakers based on Skintone
-        </ion-card-title>
+        <ion-card-title> Speakers based on Skintone </ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <canvas baseChart [data]="pieChartSpeakerSkin" [labels]="piechatLabels2" [chartType]="pieChartType"
-          [options]="pieChartOptions" [colors]="pieChartColors2" [plugins]="pieChartPlugins2" [legend]="pieChartLegend">
+        <canvas
+          baseChart
+          [data]="pieChartSpeakerSkin"
+          [labels]="piechatLabels2"
+          [chartType]="pieChartType"
+          [options]="pieChartOptions"
+          [colors]="pieChartColors2"
+          [plugins]="pieChartPlugins2"
+          [legend]="pieChartLegend"
+        >
         </canvas>
       </ion-card-content>
     </ion-card>
 
     <ion-card *ngIf="!hideSkintone">
       <ion-card-header class="ion-text-center">
-        <ion-card-title>
-          Moderators Based on Skintone
-        </ion-card-title>
+        <ion-card-title> Moderators Based on Skintone </ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <canvas baseChart [data]="pieChartModSkin" [labels]="piechatLabels2" [chartType]="pieChartType"
-          [options]="pieChartOptions" [colors]="pieChartColors2" [plugins]="pieChartPlugins2" [legend]="pieChartLegend">
+        <canvas
+          baseChart
+          [data]="pieChartModSkin"
+          [labels]="piechatLabels2"
+          [chartType]="pieChartType"
+          [options]="pieChartOptions"
+          [colors]="pieChartColors2"
+          [plugins]="pieChartPlugins2"
+          [legend]="pieChartLegend"
+        >
         </canvas>
       </ion-card-content>
     </ion-card>
 
     <ion-card *ngIf="!hideSkintone">
       <ion-card-header class="ion-text-center">
-        <ion-card-title>
-          Average Listened Time
-        </ion-card-title>
+        <ion-card-title> Average Listened Time </ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <canvas baseChart [data]="pieChartLTSkin" [labels]="piechatLabels2" [chartType]="pieChartType"
-          [options]="pieChartOptions" [colors]="pieChartColors2" [plugins]="pieChartPlugins2" [legend]="pieChartLegend">
+        <canvas
+          baseChart
+          [data]="pieChartLTSkin"
+          [labels]="piechatLabels2"
+          [chartType]="pieChartType"
+          [options]="pieChartOptions"
+          [colors]="pieChartColors2"
+          [plugins]="pieChartPlugins2"
+          [legend]="pieChartLegend"
+        >
         </canvas>
       </ion-card-content>
     </ion-card>
@@ -393,43 +533,69 @@
     <!-- Party Hats skintone progressbar -->
     <ion-card *ngIf="!hideSkintone">
       <ion-card-header class="ion-text-center">
-        <ion-card-title>Listeners based on Skintone (Party Hat Members)</ion-card-title>
+        <ion-card-title
+          >Listeners based on Skintone (Party Hat Members)</ion-card-title
+        >
       </ion-card-header>
       <ion-card-content>
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.total_listeners_new_1 }}</span>
+            <span class="ion-float-left">{{
+              fullData.total_listeners_new_1
+            }}</span>
             <span class="ion-float-right">From Skintone 1 ✋🏻</span>
-            <ion-progress-bar [value]="fullData.percent_listeners_new_1 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_listeners_new_1 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
-
         </ion-item>
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.total_listeners_new_2 }}</span>
+            <span class="ion-float-left">{{
+              fullData.total_listeners_new_2
+            }}</span>
             <span class="ion-float-right">From Skintone 2 ✋🏼</span>
-            <ion-progress-bar [value]="fullData.percent_listeners_new_2 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_listeners_new_2 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.total_listeners_new_3 }}</span>
+            <span class="ion-float-left">{{
+              fullData.total_listeners_new_3
+            }}</span>
             <span class="ion-float-right">From Skintone 3 ✋🏽</span>
-            <ion-progress-bar [value]="fullData.percent_listeners_new_3 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_listeners_new_3 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.total_listeners_new_4 }}</span>
+            <span class="ion-float-left">{{
+              fullData.total_listeners_new_4
+            }}</span>
             <span class="ion-float-right">From Skintone 4 ✋🏾</span>
-            <ion-progress-bar [value]="fullData.percent_listeners_new_4 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_listeners_new_4 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.total_listeners_new_5 }}</span>
+            <span class="ion-float-left">{{
+              fullData.total_listeners_new_5
+            }}</span>
             <span class="ion-float-right">From Skintone 5 ✋🏿</span>
-            <ion-progress-bar [value]="fullData.percent_listeners_new_5 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_listeners_new_5 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
         </ion-item>
       </ion-card-content>
@@ -437,93 +603,141 @@
 
     <ion-card *ngIf="!hideSkintone">
       <ion-card-header class="ion-text-center">
-        <ion-card-title>Speakers based on Skintone (Party Hat Members)</ion-card-title>
+        <ion-card-title
+          >Speakers based on Skintone (Party Hat Members)</ion-card-title
+        >
       </ion-card-header>
       <ion-card-content>
-
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.total_speakers_new_1 }}</span>
+            <span class="ion-float-left">{{
+              fullData.total_speakers_new_1
+            }}</span>
             <span class="ion-float-right">From Skintone 1 ✋🏻</span>
-            <ion-progress-bar [value]="fullData.percent_speakers_new_1 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_speakers_new_1 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
-
         </ion-item>
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.total_speakers_new_2 }}</span>
+            <span class="ion-float-left">{{
+              fullData.total_speakers_new_2
+            }}</span>
             <span class="ion-float-right">From Skintone 2 ✋🏼</span>
-            <ion-progress-bar [value]="fullData.percent_speakers_new_2 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_speakers_new_2 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.total_speakers_new_3 }}</span>
+            <span class="ion-float-left">{{
+              fullData.total_speakers_new_3
+            }}</span>
             <span class="ion-float-right">From Skintone 3 ✋🏽</span>
-            <ion-progress-bar [value]="fullData.percent_speakers_new_3 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_speakers_new_3 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.total_speakers_new_4 }}</span>
+            <span class="ion-float-left">{{
+              fullData.total_speakers_new_4
+            }}</span>
             <span class="ion-float-right">From Skintone 4 ✋🏾</span>
-            <ion-progress-bar [value]="fullData.percent_speakers_new_4 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_speakers_new_4 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.total_speakers_new_5 }}</span>
+            <span class="ion-float-left">{{
+              fullData.total_speakers_new_5
+            }}</span>
             <span class="ion-float-right">From Skintone 5 ✋🏿</span>
-            <ion-progress-bar [value]="fullData.percent_speakers_new_5 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_speakers_new_5 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
         </ion-item>
-
       </ion-card-content>
     </ion-card>
 
     <ion-card *ngIf="!hideSkintone">
       <ion-card-header class="ion-text-center">
-        <ion-card-title>Moderators based on Skintone (Party Hat Members)</ion-card-title>
+        <ion-card-title
+          >Moderators based on Skintone (Party Hat Members)</ion-card-title
+        >
       </ion-card-header>
       <ion-card-content>
-
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.total_moderators_new_1 }}</span>
+            <span class="ion-float-left">{{
+              fullData.total_moderators_new_1
+            }}</span>
             <span class="ion-float-right">From Skintone 1 ✋🏻</span>
-            <ion-progress-bar [value]="fullData.percent_moderators_new_1 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_moderators_new_1 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
-
         </ion-item>
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.total_moderators_new_2 }}</span>
+            <span class="ion-float-left">{{
+              fullData.total_moderators_new_2
+            }}</span>
             <span class="ion-float-right">From Skintone 2 ✋🏼</span>
-            <ion-progress-bar [value]="fullData.percent_moderators_new_2 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_moderators_new_2 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.total_moderators_new_3 }}</span>
+            <span class="ion-float-left">{{
+              fullData.total_moderators_new_3
+            }}</span>
             <span class="ion-float-right">From Skintone 3 ✋🏽</span>
-            <ion-progress-bar [value]="fullData.percent_moderators_new_3 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_moderators_new_3 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.total_moderators_new_4 }}</span>
+            <span class="ion-float-left">{{
+              fullData.total_moderators_new_4
+            }}</span>
             <span class="ion-float-right">From Skintone 4 ✋🏾</span>
-            <ion-progress-bar [value]="fullData.percent_moderators_new_4 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_moderators_new_4 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.total_moderators_new_5 }}</span>
+            <span class="ion-float-left">{{
+              fullData.total_moderators_new_5
+            }}</span>
             <span class="ion-float-right">From Skintone 5 ✋🏿</span>
-            <ion-progress-bar [value]="fullData.percent_moderators_new_5 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_moderators_new_5 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
         </ion-item>
-
       </ion-card-content>
     </ion-card>
 
@@ -532,44 +746,66 @@
         <ion-card-title>Avg Listen Time (Party Hat Members)</ion-card-title>
       </ion-card-header>
       <ion-card-content>
-
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.avg_listened_new_1 }}</span>
+            <span class="ion-float-left">{{
+              fullData.avg_listened_new_1
+            }}</span>
             <span class="ion-float-right">From Skintone 1 ✋🏻</span>
-            <ion-progress-bar [value]="fullData.percent_moderators_new_1 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_moderators_new_1 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
-
         </ion-item>
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.avg_listened_new_2 }}</span>
+            <span class="ion-float-left">{{
+              fullData.avg_listened_new_2
+            }}</span>
             <span class="ion-float-right">From Skintone 2 ✋🏼</span>
-            <ion-progress-bar [value]="fullData.percent_moderators_new_2 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_moderators_new_2 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.avg_listened_new_3 }}</span>
+            <span class="ion-float-left">{{
+              fullData.avg_listened_new_3
+            }}</span>
             <span class="ion-float-right">From Skintone 3 ✋🏽</span>
-            <ion-progress-bar [value]="fullData.percent_moderators_new_3 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_moderators_new_3 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.avg_listened_new_4 }}</span>
+            <span class="ion-float-left">{{
+              fullData.avg_listened_new_4
+            }}</span>
             <span class="ion-float-right">From Skintone 4 ✋🏾</span>
-            <ion-progress-bar [value]="fullData.percent_moderators_new_4 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_moderators_new_4 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.avg_listened_new_5 }}</span>
+            <span class="ion-float-left">{{
+              fullData.avg_listened_new_5
+            }}</span>
             <span class="ion-float-right">From Skintone 5 ✋🏿</span>
-            <ion-progress-bar [value]="fullData.percent_moderators_new_5 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_moderators_new_5 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
         </ion-item>
-
       </ion-card-content>
     </ion-card>
 
@@ -577,139 +813,211 @@
 
     <ion-card *ngIf="!hideSkintone">
       <ion-card-header class="ion-text-center">
-        <ion-card-title>Listeners based on Skintone (Non-Party Hat Members)</ion-card-title>
+        <ion-card-title
+          >Listeners based on Skintone (Non-Party Hat Members)</ion-card-title
+        >
       </ion-card-header>
       <ion-card-content>
-
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.total_listeners_old_1 }}</span>
+            <span class="ion-float-left">{{
+              fullData.total_listeners_old_1
+            }}</span>
             <span class="ion-float-right">From Skintone 1 ✋🏻</span>
-            <ion-progress-bar [value]="fullData.percent_listeners_old_1 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_listeners_old_1 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
-
         </ion-item>
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.total_listeners_old_2 }}</span>
+            <span class="ion-float-left">{{
+              fullData.total_listeners_old_2
+            }}</span>
             <span class="ion-float-right">From Skintone 2 ✋🏼</span>
-            <ion-progress-bar [value]="fullData.percent_listeners_old_2 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_listeners_old_2 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.total_listeners_old_3 }}</span>
+            <span class="ion-float-left">{{
+              fullData.total_listeners_old_3
+            }}</span>
             <span class="ion-float-right">From Skintone 3 ✋🏽</span>
-            <ion-progress-bar [value]="fullData.percent_listeners_old_3 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_listeners_old_3 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.total_listeners_old_4 }}</span>
+            <span class="ion-float-left">{{
+              fullData.total_listeners_old_4
+            }}</span>
             <span class="ion-float-right">From Skintone 4 ✋🏾</span>
-            <ion-progress-bar [value]="fullData.percent_listeners_old_4 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_listeners_old_4 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.total_listeners_old_5 }}</span>
+            <span class="ion-float-left">{{
+              fullData.total_listeners_old_5
+            }}</span>
             <span class="ion-float-right">From Skintone 5 ✋🏿</span>
-            <ion-progress-bar [value]="fullData.percent_listeners_old_5 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_listeners_old_5 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
         </ion-item>
-
       </ion-card-content>
     </ion-card>
 
     <ion-card *ngIf="!hideSkintone">
       <ion-card-header class="ion-text-center">
-        <ion-card-title>Speakers based on Skintone (Non-Party Hat Members)</ion-card-title>
+        <ion-card-title
+          >Speakers based on Skintone (Non-Party Hat Members)</ion-card-title
+        >
       </ion-card-header>
       <ion-card-content>
-
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.total_speakers_old_1 }}</span>
+            <span class="ion-float-left">{{
+              fullData.total_speakers_old_1
+            }}</span>
             <span class="ion-float-right">From Skintone 1 ✋🏻</span>
-            <ion-progress-bar [value]="fullData.percent_speakers_old_1 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_speakers_old_1 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
-
         </ion-item>
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.total_speakers_old_2 }}</span>
+            <span class="ion-float-left">{{
+              fullData.total_speakers_old_2
+            }}</span>
             <span class="ion-float-right">From Skintone 2 ✋🏼</span>
-            <ion-progress-bar [value]="fullData.percent_speakers_old_2 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_speakers_old_2 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.total_speakers_old_3 }}</span>
+            <span class="ion-float-left">{{
+              fullData.total_speakers_old_3
+            }}</span>
             <span class="ion-float-right">From Skintone 3 ✋🏽</span>
-            <ion-progress-bar [value]="fullData.percent_speakers_old_3 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_speakers_old_3 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.total_speakers_old_4 }}</span>
+            <span class="ion-float-left">{{
+              fullData.total_speakers_old_4
+            }}</span>
             <span class="ion-float-right">From Skintone 4 ✋🏾</span>
-            <ion-progress-bar [value]="fullData.percent_speakers_old_4 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_speakers_old_4 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.total_speakers_old_5 }}</span>
+            <span class="ion-float-left">{{
+              fullData.total_speakers_old_5
+            }}</span>
             <span class="ion-float-right">From Skintone 5 ✋🏿</span>
-            <ion-progress-bar [value]="fullData.percent_speakers_old_5 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_speakers_old_5 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
         </ion-item>
-
       </ion-card-content>
     </ion-card>
 
     <ion-card *ngIf="!hideSkintone">
       <ion-card-header class="ion-text-center">
-        <ion-card-title>Moderators based on Skintone (Non-Party Hat Members)</ion-card-title>
+        <ion-card-title
+          >Moderators based on Skintone (Non-Party Hat Members)</ion-card-title
+        >
       </ion-card-header>
       <ion-card-content>
-
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.total_moderators_old_1 }}</span>
+            <span class="ion-float-left">{{
+              fullData.total_moderators_old_1
+            }}</span>
             <span class="ion-float-right">From Skintone 1 ✋🏻</span>
-            <ion-progress-bar [value]="fullData.percent_moderators_old_1 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_moderators_old_1 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
-
         </ion-item>
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.total_moderators_old_2 }}</span>
+            <span class="ion-float-left">{{
+              fullData.total_moderators_old_2
+            }}</span>
             <span class="ion-float-right">From Skintone 2 ✋🏼</span>
-            <ion-progress-bar [value]="fullData.percent_moderators_old_2 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_moderators_old_2 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.total_moderators_old_3 }}</span>
+            <span class="ion-float-left">{{
+              fullData.total_moderators_old_3
+            }}</span>
             <span class="ion-float-right">From Skintone 3 ✋🏽</span>
-            <ion-progress-bar [value]="fullData.percent_moderators_old_3 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_moderators_old_3 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.total_moderators_old_4 }}</span>
+            <span class="ion-float-left">{{
+              fullData.total_moderators_old_4
+            }}</span>
             <span class="ion-float-right">From Skintone 4 ✋🏾</span>
-            <ion-progress-bar [value]="fullData.percent_moderators_old_4 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_moderators_old_4 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.total_moderators_old_5 }}</span>
+            <span class="ion-float-left">{{
+              fullData.total_moderators_old_5
+            }}</span>
             <span class="ion-float-right">From Skintone 5 ✋🏿</span>
-            <ion-progress-bar [value]="fullData.percent_moderators_old_5 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_moderators_old_5 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
         </ion-item>
-
       </ion-card-content>
     </ion-card>
 
@@ -718,310 +1026,546 @@
         <ion-card-title>Avg Listen Time (Non-Party Hat Members)</ion-card-title>
       </ion-card-header>
       <ion-card-content>
-
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.avg_listened_old_1 }}</span>
+            <span class="ion-float-left">{{
+              fullData.avg_listened_old_1
+            }}</span>
             <span class="ion-float-right">From Skintone 1 ✋🏻</span>
-            <ion-progress-bar [value]="fullData.percent_moderators_old_1 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_moderators_old_1 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
-
         </ion-item>
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.avg_listened_old_2 }}</span>
+            <span class="ion-float-left">{{
+              fullData.avg_listened_old_2
+            }}</span>
             <span class="ion-float-right">From Skintone 2 ✋🏼</span>
-            <ion-progress-bar [value]="fullData.percent_moderators_old_2 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_moderators_old_2 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.avg_listened_old_3 }}</span>
+            <span class="ion-float-left">{{
+              fullData.avg_listened_old_3
+            }}</span>
             <span class="ion-float-right">From Skintone 3 ✋🏽</span>
-            <ion-progress-bar [value]="fullData.percent_moderators_old_3 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_moderators_old_3 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.avg_listened_old_4 }}</span>
+            <span class="ion-float-left">{{
+              fullData.avg_listened_old_4
+            }}</span>
             <span class="ion-float-right">From Skintone 4 ✋🏾</span>
-            <ion-progress-bar [value]="fullData.percent_moderators_old_4 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_moderators_old_4 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-label>
-            <span class="ion-float-left">{{ fullData.avg_listened_old_5 }}</span>
+            <span class="ion-float-left">{{
+              fullData.avg_listened_old_5
+            }}</span>
             <span class="ion-float-right">From Skintone 5 ✋🏿</span>
-            <ion-progress-bar [value]="fullData.percent_moderators_old_5 /100" color="primary"></ion-progress-bar>
+            <ion-progress-bar
+              [value]="fullData.percent_moderators_old_5 / 100"
+              color="primary"
+            ></ion-progress-bar>
           </ion-label>
         </ion-item>
-
       </ion-card-content>
     </ion-card>
 
     <ion-card *ngIf="top.length > 0">
       <ion-card-header>
         <ion-card-title>Top Listeners</ion-card-title>
-        <ion-button expand="full" color="primary" (click)="export()">Export to CSV</ion-button>
-        <br>
+        <ion-button expand="full" color="primary" (click)="export()"
+          >Export to CSV</ion-button
+        >
+        <br />
         <ion-item>
           <ion-label position="floating">Search</ion-label>
-          <ion-input type="text" name="name2" [(ngModel)]="name2" (ngModelChange)="search2()"></ion-input>
+          <ion-input
+            type="text"
+            name="name2"
+            [(ngModel)]="name2"
+            (ngModelChange)="search2()"
+          ></ion-input>
         </ion-item>
       </ion-card-header>
       <ion-card-content>
         <ion-list
-          *ngFor="let item of newTop | orderBy: key1: reverse1 | paginate: {id: 'pagination', itemsPerPage: 7, currentPage: q}">
-          <ion-item >
+          *ngFor="
+            let item of newTop
+              | orderBy: key1:reverse1
+              | paginate: { id: 'pagination', itemsPerPage: 7, currentPage: q }
+          "
+        >
+          <ion-item>
             <ion-label class="ion-text-wrap padding">
-              <h3 *ngIf="item.name">Name: <span style=" font-weight:bold"> {{ item.name }} </span></h3>
-              <p>Username: <span style=" font-weight:bold"> {{ item.username }} </span></p>
-              <p>Minutes: <span style=" font-weight:bold"> {{ item.minutes }} </span></p>
-              <p *ngIf="showTwitter">Twitter:  <span style=" font-weight:bold">
-                  {{ item.twitter || '_' }} </span></p>
-              <p *ngIf="showInsta">Instagram <span style=" font-weight:bold">
-                  {{ item.instagram || '_' }}</span> </p>
+              <h3 *ngIf="item.name">
+                Name: <span style="font-weight: bold"> {{ item.name }} </span>
+              </h3>
+              <p>
+                Username:
+                <span style="font-weight: bold"> {{ item.username }} </span>
+              </p>
+              <p>
+                Minutes:
+                <span style="font-weight: bold"> {{ item.minutes }} </span>
+              </p>
+              <p *ngIf="showTwitter">
+                Twitter:
+                <span style="font-weight: bold">
+                  {{ item.twitter || "_" }}
+                </span>
+              </p>
+              <p *ngIf="showInsta">
+                Instagram
+                <span style="font-weight: bold">
+                  {{ item.instagram || "_" }}</span
+                >
+              </p>
             </ion-label>
           </ion-item>
         </ion-list>
         <ion-item>
-          <div class="ion-text-center" style="width: 100%;">
-            <pagination-controls class="my-pagination" id="pagination" (pageChange)="q = $event" previousLabel=""
-              nextLabel="">
+          <div class="ion-text-center" style="width: 100%">
+            <pagination-controls
+              id="pagination"
+              (pageChange)="q = $event"
+              previousLabel=""
+              nextLabel=""
+            >
             </pagination-controls>
           </div>
         </ion-item>
-
       </ion-card-content>
     </ion-card>
 
-    <ion-card *ngIf="fullData.room_status === 'ongoing' && superFans.length >0">
+    <ion-card
+      *ngIf="fullData.room_status === 'ongoing' && superFans.length > 0"
+    >
       <ion-card-header>
         <ion-card-title class="ion-margin-vertical">Super Fans</ion-card-title>
-        <ion-button expand="full" color="primary" (click)="export2()">Export to CSV</ion-button>
-        <br>
+        <ion-button expand="full" color="primary" (click)="export2()"
+          >Export to CSV</ion-button
+        >
+        <br />
         <ion-item>
           <ion-label position="floating">Search</ion-label>
-          <ion-input type="text" type="text" class="form-control input-sm" name="name" [(ngModel)]="name3"
-            (ngModelChange)="search3()"></ion-input>
+          <ion-input
+            type="text"
+            type="text"
+            class="form-control input-sm"
+            name="name"
+            [(ngModel)]="name3"
+            (ngModelChange)="search3()"
+          ></ion-input>
         </ion-item>
-
       </ion-card-header>
       <ion-card-content>
         <ion-list
-          *ngFor="let item of newSuperFans | orderBy: key2: reverse2 | paginate: {id: 'pagination3', itemsPerPage: 7,
-          currentPage: r}">
+          *ngFor="
+            let item of newSuperFans
+              | orderBy: key2:reverse2
+              | paginate: { id: 'pagination3', itemsPerPage: 7, currentPage: r }
+          "
+        >
           <ion-item>
             <ion-label class="ion-text-wrap padding">
-              <h3 *ngIf="item.name">Name: <span style=" font-weight:bold"> {{ item.name }} </span></h3>
-              <p>Username: <span style=" font-weight:bold"> {{ item.username }} </span></p>
-              <p>Minutes: <span style=" font-weight:bold"> {{ item.minutes }} </span></p>
-              <p>Rooms: <span style=" font-weight:bold"> {{ item.no_rooms }} </span></p>
-              <p *ngIf="showSuperTwitter">Twitter: <span style=" font-weight:bold">
-                  {{ item.twitter || '_' }} </span></p>
-              <p *ngIf="showSuperInsta">Instagram <span style=" font-weight:bold">
-                  {{ item.instagram || '_' }}</span> </p>
+              <h3 *ngIf="item.name">
+                Name: <span style="font-weight: bold"> {{ item.name }} </span>
+              </h3>
+              <p>
+                Username:
+                <span style="font-weight: bold"> {{ item.username }} </span>
+              </p>
+              <p>
+                Minutes:
+                <span style="font-weight: bold"> {{ item.minutes }} </span>
+              </p>
+              <p>
+                Rooms:
+                <span style="font-weight: bold"> {{ item.no_rooms }} </span>
+              </p>
+              <p *ngIf="showSuperTwitter">
+                Twitter:
+                <span style="font-weight: bold">
+                  {{ item.twitter || "_" }}
+                </span>
+              </p>
+              <p *ngIf="showSuperInsta">
+                Instagram
+                <span style="font-weight: bold">
+                  {{ item.instagram || "_" }}</span
+                >
+              </p>
             </ion-label>
           </ion-item>
         </ion-list>
         <ion-item>
-          <div class="ion-text-center" style="width: 100%;">
-            <pagination-controls class="my-pagination" id="pagination3" (pageChange)="r = $event" previousLabel=""
-              nextLabel="">
+          <div class="ion-text-center" style="width: 100%">
+            <pagination-controls
+              id="pagination3"
+              (pageChange)="r = $event"
+              previousLabel=""
+              nextLabel=""
+            >
             </pagination-controls>
           </div>
         </ion-item>
       </ion-card-content>
     </ion-card>
 
-
-    <ion-card *ngIf="fullData.room_status === 'ended' && Fans.length >0">
+    <ion-card *ngIf="fullData.room_status === 'ended' && Fans.length > 0">
       <ion-card-header>
         <ion-card-title class="ion-margin-vertical">Super Fans</ion-card-title>
-        <ion-button expand="full" color="primary" (click)="export3()">Export to CSV</ion-button>
-        <br>
+        <ion-button expand="full" color="primary" (click)="export3()"
+          >Export to CSV</ion-button
+        >
+        <br />
         <ion-item>
           <ion-label position="floating">Search</ion-label>
-          <ion-input type="text" type="text" class="form-control input-sm" name="name" [(ngModel)]="name3"
-            (ngModelChange)="search1()"></ion-input>
+          <ion-input
+            type="text"
+            type="text"
+            class="form-control input-sm"
+            name="name"
+            [(ngModel)]="name3"
+            (ngModelChange)="search1()"
+          ></ion-input>
         </ion-item>
-
       </ion-card-header>
       <ion-card-content>
-        <ion-list *ngFor="let item of newSuperFans | orderBy: key2: reverse2 | paginate: {id: 'pagination3', itemsPerPage: 7,
-          currentPage: r}">
+        <ion-list
+          *ngFor="
+            let item of newSuperFans
+              | orderBy: key2:reverse2
+              | paginate: { id: 'pagination3', itemsPerPage: 7, currentPage: r }
+          "
+        >
           <ion-item>
             <ion-label class="ion-text-wrap padding">
-              <h3 *ngIf="item.name">Name: <span style=" font-weight:bold"> {{ item.name }} </span></h3>
-              <p>Username: <span style=" font-weight:bold"> {{ item.username }} </span></p>
-              <p>Minutes: <span style=" font-weight:bold"> {{ item.minutes }} </span></p>
-              <p>Rooms: <span style=" font-weight:bold"> {{ item.no_rooms }} </span></p>
-              <p *ngIf="showTwitter">Twitter: <span style=" font-weight:bold">
-                  {{ item.twitter || '_' }} </span></p>
-              <p *ngIf="showInsta">Instagram <span style=" font-weight:bold">
-                  {{ item.instagram || '_' }}</span> </p>
+              <h3 *ngIf="item.name">
+                Name: <span style="font-weight: bold"> {{ item.name }} </span>
+              </h3>
+              <p>
+                Username:
+                <span style="font-weight: bold"> {{ item.username }} </span>
+              </p>
+              <p>
+                Minutes:
+                <span style="font-weight: bold"> {{ item.minutes }} </span>
+              </p>
+              <p>
+                Rooms:
+                <span style="font-weight: bold"> {{ item.no_rooms }} </span>
+              </p>
+              <p *ngIf="showTwitter">
+                Twitter:
+                <span style="font-weight: bold">
+                  {{ item.twitter || "_" }}
+                </span>
+              </p>
+              <p *ngIf="showInsta">
+                Instagram
+                <span style="font-weight: bold">
+                  {{ item.instagram || "_" }}</span
+                >
+              </p>
             </ion-label>
           </ion-item>
         </ion-list>
 
         <ion-item>
-          <div class="ion-text-center" style="width: 100%;">
-            <pagination-controls class="my-pagination" id="pagination3" (pageChange)="r = $event" previousLabel=""
-              nextLabel="">
+          <div class="ion-text-center" style="width: 100%">
+            <pagination-controls
+              id="pagination3"
+              (pageChange)="r = $event"
+              previousLabel=""
+              nextLabel=""
+            >
             </pagination-controls>
           </div>
         </ion-item>
       </ion-card-content>
     </ion-card>
-
 
     <ion-card *ngIf="followers_gained.length > 0">
       <ion-card-header>
-        <ion-card-title class="ion-margin-vertical">Followers Gained</ion-card-title>
-        <ion-button expand="full" color="primary" (click)="export4()">Export to CSV</ion-button>
-        <br>
+        <ion-card-title class="ion-margin-vertical"
+          >Followers Gained</ion-card-title
+        >
+        <ion-button expand="full" color="primary" (click)="export4()"
+          >Export to CSV</ion-button
+        >
+        <br />
         <ion-item>
           <ion-label position="floating">Search</ion-label>
-          <ion-input type="text" type="text" class="form-control input-sm" name="name" [(ngModel)]="name" (ngModelChange)="search()"></ion-input>
+          <ion-input
+            type="text"
+            type="text"
+            class="form-control input-sm"
+            name="name"
+            [(ngModel)]="name"
+            (ngModelChange)="search()"
+          ></ion-input>
         </ion-item>
       </ion-card-header>
       <ion-card-content>
         <ion-list
-          *ngFor="let item of newFollowers_gained | orderBy: key: reverse | paginate: {id: 'pagination1', itemsPerPage:7, currentPage: p}">
+          *ngFor="
+            let item of newFollowers_gained
+              | orderBy: key:reverse
+              | paginate: { id: 'pagination1', itemsPerPage: 7, currentPage: p }
+          "
+        >
           <ion-item>
             <ion-label class="ion-text-wrap padding">
-              <h3 *ngIf="item.name">Name: <span style=" font-weight:bold"> {{ item.name }} </span></h3>
-              <p>Username: <span style=" font-weight:bold"> {{ item.username }} </span></p>
-              <p>New Followers: <span style=" font-weight:bold"> {{ item.new }} </span></p>
-
+              <h3 *ngIf="item.name">
+                Name: <span style="font-weight: bold"> {{ item.name }} </span>
+              </h3>
+              <p>
+                Username:
+                <span style="font-weight: bold"> {{ item.username }} </span>
+              </p>
+              <p>
+                New Followers:
+                <span style="font-weight: bold"> {{ item.new }} </span>
+              </p>
             </ion-label>
           </ion-item>
         </ion-list>
         <ion-item class="ion-text-center">
-          <div class="ion-text-center" style="width: 100%;">
-            <pagination-controls class="my-pagination" id="pagination1" (pageChange)="p = $event" previousLabel=""
-              nextLabel="">
+          <div class="ion-text-center" style="width: 100%">
+            <pagination-controls
+              id="pagination1"
+              (pageChange)="p = $event"
+              previousLabel=""
+              nextLabel=""
+            >
             </pagination-controls>
           </div>
-
         </ion-item>
       </ion-card-content>
     </ion-card>
-
 
     <ion-card *ngIf="moderators.length > 0">
       <ion-card-header>
         <ion-card-title>Moderators</ion-card-title>
-        <ion-button expand="full" color="primary" (click)="export5()">Export to CSV</ion-button>
-        <br>
+        <ion-button expand="full" color="primary" (click)="export5()"
+          >Export to CSV</ion-button
+        >
+        <br />
         <ion-item>
           <ion-label position="floating">Search</ion-label>
-          <ion-input type="text" name="name5" [(ngModel)]="name5" (ngModelChange)="search5()"></ion-input>
+          <ion-input
+            type="text"
+            name="name5"
+            [(ngModel)]="name5"
+            (ngModelChange)="search5()"
+          ></ion-input>
         </ion-item>
       </ion-card-header>
       <ion-card-content>
         <ion-list
-          *ngFor="let item of newModerators | orderBy: key3: reverse3 | paginate: {id: 'pagination5', itemsPerPage:
-          10, currentPage: s}">
+          *ngFor="
+            let item of newModerators
+              | orderBy: key3:reverse3
+              | paginate
+                : { id: 'pagination5', itemsPerPage: 10, currentPage: s }
+          "
+        >
           <ion-item>
             <ion-label class="ion-text-wrap padding">
-              <h3 *ngIf="item.name">Name: <span style=" font-weight:bold"> {{ item.name }} </span></h3>
-              <p>Username: <span style=" font-weight:bold"> {{ item.username }} </span></p>
-              <p>User ID: <span style=" font-weight:bold"> {{ item.user_id }} </span></p>
-              <p *ngIf="modshowTwitter">Twitter: <span style=" font-weight:bold">
-                  {{ item.twitter || '_' }} </span></p>
-              <p *ngIf="modshowInsta">Instagram: <span style=" font-weight:bold">
-                  {{ item.instagram || '_' }}</span> </p>
+              <h3 *ngIf="item.name">
+                Name: <span style="font-weight: bold"> {{ item.name }} </span>
+              </h3>
+              <p>
+                Username:
+                <span style="font-weight: bold"> {{ item.username }} </span>
+              </p>
+              <p>
+                User ID:
+                <span style="font-weight: bold"> {{ item.user_id }} </span>
+              </p>
+              <p *ngIf="modshowTwitter">
+                Twitter:
+                <span style="font-weight: bold">
+                  {{ item.twitter || "_" }}
+                </span>
+              </p>
+              <p *ngIf="modshowInsta">
+                Instagram:
+                <span style="font-weight: bold">
+                  {{ item.instagram || "_" }}</span
+                >
+              </p>
             </ion-label>
           </ion-item>
         </ion-list>
         <ion-item>
-          <div class="ion-text-center" style="width: 100%;">
-            <pagination-controls class="my-pagination" id="pagination5" (pageChange)="s = $event" previousLabel=""
-              nextLabel="">
+          <div class="ion-text-center" style="width: 100%">
+            <pagination-controls
+              id="pagination5"
+              (pageChange)="s = $event"
+              previousLabel=""
+              nextLabel=""
+            >
             </pagination-controls>
           </div>
         </ion-item>
-
       </ion-card-content>
     </ion-card>
-
-
 
     <ion-card *ngIf="speakers.length > 0">
       <ion-card-header>
         <ion-card-title>Speakers</ion-card-title>
-        <ion-button expand="full" color="primary" (click)="export6()">Export to CSV</ion-button>
-        <br>
+        <ion-button expand="full" color="primary" (click)="export6()"
+          >Export to CSV</ion-button
+        >
+        <br />
         <ion-item>
           <ion-label position="floating">Search</ion-label>
-          <ion-input type="text" name="name" [(ngModel)]="name4" (ngModelChange)="search4()"></ion-input>
+          <ion-input
+            type="text"
+            name="name"
+            [(ngModel)]="name4"
+            (ngModelChange)="search4()"
+          ></ion-input>
         </ion-item>
       </ion-card-header>
       <ion-card-content>
         <ion-list
-          *ngFor="let item of newSpeakers | orderBy: key4: reverse4 | paginate: {id: 'pagination4', itemsPerPage:
-          10, currentPage: t}">
+          *ngFor="
+            let item of newSpeakers
+              | orderBy: key4:reverse4
+              | paginate
+                : { id: 'pagination4', itemsPerPage: 10, currentPage: t }
+          "
+        >
           <ion-item>
             <ion-label class="ion-text-wrap padding">
-              <h3 *ngIf="item.name">Name: <span style=" font-weight:bold"> {{ item.name }} </span></h3>
-              <p>Username: <span style=" font-weight:bold"> {{ item.username }} </span></p>
-              <p>User ID: <span style=" font-weight:bold"> {{ item.user_id }} </span></p>
-              <p *ngIf="speakersshowTwitter">Twitter: <span style=" font-weight:bold">
-                  {{ item.twitter || '_' }} </span></p>
-              <p *ngIf="speakershowInsta">Instagram: <span style=" font-weight:bold">
-                  {{ item.instagram || '_' }}</span> </p>
+              <h3 *ngIf="item.name">
+                Name: <span style="font-weight: bold"> {{ item.name }} </span>
+              </h3>
+              <p>
+                Username:
+                <span style="font-weight: bold"> {{ item.username }} </span>
+              </p>
+              <p>
+                User ID:
+                <span style="font-weight: bold"> {{ item.user_id }} </span>
+              </p>
+              <p *ngIf="speakersshowTwitter">
+                Twitter:
+                <span style="font-weight: bold">
+                  {{ item.twitter || "_" }}
+                </span>
+              </p>
+              <p *ngIf="speakershowInsta">
+                Instagram:
+                <span style="font-weight: bold">
+                  {{ item.instagram || "_" }}</span
+                >
+              </p>
             </ion-label>
           </ion-item>
         </ion-list>
         <ion-item>
-          <div class="ion-text-center" style="width: 100%;">
-            <pagination-controls class="my-pagination" id="pagination4" (pageChange)="t = $event" previousLabel=""
-              nextLabel="">
+          <div class="ion-text-center" style="width: 100%">
+            <pagination-controls
+              id="pagination4"
+              (pageChange)="t = $event"
+              previousLabel=""
+              nextLabel=""
+            >
             </pagination-controls>
           </div>
         </ion-item>
-
       </ion-card-content>
     </ion-card>
-
 
     <ion-card *ngIf="showSpd">
       <ion-card-header>
         <ion-card-title>Speakers Impact</ion-card-title>
-        <ion-button expand="full" color="primary" (click)="export7()">Export to CSV</ion-button>
-        <br>
+        <ion-button expand="full" color="primary" (click)="export7()"
+          >Export to CSV</ion-button
+        >
+        <br />
         <ion-item>
           <ion-label position="floating">Search</ion-label>
-          <ion-input type="text" name="name" [(ngModel)]="name6" (ngModelChange)="search6()"></ion-input>
+          <ion-input
+            type="text"
+            name="name"
+            [(ngModel)]="name6"
+            (ngModelChange)="search6()"
+          ></ion-input>
         </ion-item>
       </ion-card-header>
       <ion-card-content>
         <ion-list
-        *ngFor="let item of newSpdData | orderBy: key5: reverse5 | paginate: {id: 'pagination6', itemsPerPage:
-        10, currentPage: u}">
+          *ngFor="
+            let item of newSpdData
+              | orderBy: key5:reverse5
+              | paginate
+                : { id: 'pagination6', itemsPerPage: 10, currentPage: u }
+          "
+        >
           <ion-item>
             <ion-label class="ion-text-wrap padding">
-              <h3 *ngIf="item.name">Name: <span style=" font-weight:bold"> {{ item.name }} </span></h3>
-              <p>Username: <span style=" font-weight:bold"> {{ item.username }} </span></p>
-              <p>User ID: <span style=" font-weight:bold"> {{ item.user_id }} </span></p>
-              <p *ngIf="speakersshowTwitter">Twitter: <span style=" font-weight:bold">
-                  {{ item.twitter || '_' }} </span></p>
-              <p *ngIf="speakershowInsta">Instagram: <span style=" font-weight:bold">
-                  {{ item.instagram || '_' }}</span> </p>
+              <h3 *ngIf="item.name">
+                Name: <span style="font-weight: bold"> {{ item.name }} </span>
+              </h3>
+              <p>
+                Username:
+                <span style="font-weight: bold"> {{ item.username }} </span>
+              </p>
+              <p>
+                User ID:
+                <span style="font-weight: bold"> {{ item.user_id }} </span>
+              </p>
+              <p *ngIf="speakersshowTwitter">
+                Twitter:
+                <span style="font-weight: bold">
+                  {{ item.twitter || "_" }}
+                </span>
+              </p>
+              <p *ngIf="speakershowInsta">
+                Instagram:
+                <span style="font-weight: bold">
+                  {{ item.instagram || "_" }}</span
+                >
+              </p>
             </ion-label>
           </ion-item>
         </ion-list>
         <ion-item>
-          <div class="ion-text-center" style="width: 100%;">
-            <pagination-controls class="my-pagination" id="pagination6" (pageChange)="u = $event" previousLabel=""
-							nextLabel="">
-						</pagination-controls>
+          <div class="ion-text-center" style="width: 100%">
+            <pagination-controls
+              id="pagination6"
+              (pageChange)="u = $event"
+              previousLabel=""
+              nextLabel=""
+            >
+            </pagination-controls>
           </div>
         </ion-item>
-
       </ion-card-content>
     </ion-card>
-
   </div>
 </ion-content>

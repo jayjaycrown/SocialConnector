@@ -5,5 +5,77 @@
 </ion-header>
 
 <ion-content>
+  <div class="tabbar">
+    <ion-segment
+      [(ngModel)]="type"
+      (ionChange)="segmentChanged($event)"
+      swipeGesture="true"
+    >
+      <ion-segment-button value="ch">
+        <ion-label>Clubhouse</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="gr">
+        <ion-label>GreenRoom</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
 
+  <div class="clear"></div>
+
+  <div [ngSwitch]="type">
+    <div *ngSwitchCase="'ch'">
+      <div *ngFor="let item of fullData">
+        <ion-card (click)="onClick(item.channel)">
+          <ion-card-content>
+            <ion-item lines="none">
+              <ion-label class="ion-text-wrap">
+                <h2>{{ item.topic }}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-label>
+                <span class="ion-align-items-center">
+                  <ion-icon name="chatbox-ellipses-outline"></ion-icon>
+                </span>
+                {{ item.end_total_speakers }}
+              </ion-label>
+              <ion-label>
+                <ion-icon name="people-outline"></ion-icon> {{
+                item.end_total_listeners }}
+              </ion-label>
+              <ion-label>
+                <ion-icon name="time-outline"></ion-icon> {{
+                getDateDiff(item.date_started, item.date_ended)}}
+              </ion-label>
+            </ion-item>
+            <!-- <div class="image">
+            <span *ngFor="let moderator of allmoderators">
+              <img
+                [src]="moderator.photo_url"
+                class="creators"
+                alt=""
+                srcset=""
+              />
+            </span>
+            <span
+              style="
+                float: right;
+                color: #fff !important;
+                background-color: rgb(122, 121, 121);
+                border-radius: 50%;
+                margin-top: 12px;
+                padding: 5px;
+              "
+              *ngIf="modLength > 5"
+              >+{{ modLength - 5 }}
+            </span>
+            <div class="clear"></div>
+          </div> -->
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </div>
+
+    <div *ngSwitchCase="'gr'"></div>
+  </div>
 </ion-content>

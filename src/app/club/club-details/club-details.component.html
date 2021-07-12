@@ -1,0 +1,120 @@
+<ion-header class="ion-no-border" mode="md">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/club"></ion-back-button>
+    </ion-buttons>
+    <ion-title>My Club</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding-horizontal" *ngIf="showData">
+  <ion-card>
+    <ion-card-header style="padding-bottom: 0px !important">
+      <ion-grid fixed>
+        <ion-row>
+          <ion-col size="4">
+            <ion-img [src]="item.photo_url"></ion-img>
+          </ion-col>
+          <ion-col size="8">
+            <ion-card-title class="ion-text-center">
+              {{ item.name }}
+            </ion-card-title>
+            <ion-card-subtitle>
+              <ion-item lines="none" class="ion-text-center">
+                <ion-label>
+                  <p>Followers</p>
+                  <h2>{{ item.num_followers }}</h2>
+                </ion-label>
+                <ion-label>
+                  <p>Members</p>
+                  <h2>{{ item.num_members }}</h2>
+                </ion-label>
+              </ion-item>
+            </ion-card-subtitle>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-label class="ion-text-wrap">
+          <p>{{ item.description }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="showData">
+    <canvas
+      baseChart
+      height="300"
+      [datasets]="barChartData"
+      [labels]="barChartLabels"
+      [options]="barChartOptions"
+      [plugins]="barChartPlugins"
+      [legend]="barChartLegend"
+      [chartType]="barChartType"
+    >
+    </canvas>
+    <div
+      style="text-align: center !important; padding: 10px"
+      (click)="randomize()"
+    >
+      <a
+        ><ion-icon
+          slot="start"
+          name="swap-horizontal"
+          color="primary"
+        ></ion-icon
+      ></a>
+      <ion-text color="primary" style="display: block !important">
+        <P style="font-size: 0.6em !important; margin: 0; padding: 0"
+          >Change Style</P
+        >
+      </ion-text>
+    </div>
+  </ion-card>
+  <br />
+
+  <ion-list>
+    <ion-item *ngIf="results?.length === 0">
+      <ion-label>No data available</ion-label>
+    </ion-item>
+  </ion-list>
+  <br />
+  <div class="ion-padding-horizontal">
+    <ion-item-divider color="secondary" *ngIf="results?.length !== 0">
+      <ion-label>
+        <h2>Top rooms for the week</h2>
+      </ion-label>
+    </ion-item-divider>
+  </div>
+
+  <div *ngFor="let item of results.rooms">
+    <ion-card (click)="onClick(item.channel)">
+      <ion-card-content>
+        <ion-item lines="none">
+          <ion-label class="ion-text-wrap">
+            <h2>{{ item.topic }}</h2>
+          </ion-label>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label>
+            <span class="ion-align-items-center">
+              <ion-icon name="chatbox-ellipses-outline"></ion-icon>
+            </span>
+            {{ item.end_total_speakers }}
+          </ion-label>
+          <ion-label>
+            <ion-icon name="people-outline"></ion-icon>
+            {{ item.end_total_listeners }}
+          </ion-label>
+          <ion-label>
+            <ion-icon name="time-outline"></ion-icon>
+            {{ getDateDiff(item.date_started, item.date_ended) }}
+          </ion-label>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

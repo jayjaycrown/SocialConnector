@@ -34,9 +34,9 @@ const routes: Routes = [
           import('../profile/profile.module').then((m) => m.ProfilePageModule),
       },
       {
-        path: 'support',
+        path: 'club',
         loadChildren: () =>
-          import('../support/support.module').then((m) => m.SupportPageModule),
+          import('../club/support.module').then((m) => m.SupportPageModule),
       },
       // {
       //   path: 'tab1',
@@ -68,16 +68,12 @@ const routes: Routes = [
   {
     path: 'chtools',
     loadChildren: () =>
-      import('../chtools/home/home.module').then(
-        (m) => m.HomePageModule
-      ),
+      import('../chtools/home/home.module').then((m) => m.HomePageModule),
   },
   {
     path: 'grtools',
     loadChildren: () =>
-      import('../grtools/home/home.module').then(
-        (m) => m.HomePageModule
-      ),
+      import('../grtools/home/home.module').then((m) => m.HomePageModule),
   },
   {
     path: 'upgrade',

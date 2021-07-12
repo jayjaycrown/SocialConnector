@@ -1,0 +1,85 @@
+.newsDiv {
+  display: block;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: rgb(197, 235, 194) !important;
+}
+.coloredCard {
+  background-color: var(--ion-color-primary);
+  padding: 60px !important;
+  border-radius: 20px;
+  // color: rgb(0, 128, 0);
+}
+
+.toolscard {
+  text-align: center !important;
+  // padding: 30px 20px !important;
+  border-radius: 20px;
+}
+.clear {
+  clear: both;
+}
+
+.tabbar {
+  width: 70% !important;
+  float: left;
+}
+.right {
+  float: right !important;
+}
+.moreButton {
+  font-size: 0.8em;
+  color: var(--ion-color-dark);
+}
+.red {
+  color: red !important;
+}
+.green {
+  color: green !important;
+}
+.black {
+  color: var(--ion-color-dark);
+}
+// ion-label,
+// ion-col,
+// ion-grid {
+//   margin: 0 !important;
+//   padding: 0 !important;
+// }
+
+.selectFilter {
+  --border-width: 1px !important;
+  --border-color: var(--ion-color-light);
+  // --border: 1px solid var(--ion-color-medum) !important;
+  --border-radius: 5px !important;
+}
+
+.bgCh {
+  height: 19vh !important;
+  background: url("../../assets/img/ch.jpg") 0 0/ 100% 100%;
+  background-size: cover;
+  background-position-x: unset;
+}
+
+.bgGr {
+  height: 19vh !important;
+  background: url("../../assets/img/gr.jpg") 0 0/ 100% 100%;
+  background-size: cover;
+  background-position-x: unset;
+}
+
+.image {
+  margin-left: auto;
+  margin-right: auto;
+  // margin-top: 20px;
+}
+.creators {
+  margin-right: 5px !important;
+  width: 50px !important;
+  height: 50px !important;
+  border-radius: 50%;
+}
+.clear {
+  clear: both;
+}
