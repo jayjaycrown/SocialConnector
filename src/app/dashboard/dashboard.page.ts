@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/member-delimiter-style */
 /* eslint-disable no-underscore-dangle */
-import { AppService } from 'src/app/_services/app.service';
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
@@ -11,6 +10,8 @@ import * as moment from 'moment';
 import { LoadingController, ToastController } from '@ionic/angular';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Color, BaseChartDirective, Label } from 'ng2-charts';
+import { AppService } from 'src/app/_services/app.service';
+import { GrServiceService } from './../_services/gr-service.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -27,6 +28,7 @@ export class DashboardPage implements OnInit {
   page = 1;
   month: any;
   current: any = {};
+  currentgr: any = {};
   last: any = {};
   color = '';
   icon = '';
@@ -35,10 +37,16 @@ export class DashboardPage implements OnInit {
   total_listeners: string;
   avg: string;
   new: string;
+  avggr: string;
+  newgr: string;
   totalColor: string[];
+  totalColorgr: string[];
   listenerColor: string[];
+  listenerColorgr: string[];
   avgColor: string[];
   newColor: string[];
+  avgColorgr: string[];
+  newColorgr: string[];
   total_roomsData: number[] = [];
   total_listenersData: number[] = [];
   total_listened: number[] = [];
@@ -181,10 +189,15 @@ export class DashboardPage implements OnInit {
   fullData: any = [];
   thisDay: Date;
   durationDays: string;
+  name: any;
+  lastgr: any = {};
+  percTotalgr: any;
+  total_listenersgr: any;
 
   constructor(
     private router: Router,
     private app: AppService,
+    private gr: GrServiceService,
     private toastController: ToastController,
     private loadingController: LoadingController
   ) {}
@@ -193,12 +206,14 @@ export class DashboardPage implements OnInit {
     const user: any = await JSON.parse(localStorage.getItem('user'));
     const result = user.result;
     this.api_token = result.api_token;
+    this.name = result.name;
     this.date = moment().format('YYYY-MM-DD');
     this.month = moment().format('MM');
     this.month1 = moment().format('MMMM');
     // alert(this.month1);
     // alert(this.month);
     this.getPerformanceStats();
+    this.getGRPerformanceStats();
     this.getWeeklyStats(this.month);
     this.getWeeklyTopRooms();
   }
@@ -227,6 +242,53 @@ export class DashboardPage implements OnInit {
           this.avgColor = this.getColor(this.avg);
           this.new = this.relDiff(this.current.new, this.last.new);
           this.newColor = this.getColor(this.new);
+        } else if (res.status === 'upgrade') {
+          const color = 'danger';
+          this.presentToast(color, res.message);
+          // this.alertService.danger(res.message);
+          this.router.navigateByUrl('/tabs/upgrade');
+        } else if (res.status === 'validate') {
+          // this.alertService.danger(res.message);
+          const color = 'danger';
+          this.presentToast(color, res.message);
+          this.router.navigateByUrl('/auth/validate/ ' + this.api_token);
+        } else {
+          // this.alertService.danger(res.message);
+          const color = 'danger';
+          this.presentToast(color, res.message);
+        }
+      },
+      (err) => {
+        this.presentToast('danger', err.message);
+        // console.log(err);
+      }
+    );
+  }
+
+  async getGRPerformanceStats() {
+    // this.date = '2021-04-07';
+    this.gr.performanceStats(this.api_token, this.date, this.page).subscribe(
+      async (res: any) => {
+        console.log(res);
+        if (res.status === 'success') {
+          // this.show = true;
+          this.currentgr = res.result.current;
+          this.lastgr = res.result.last;
+          this.percTotalgr = this.relDiff(
+            this.currentgr.total_rooms,
+            this.lastgr.total_rooms
+          );
+          this.totalColorgr = this.getColor(this.percTotalgr);
+          // console.log(this.totalColor);
+          this.total_listenersgr = this.relDiff(
+            this.currentgr.total_listeners,
+            this.lastgr.total_listeners
+          );
+          this.listenerColorgr = this.getColor(this.total_listenersgr);
+          this.avggr = this.relDiff(this.currentgr.avg, this.lastgr.avg);
+          this.avgColorgr = this.getColor(this.avggr);
+          this.newgr = this.relDiff(this.currentgr.new, this.lastgr.new);
+          this.newColorgr = this.getColor(this.newgr);
         } else if (res.status === 'upgrade') {
           const color = 'danger';
           this.presentToast(color, res.message);

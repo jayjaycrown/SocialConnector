@@ -325,6 +325,17 @@ export class AppService {
       .pipe(catchError(this.handleError('myClubDetails')));
   }
 
+  // https://monitor.clubhousetools.xyz/api/superfans?api_token=apRCOa9jBmJvgr7X7C0Y6EzHcgCSv66hrVT39AWAnjoWJlKGxm&date=2021-07-16
+
+  getSuperfans(api_token, date) {
+    const formData = new FormData();
+    formData.append('api_token', api_token);
+    formData.append('date', date);
+    return this.http
+      .post(this.url + '/superfans', formData)
+      .pipe(catchError(this.handleError('getSuperfans')));
+  }
+
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);

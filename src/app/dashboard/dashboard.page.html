@@ -1,6 +1,6 @@
 <ion-header class="ion-no-border" mode="md">
   <ion-toolbar>
-    <ion-title>Hello Jonathan</ion-title>
+    <ion-title>Hello {{ name }} </ion-title>
     <ion-buttons slot="end">
       <ion-button fill="clear">
         <ion-icon slot="icon-only" name="notifications"></ion-icon>
@@ -28,7 +28,7 @@
           </ion-label>
         </ion-item>
       </ion-card-subtitle>
-      <ion-card-title>
+      <ion-card-subtitle>
         <div class="tabbar">
           <ion-segment
             [(ngModel)]="type2"
@@ -45,9 +45,9 @@
         </div>
 
         <div class="clear"></div>
-      </ion-card-title>
+      </ion-card-subtitle>
     </ion-card-header>
-    <ion-card-content [ngSwitch]="type2">
+    <ion-card-content [ngSwitch]="type2" class="ion-no-padding">
       <div *ngSwitchCase="'ch'">
         <ion-grid class="noPM" *ngIf="show">
           <ion-row>
@@ -124,11 +124,11 @@
               <ion-item class="ion-text-center" lines="none">
                 <ion-label>
                   <p>No of Rooms</p>
-                  <h1>{{ current.total_rooms }}</h1>
+                  <h1>{{ currentgr.total_rooms }}</h1>
                   <ion-button expand="full" fill="clear">
-                    <span [class]="totalColor[0]">
-                      <ion-icon [name]="totalColor[1]"></ion-icon>{{ percTotal
-                      }}%
+                    <span [class]="totalColorgr[0]">
+                      <ion-icon [name]="totalColorgr[1]"></ion-icon>{{
+                      percTotalgr }}%
                     </span>
                   </ion-button>
                 </ion-label>
@@ -139,12 +139,12 @@
               <ion-item class="ion-text-center" lines="none">
                 <ion-label>
                   <p>Total Listeners</p>
-                  <h1>{{ current.total_listeners | number}}</h1>
+                  <h1>{{ currentgr.total_listeners | number}}</h1>
                   <!-- <h2><span class="red"><ion-icon name="arrow-down-outline"></ion-icon>34%</span></h2> -->
                   <ion-button expand="full" fill="clear">
-                    <span [class]="listenerColor[0]">
-                      <ion-icon [name]="listenerColor[1]"></ion-icon>{{
-                      total_listeners }}%
+                    <span [class]="listenerColorgr[0]">
+                      <ion-icon [name]="listenerColorgr[1]"></ion-icon>{{
+                      total_listenersgr }}%
                     </span>
                   </ion-button>
                 </ion-label>
@@ -157,10 +157,10 @@
               <ion-item class="ion-text-center" lines="none">
                 <ion-label>
                   <p>Avg Listened time</p>
-                  <h1>{{ convert(current.avg) }}</h1>
+                  <h1>{{ convert(currentgr.avg) }}</h1>
                   <ion-button expand="block" fill="clear" shape="round">
-                    <span [class]="avgColor[0]">
-                      <ion-icon [name]="avgColor[1]"></ion-icon>{{ avg }}%
+                    <span [class]="avgColorgr[0]">
+                      <ion-icon [name]="avgColorgr[1]"></ion-icon>{{ avggr }}%
                     </span>
                   </ion-button>
                 </ion-label>
@@ -171,11 +171,11 @@
               <ion-item class="ion-text-center" lines="none">
                 <ion-label>
                   <p>New Followers</p>
-                  <h1>{{ current.new || 0 | number}}</h1>
+                  <h1>{{ currentgr.new || 0 | number}}</h1>
                   <h2>
                     <ion-button expand="block" fill="clear" shape="round">
-                      <span [class]="newColor[0]">
-                        <ion-icon [name]="newColor[1]"></ion-icon>{{ new}}%
+                      <span [class]="newColorgr[0]">
+                        <ion-icon [name]="newColorgr[1]"></ion-icon>{{ new}}%
                       </span>
                     </ion-button>
                   </h2>
@@ -202,9 +202,7 @@
             [routerLink]="['/tabs/chtools']"
             routerLinkActive="router-link-active"
           >
-            <ion-card-content>
-              <!-- <h2>CH TOOLS</h2> -->
-            </ion-card-content>
+            <ion-img src="assets/img/ch.jpg"></ion-img>
           </ion-card>
         </ion-col>
         <ion-col size="6">
@@ -214,9 +212,7 @@
             [routerLink]="['/tabs/grtools']"
             routerLinkActive="router-link-active"
           >
-            <ion-card-content>
-              <!-- <h2>GR TOOLS</h2> -->
-            </ion-card-content>
+            <ion-img src="assets/img/gr.jpg"></ion-img>
           </ion-card>
         </ion-col>
       </ion-row>

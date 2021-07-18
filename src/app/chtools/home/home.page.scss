@@ -18,9 +18,9 @@ ion-list {
 .selected {
   // border-left: 3px solid var(--ion-color-primary);
   border-left: 3px solid var(--ion-color-primary);
-  color: #000 !important;
+  color: var(--ion-color-dark) !important;
   // background: var(--ion-color-primary) !important;
 }
 .selected ion-icon {
-  color: #000 !important;
+  color: var(--ion-color-dark) !important;
 }

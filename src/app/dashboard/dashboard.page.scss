@@ -22,8 +22,14 @@
 }
 
 .tabbar {
-  width: 70% !important;
+  width: 60vw !important;
   float: left;
+  overflow: scroll !important;
+  font-size: 0.8em !important;
+}
+
+ion-segment-button {
+  font-size: 0.8em !important;
 }
 .right {
   float: right !important;
@@ -55,19 +61,25 @@
   --border-radius: 5px !important;
 }
 
-.bgCh {
-  height: 19vh !important;
-  background: url("../../assets/img/ch.jpg") 0 0/ 100% 100%;
-  background-size: cover;
-  background-position-x: unset;
-}
+// .bgCh {
+//   // height: 19vh !important;
+//   background: url("../../assets/img/ch.jpg") 0 0/ 100% 100%;
+//   // background-size: cover;
+//   // background-size: contain;
+//   background-position: center !important;
+//   background-repeat: no-repeat !important;
+// }
 
-.bgGr {
-  height: 19vh !important;
-  background: url("../../assets/img/gr.jpg") 0 0/ 100% 100%;
-  background-size: cover;
-  background-position-x: unset;
-}
+// .bgGr {
+//   // height: 19vh !important;
+//   height: auto !important;
+//   width: 100% !important;
+//   background: url("../../assets/img/gr.jpg") 0 0/ 100% 100%;
+//   // background-size: cover;
+//   // background-position-x: unset;
+//   background-position: center !important;
+//   background-repeat: no-repeat !important;
+// }
 
 .image {
   margin-left: auto;

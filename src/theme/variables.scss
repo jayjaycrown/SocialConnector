@@ -3,6 +3,14 @@
 
 /** Ionic CSS Variables **/
 :root {
+  // --ion-background-color: #ece7cd;
+  // --ion-background-color-rgb: 236, 231, 205;
+
+  --ion-font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue",
+    "Roboto", sans-serif;
+
+  // --ion-card-background: #ffffff;
+  // --ion-card-background-rgb: 255, 255, 255;
   /** primary **/
   --ion-color-primary: #357be9;
   --ion-color-primary-rgb: 53, 123, 233;
@@ -76,7 +84,7 @@
   --ion-color-light-tint: #f5f6f9;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   /*
    * Dark Colors
    * -------------------------------------------
