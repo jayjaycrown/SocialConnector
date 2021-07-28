@@ -38,6 +38,7 @@ const routes: Routes = [
         loadChildren: () =>
           import('../club/support.module').then((m) => m.SupportPageModule),
       },
+
       // {
       //   path: 'tab1',
       //   loadChildren: () =>

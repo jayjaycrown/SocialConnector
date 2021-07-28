@@ -4,7 +4,7 @@
       <ion-menu-button menu="rayo" autoHide="false"></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      CH TOOLS
+      Announcements
     </ion-title>
     <ion-buttons slot="end">
       <ion-button fill="clear" [routerLink]="['/home/profile']" routerLinkActive="router-link-active">
@@ -21,8 +21,8 @@
     <ion-card-content>
       <form name="form" #announcementForm="ngForm" (ngSubmit)="announcementForm.valid && onSubmit()">
         <ion-item class="ion-margin-bottom">
-          <ion-textarea  rows="10" name="message" [(ngModel)]="model.message"
-            placeholder="Enter your messages here" required>
+          <ion-textarea rows="10" name="message" [(ngModel)]="model.message" placeholder="Enter your messages here"
+            required>
           </ion-textarea>
         </ion-item>
         <ion-item>

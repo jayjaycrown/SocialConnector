@@ -19,6 +19,9 @@ export class SuperfansPage implements OnInit {
   date: string;
   results: any = [];
   data: any[];
+  key = '';
+  reverse = true;
+  p = 1;
 
   constructor(
     private app: AppService,
@@ -37,6 +40,7 @@ export class SuperfansPage implements OnInit {
   }
 
   async getSuperFans() {
+    this.results = [];
     const loading = await this.loadingController.create({
       spinner: null,
       cssClass: 'custom-loading',
@@ -46,25 +50,15 @@ export class SuperfansPage implements OnInit {
       .getSuperfans(this.api_token, this.date)
       .subscribe(async (res: any) => {
         console.log(res);
+        for (const key in res.result) {
+          if (Object.prototype.hasOwnProperty.call(res.result, key)) {
+            const element = res.result[key];
+            // console.log(element);
+            this.results.push(element);
+          }
+        }
         await loading.dismiss();
-        this.results = JSON.stringify(this.results);
         console.log(this.results);
-        // for (const iterator of this.results) {
-        //   const element = this.results[iterator];
-        //   this.data = [];
-        //   this.data.push(element);
-        // }
-
-        // const array: any[] = this.results;
-        // for (const key in this.results) {
-        //   if (Object.prototype.hasOwnProperty.call(this.results, key)) {
-        //     const element = this.results[key];
-        //     this.data = [];
-        //     this.data.push(element);
-        //   }
-        // }
-        // console.log(this.data);
-        // console.log(this.results.length);
       });
   }
 }

@@ -6,7 +6,7 @@ ion-content {
     margin: 0vh auto;
     text-align: center;
     // background-color: black;
-    background: url("../../../assets/logo.PNG") 0px 0%/100% 100% no-repeat;
+   background: url("../../../assets/img/socialConnector.jpeg") 0px 0%/100% 100% no-repeat;
   }
 }
 
@@ -20,4 +20,19 @@ ion-content {
   padding-left: 15px;
   padding-top: 5px;
   padding-bottom: 5px;
+}
+
+.captchaspace{
+  // background-color: black;
+  width: 100%;
+  overflow: hidden !important;
+  // height: 50px;
+  text-align:center !important;
+
+}
+.white{
+  // background-color: green;
+  // height: 40px !important;
+  // width: 50vw !important;
+  margin:0 auto !important;
 }

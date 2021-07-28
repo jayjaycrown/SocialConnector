@@ -4,7 +4,7 @@
       <ion-menu-button autoHide="false"></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      CH TOOLS
+      History
     </ion-title>
     <ion-buttons slot="end">
       <ion-button fill="clear" [routerLink]="['/tabs']" routerLinkActive="router-link-active" routerDirection="back">
@@ -28,7 +28,8 @@
               min="2016-01-01" max="2022-12-31" required>
             </ion-datetime>
           </ion-item>
-          <ion-button type="submit" [disabled]="!historyForm.valid" expand="full" color="primary">Get History</ion-button>
+          <ion-button type="submit" [disabled]="!historyForm.valid" expand="full" color="primary">Get History
+          </ion-button>
         </form>
 
       </ion-card-content>
@@ -47,7 +48,7 @@
               <!-- <p></p> -->
               <h3>
                 <span class="ion-float-left">Total Listeners</span>
-                <span  class="ion-float-right">{{ allRoom.end_total_listeners }}</span>
+                <span class="ion-float-right">{{ allRoom.end_total_listeners }}</span>
               </h3>
             </ion-label>
           </ion-item>
@@ -68,37 +69,37 @@
               </h3>
             </ion-label>
           </ion-item>
-            <div *ngIf="allRoom.date_ended;else templateName">
-              <ion-item>
-                <ion-label>
-                  <!-- <p></p> -->
-                  <h3>
-                    <span class="ion-float-left">Room Status</span>
-                    <span class="ion-float-right">Ended</span>
-                  </h3>
-                </ion-label>
-              </ion-item>
-              <ion-item>
-                <ion-label>
-                  <!-- <p>Room Status</p> -->
-                  <h3>
-                    <span class="ion-float-left">Ended on </span>
-                    <span class="ion-float-right"> {{ allRoom.date_ended }} </span>
-                  </h3>
-                </ion-label>
-              </ion-item>
-            </div>
-            <ng-template #templateName>
-              <ion-item>
-                <ion-label>
-                  <!-- <p>Room Status</p> -->
-                  <h3>
-                    <span class="ion-float-left">Room Status</span>
-                    <span class="ion-float-right">Active</span>
-                  </h3>
-                </ion-label>
-              </ion-item>
-            </ng-template>
+          <div *ngIf="allRoom.date_ended;else templateName">
+            <ion-item>
+              <ion-label>
+                <!-- <p></p> -->
+                <h3>
+                  <span class="ion-float-left">Room Status</span>
+                  <span class="ion-float-right">Ended</span>
+                </h3>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <!-- <p>Room Status</p> -->
+                <h3>
+                  <span class="ion-float-left">Ended on </span>
+                  <span class="ion-float-right"> {{ allRoom.date_ended }} </span>
+                </h3>
+              </ion-label>
+            </ion-item>
+          </div>
+          <ng-template #templateName>
+            <ion-item>
+              <ion-label>
+                <!-- <p>Room Status</p> -->
+                <h3>
+                  <span class="ion-float-left">Room Status</span>
+                  <span class="ion-float-right">Active</span>
+                </h3>
+              </ion-label>
+            </ion-item>
+          </ng-template>
 
         </ion-list>
       </ion-card-content>
@@ -107,7 +108,7 @@
   </ion-item>
 
   <ion-item *ngIf="allRooms?.length > 0">
-    <ion-grid  class="ion-text-center" style="background:#fff !important">
+    <ion-grid class="ion-text-center" style="background:#fff !important">
       <ion-row>
         <ion-col size="3"></ion-col>
         <ion-col size="3">

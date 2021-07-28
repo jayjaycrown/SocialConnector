@@ -10,24 +10,32 @@ const routes: Routes = [
   {
     path: '',
     redirectTo: 'login',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'register',
-    component: RegisterComponent
+    component: RegisterComponent,
   },
   {
     path: 'validate/:id',
-    component: ValidateComponent
+    component: ValidateComponent,
   },
   {
     path: 'validategr/:id',
-    component: GrValidateComponent
+    component: GrValidateComponent,
   },
   {
     path: 'login',
-    component: AuthPage
-  }
+    component: AuthPage,
+  },
+  {
+    path: 'forgot',
+    loadChildren: () => import('./forgot/forgot.module').then( m => m.ForgotPageModule)
+  },
+  {
+    path: 'reset',
+    loadChildren: () => import('./reset/reset.module').then( m => m.ResetPageModule)
+  },
 ];
 
 @NgModule({

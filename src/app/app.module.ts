@@ -8,6 +8,7 @@ import { ChartsModule } from 'ng2-charts';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+// import { ReplaceLinebreaksPipe } from './_helpers/replace-linebreaks.pipe';
 
 @NgModule({
   declarations: [AppComponent],

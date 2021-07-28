@@ -6,17 +6,23 @@ const routes: Routes = [
   {
     path: '',
     redirectTo: 'tabs',
-    pathMatch: 'full'
+    pathMatch: 'full',
+  },
+  {
+    path: 'landing',
+    loadChildren: () =>
+      import('./auth//landing/landing.module').then((m) => m.LandingPageModule),
   },
   {
     path: 'tabs',
     loadChildren: () =>
       import('./tabs/tabs.module').then((m) => m.TabsPageModule),
-      canLoad: [AuthGuard]
+    canLoad: [AuthGuard],
   },
   {
     path: 'auth',
-    loadChildren: () => import('./auth/auth.module').then(m => m.AuthPageModule),
+    loadChildren: () =>
+      import('./auth/auth.module').then((m) => m.AuthPageModule),
   },
 ];
 @NgModule({

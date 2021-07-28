@@ -24,3 +24,148 @@ ion-item {
   margin-bottom: 5px;
   // --border-width: 1px;
 }
+
+p {
+  font-size: 0.8em !important;
+}
+
+.userlist{
+  margin-left: auto;
+  margin-right: auto;
+  // background-color: #eee !important;
+  text-align: center !important;
+}
+.userImg{
+  // margin: 5px auto !important;
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 50%;
+}
+
+// p {
+//     margin-block-start: 0em !important;
+//     margin-block-end: 0em !important;
+
+// }
+.mr-1 {
+    margin-right: .25rem;
+}
+.mr-2 {
+    margin-right: .5rem;
+}
+.mb-1 {
+    margin-bottom: .25rem;
+}
+.font-semibold {
+    font-weight: 600;
+}
+
+.new-user{
+    width: 1.5rem;
+    height: 1.5rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    position: absolute;
+    background: #fff;
+    bottom: 0;
+    border-radius: 50%;
+    -webkit-box-shadow: #b8b8b8 0 2px 1px 0;
+    box-shadow: 0 2px 1px 0 #b8b8b8;
+}
+
+.superfan{
+    width: 1.5rem;
+    height: 1.5rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    position: absolute;
+    background: #fff;
+    bottom: 0;
+    right: 0;
+    border-radius: 50%;
+    -webkit-box-shadow: #b8b8b8 0 2px 1px 0;
+    box-shadow: 0 2px 1px 0 #b8b8b8;
+}
+.text-xs {
+    font-size: .75rem;
+    line-height: 1rem;
+}
+.justify-center {
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+.relative {
+    position: relative !important;
+}
+.block{
+  display: block !important;
+}
+.flex {
+    display: -webkit-box !important;
+    display: -ms-flexbox !important;
+    display: flex !important;
+}
+
+
+.clamp {
+	overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* number of lines to show */
+  -webkit-box-orient: vertical;
+}
+.badge{
+  font-size: .6em !important;
+   color: rgb(214, 210, 210) !important;
+}
+
+
+.blink_me {
+    -webkit-animation-name: blinker;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-iteration-count: infinite;
+
+    -moz-animation-name: blinker;
+    -moz-animation-duration: 2s;
+    -moz-animation-timing-function: linear;
+    -moz-animation-iteration-count: infinite;
+
+    animation-name: blinker;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+@-moz-keyframes blinker {
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}
+
+@-webkit-keyframes blinker {
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}
+
+@keyframes blinker {
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}

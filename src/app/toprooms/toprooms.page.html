@@ -1,16 +1,12 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title>toprooms</ion-title>
+    <ion-title>Top Rooms</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <div class="tabbar">
-    <ion-segment
-      [(ngModel)]="type"
-      (ionChange)="segmentChanged($event)"
-      swipeGesture="true"
-    >
+    <ion-segment [(ngModel)]="type" (ionChange)="segmentChanged($event)" swipeGesture="true">
       <ion-segment-button value="ch">
         <ion-label>Clubhouse</ion-label>
       </ion-segment-button>

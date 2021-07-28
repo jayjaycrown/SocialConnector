@@ -4,7 +4,7 @@
       <ion-menu-button autoHide="false"></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      CH TOOLS
+      Clubs
     </ion-title>
     <ion-buttons slot="end">
       <ion-button fill="clear" [routerLink]="['/tabs']" routerLinkActive="router-link-active" routerDirection="back">
@@ -20,8 +20,9 @@
       <ion-card-content>
         <ion-item>
           <ion-label position="floating">Club Name</ion-label>
-          <ion-input type='text' minlength="3" name="club" class="form-control" placeholder="Enter Club Name" [(ngModel)]="model.club"
-            #club="ngModel" [ngClass]="{ 'is-invalid': clubForm.submitted && club.invalid }" required></ion-input>
+          <ion-input type='text' minlength="3" name="club" class="form-control" placeholder="Enter Club Name"
+            [(ngModel)]="model.club" #club="ngModel" [ngClass]="{ 'is-invalid': clubForm.submitted && club.invalid }"
+            required></ion-input>
         </ion-item>
         <ion-button type="submit" [disabled]="!clubForm.valid" expand="full" color="primary">Search Club
         </ion-button>
@@ -38,7 +39,7 @@
       <ion-label>Clubs List</ion-label>
     </ion-list-header>
     <ion-item *ngFor="let allRoom of allRooms">
-      <ion-card class="test ion-text-center" >
+      <ion-card class="test ion-text-center">
         <ion-img [src]="allRoom.photo_url"></ion-img>
         <ion-card-header (click)="analyze(allRoom.club_id)">
           <ion-card-title>{{ allRoom.name }}</ion-card-title>

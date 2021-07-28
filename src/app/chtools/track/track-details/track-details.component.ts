@@ -52,6 +52,7 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
   reverse4 = false;
   reverse5 = false;
   showChat = true;
+  rrverse = true;
   p = 1;
   q = 1;
   r = 1;
@@ -147,6 +148,16 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
       pointHoverBorderColor: 'rgb(12,18,14)',
     },
   ];
+
+  customPopoverOptions: any = {
+    header: 'Badge',
+    subHeader: 'Add a badge',
+  };
+
+  customActionSheetOptions: any = {
+    header: 'Sort',
+    subHeader: 'Sort by',
+  };
 
   loadMore = false;
   fullData: any = {};
@@ -287,7 +298,9 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
   date_entered: any[] = [];
   listeners_data: number[] = [];
 
-  public lineChartData: ChartDataSets[] = [{ data: this.listeners_data }];
+  public lineChartData: ChartDataSets[] = [
+    { data: this.listeners_data, label: 'Active Listeners' },
+  ];
   public lineChartLabels: Label[] = this.date_entered;
   public lineChartColors: Color[] = [
     {
@@ -309,6 +322,17 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
   public lineChartType: ChartType = 'line';
   public lineChartPlugins = [];
   showData = false;
+  modSpeaker: any[];
+  followedBySpeaker: any[];
+  othersInRoom: any[];
+  activeMods: any[];
+  roomOn: boolean;
+  showDisplay: any;
+  sortKey = '';
+  randomElement: any = {};
+  showonlyone = false;
+  event = false;
+  // sortby = '';
 
   constructor(
     private router: Router,
@@ -330,6 +354,9 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
   sort(key) {
     this.key = key;
     this.reverse = !this.reverse;
+  }
+  sortWoKey() {
+    this.rrverse = !this.rrverse;
   }
 
   sort1(key) {
@@ -684,6 +711,38 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
+  // waitForElement() {
+  //   console.log('calling');
+  //   if (typeof this.roomStatus !== 'undefined') {
+  //     //variable exists, do what you want
+  //     console.log(this.roomStatus);
+  //     if (this.roomStatus === 'ongoing') {
+  //       this.refresh = setInterval(() => {
+  //         // console.log('Setting');
+  //         this.getAppData(this.id, this.api_token);
+  //       }, 30000);
+  //     } else {
+  //       clearInterval(this.refresh);
+  //     }
+  //   } else {
+  //     // console.log(this.roomStatus);
+  //     setTimeout(this.waitForElement, 250);
+  //   }
+  // }
+
+  // checkVariable() {
+  //   console.log('checking');
+  //   if (this.roomStatus !== 'undefined') {
+  //     if (this.roomStatus === 'ongoing') {
+  //       this.refresh = setInterval(() => {
+  //         // console.log('Setting');
+  //         this.getAppData(this.id, this.api_token);
+  //       }, 30000);
+  //     } else {
+  //       clearInterval(this.refresh);
+  //     }
+  //   }
+  // }
   async ngOnInit() {
     this.date2 = moment().format('YYYY-MM-DD');
     const user: any = await JSON.parse(localStorage.getItem('user'));
@@ -701,34 +760,37 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
     await this.loading.present();
 
     await this.getAppData(this.id, this.api_token);
-    setTimeout(() => {
-      if (this.roomStatus === 'ongoing') {
-        this.refresh = setInterval(() => {
-          // console.log('Setting');
-          this.getAppData(this.id, this.api_token);
-        }, 30000);
-      } else {
-        clearInterval(this.refresh);
-      }
-      // alert(this.roomStatus);
-      // this.roomtrack = setInterval(() => {
-      //   this.getRoomStats();
-      // }, 300000);
-    }, 5000);
+    // setTimeout(this.checkVariable, 10000);
+    // this.waitForElement();
+    // setTimeout(() => {
+    //   console.log(this.roomStatus);
+    //   if (this.roomStatus === 'ongoing') {
+    //     this.refresh = setInterval(() => {
+    //       // console.log('Setting');
+    //       this.getAppData(this.id, this.api_token);
+    //     }, 30000);
+    //   } else {
+    //     clearInterval(this.refresh);
+    //   }
+    // }, 30000);
 
     this.getDetails();
   }
   async doRefresh(event) {
     // console.log(event)
     await this.getAppData(this.id, this.api_token);
-    event.target.complete();
+    // this.event = event;
+    // console.log(this.event);
+    if (this.event === true) {
+      event.target.complete();
+    }
   }
 
   ngOnDestroy() {
     this.fullData = {};
     if (this.refresh) {
       // console.log(this.refresh);
-      // console.log('clearing');
+      console.log('clearing');
       clearInterval(this.refresh);
     }
     // if (this.roomtrack) {
@@ -755,7 +817,6 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  // tslint:disable-next-line: variable-name
   async getAppData(data, api_token) {
     // const loading = await this.loadingController.create({
     //   spinner: null,
@@ -766,7 +827,9 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
     const fields: string[] = [];
     this.app.getRoomDetails(data, api_token).subscribe(async (res: any) => {
       // await loading.dismiss();
+      // console.log(res);
       await this.loading.dismiss();
+      this.event = true;
       if (res.status === 'success') {
         this.showData = true;
         this.fullData = res.result;
@@ -826,9 +889,18 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
         this.setDisplay = true;
         this.roomStatus = this.fullData.room_status;
         // console.log(this.roomStatus);
+
+        // alert(this.roomStatus);
         if (this.roomStatus === 'ongoing') {
+          console.log('checking');
+          this.roomOn = true;
+          this.refresh = setTimeout(() => {
+            this.getAppData(this.id, this.api_token);
+          }, 30000);
           this.imageLight = this.greenImg;
         } else {
+          this.roomOn = false;
+          clearTimeout(this.refresh);
           this.imageLight = this.redImg;
         }
         const size = 5;
@@ -855,6 +927,8 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
         this.newSpdData = this.spdData;
         this.newModerators = this.moderators;
         this.speakers = this.fullData.speakers;
+        this.speakerWithMod();
+        this.getActiveMods();
         if (this.speakers) {
           this.showSpeaker = true;
         }
@@ -1119,6 +1193,9 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
         this.presentToast(color, res.message);
         this.router.navigateByUrl('/auth/validate/ ' + this.api_token);
       } else {
+        setTimeout(() => {
+          this.getAppData(this.id, this.api_token);
+        }, 30000);
         this.setDisplay = false;
         const color = 'danger';
         this.presentToast(color, res.message);
@@ -1194,9 +1271,9 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
         .subscribe((resp: any) => {
           // console.log(resp);
           const arr = resp.result;
-          console.log(arr);
+          // console.log(arr);
           const data = arr.slice(Math.max(arr.length - 10, 0));
-          console.log(data);
+          // console.log(data);
           this.date_entered.length = 0;
           this.listeners_data.length = 0;
           for (const x of data) {
@@ -1214,5 +1291,141 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
           // this.listeners_data = data.listeners;
         });
     });
+  }
+
+  convert(value: number) {
+    const data: any = moment.duration(value, 'minutes');
+    // console.log(data._data);
+    return (
+      String(data._data.hours).padStart(2, '0') +
+      ':' +
+      String(data._data.minutes).padStart(2, '0')
+    );
+  }
+
+  split(name: string) {
+    if (name && (name !== null || name !== undefined)) {
+      const splitted = name.split(' ');
+      const first = splitted[0];
+      return first;
+    } else {
+      return '___';
+    }
+  }
+
+  // channel_emoji: '🇰🇼';
+  // fan: false;
+  // first_name: 'Zeyad';
+  // instagram: 'cpt.zeyad';
+  // is_followed_by_speaker: 'true';
+  // is_invited_as_speaker: 'false';
+  // is_moderator: 'true';
+  // is_new: 'false';
+  // is_speaker: 'true';
+  // minutes: 171;
+  // name: 'Zeyad Alashram';
+  // no_rooms: '0';
+  // photo_url: 'https://d14u0p1qkech25.cloudfront.net/678008011_a2406c6b-2b14-4d54-92ed-b20b0b630c7b_thumbnail_250x250';
+  // twitter: null;
+  // user_id: '678008011';
+  // username: 'pilotx';
+  getActiveMods() {
+    if (this.roomStatus === 'ongoing') {
+      this.moderators = [];
+      for (let i = 0; i < this.top.length; i++) {
+        const element = this.top[i];
+        if (element.is_moderator === 'true') {
+          this.moderators.push(element);
+        }
+      }
+
+      this.allmoderators = this.moderators.slice(0, 5);
+      // alert(this.moderators.length)
+      this.modLength = this.moderators.length;
+      // console.log('active mods', this.moderators);
+    }
+  }
+  speakerWithMod() {
+    this.modSpeaker = [];
+    this.followedBySpeaker = [];
+    this.othersInRoom = [];
+    for (let i = 0; i < this.top.length; i++) {
+      const element = this.top[i];
+      if (element.is_speaker === 'true') {
+        this.modSpeaker.push(element);
+      } else if (element.is_followed_by_speaker === 'true') {
+        this.followedBySpeaker.push(element);
+      } else {
+        this.othersInRoom.push(element);
+      }
+    }
+    // console.log('all users', this.top);
+    // console.log('speaker', this.modSpeaker);
+    // console.log('followed by speaker', this.followedBySpeaker);
+    // console.log('Others in room', this.othersInRoom);
+  }
+
+  checkIfMod(username: string) {
+    for (let i = 0; i < this.moderators.length; i++) {
+      const element = this.moderators[i];
+      if (String(element.username) === username) {
+        // console.log(username);
+        return true;
+      } else {
+        return false;
+      }
+    }
+    // for (const i of this.moderators) {
+    //   if (i.username === username) {
+    //     return true;
+    //   } else {
+    //     return false;
+    //   }
+    // }
+  }
+
+  selectFilter(ev) {
+    this.showDisplay = '';
+    // console.log(ev);
+    this.showDisplay = ev;
+  }
+
+  // selectFilter(ev: any) {
+  //   this.showDisplay = '';
+  //   console.log(String(ev));
+  //   this.showDisplay = String(ev);
+  //   if (this.showDisplay === 'superfan') {
+  //     this.setSuper = true;
+  //     this.setnewUser = false;
+  //   } else if (this.showDisplay === 'newuser') {
+  //     this.setSuper = false;
+  //     this.setnewUser = true;
+  //   } else {
+  //     this.setSuper = false;
+  //     this.setnewUser = false;
+  //   }
+  // }
+  orderBy(ev) {
+    console.log(ev);
+    this.sortKey = '';
+    this.sortKey = String(ev);
+  }
+
+  clearFilter() {
+    this.sortKey = '';
+    this.showonlyone = false;
+    // console.log(this.showonlyone);
+  }
+
+  pickRandom() {
+    this.showonlyone = true;
+    this.randomElement =
+      this.othersInRoom[Math.floor(Math.random() * this.othersInRoom.length)];
+    // console.log(this.randomElement);
+  }
+
+  gotoUser(userid) {
+    console.log(userid);
+    this.router.navigateByUrl('/tabs/chtools/profile/' + userid);
   }
 }

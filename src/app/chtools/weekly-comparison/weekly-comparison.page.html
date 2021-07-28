@@ -1,11 +1,11 @@
 <ion-header class="ion-no-border" mode="ios">
-  <ion-toolbar >
+  <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button autoHide="false"></ion-menu-button>
     </ion-buttons>
-    <ion-title>
+    <!-- <ion-title>
       CH TOOLS
-    </ion-title>
+    </ion-title> -->
     <ion-buttons slot="end">
       <ion-button fill="clear" [routerLink]="['/tabs']" routerLinkActive="router-link-active" routerDirection="back">
         <ion-icon name="close" slot="icon-only" style="width: 36px !important; height: 36px !important;"></ion-icon>
@@ -46,14 +46,14 @@
       <ion-grid>
         <ion-row>
           <ion-col size="6">
-            <ion-item  lines="none" class="ion-text-center">
+            <ion-item lines="none" class="ion-text-center">
               <ion-label>
                 <h3>Week 1</h3>
               </ion-label>
             </ion-item>
           </ion-col>
           <ion-col size="6">
-            <ion-item  lines="none" class="ion-text-center">
+            <ion-item lines="none" class="ion-text-center">
               <ion-label>
                 <h3>Week 2</h3>
               </ion-label>
@@ -62,21 +62,21 @@
         </ion-row>
         <ion-row>
           <ion-col size="12">
-            <ion-item  lines="none" class="ion-text-center">
+            <ion-item lines="none" class="ion-text-center">
               <ion-label>
                 <h3>Average Listened</h3>
               </ion-label>
             </ion-item>
           </ion-col>
           <ion-col size="6">
-            <ion-item  lines="none" class="ion-text-center">
+            <ion-item lines="none" class="ion-text-center">
               <ion-label>
                 <h3>{{ week1Details.avg }} </h3>
               </ion-label>
             </ion-item>
           </ion-col>
           <ion-col size="6">
-            <ion-item  lines="none" class="ion-text-center">
+            <ion-item lines="none" class="ion-text-center">
               <ion-label>
                 <h3>{{ week2Details.avg }} </h3>
               </ion-label>
@@ -86,21 +86,21 @@
 
         <ion-row>
           <ion-col size="12">
-            <ion-item  lines="none" class="ion-text-center">
+            <ion-item lines="none" class="ion-text-center">
               <ion-label>
                 <h3>Average Max Listeners</h3>
               </ion-label>
             </ion-item>
           </ion-col>
           <ion-col size="6">
-            <ion-item  lines="none" class="ion-text-center">
+            <ion-item lines="none" class="ion-text-center">
               <ion-label>
                 <h3>{{ week1Details.avg_max_listeners }} </h3>
               </ion-label>
             </ion-item>
           </ion-col>
           <ion-col size="6">
-            <ion-item  lines="none" class="ion-text-center">
+            <ion-item lines="none" class="ion-text-center">
               <ion-label>
                 <h3>{{ week2Details.avg_max_listeners }} </h3>
               </ion-label>
@@ -110,21 +110,21 @@
 
         <ion-row>
           <ion-col size="12">
-            <ion-item  lines="none" class="ion-text-center">
+            <ion-item lines="none" class="ion-text-center">
               <ion-label>
                 <h3>Total Listened Time</h3>
               </ion-label>
             </ion-item>
           </ion-col>
           <ion-col size="6">
-            <ion-item  lines="none" class="ion-text-center">
+            <ion-item lines="none" class="ion-text-center">
               <ion-label>
                 <h3 class="ion-text-wrap">{{transformMinute(week1Details.total_listened)}} </h3>
               </ion-label>
             </ion-item>
           </ion-col>
           <ion-col size="6">
-            <ion-item  lines="none" class="ion-text-center">
+            <ion-item lines="none" class="ion-text-center">
               <ion-label>
                 <h3 class="ion-text-wrap"> {{transformMinute(week2Details.total_listened)}} </h3>
               </ion-label>
@@ -134,21 +134,21 @@
 
         <ion-row>
           <ion-col size="12">
-            <ion-item  lines="none" class="ion-text-center">
+            <ion-item lines="none" class="ion-text-center">
               <ion-label>
                 <h3>Total Listeners</h3>
               </ion-label>
             </ion-item>
           </ion-col>
           <ion-col size="6">
-            <ion-item  lines="none" class="ion-text-center">
+            <ion-item lines="none" class="ion-text-center">
               <ion-label>
                 <h3>{{ week1Details.total_listeners || 0 }} </h3>
               </ion-label>
             </ion-item>
           </ion-col>
           <ion-col size="6">
-            <ion-item  lines="none" class="ion-text-center">
+            <ion-item lines="none" class="ion-text-center">
               <ion-label>
                 <h3>{{ week2Details.total_listeners || 0 }} </h3>
               </ion-label>
@@ -158,23 +158,23 @@
 
         <ion-row>
           <ion-col size="12">
-            <ion-item  lines="none" class="ion-text-center">
+            <ion-item lines="none" class="ion-text-center">
               <ion-label>
                 <h3>Total Rooms</h3>
               </ion-label>
             </ion-item>
           </ion-col>
           <ion-col size="6">
-            <ion-item  lines="none" class="ion-text-center">
+            <ion-item lines="none" class="ion-text-center">
               <ion-label>
                 <h3>{{ week1Details.total_rooms }} </h3>
               </ion-label>
             </ion-item>
           </ion-col>
           <ion-col size="6">
-            <ion-item  lines="none" class="ion-text-center">
+            <ion-item lines="none" class="ion-text-center">
               <ion-label>
-                  <h3>{{ week2Details.total_rooms }} </h3>
+                <h3>{{ week2Details.total_rooms }} </h3>
               </ion-label>
             </ion-item>
           </ion-col>

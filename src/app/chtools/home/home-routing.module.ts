@@ -64,6 +64,11 @@ const routes: Routes = [
           ),
         canLoad: [AuthGuard],
       },
+      {
+        path: 'profile/:id',
+        loadChildren: () =>
+          import('../profile/profile.module').then((m) => m.ProfilePageModule),
+      },
       // {
       //   path: 'profile',
       //   loadChildren: () =>

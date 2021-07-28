@@ -23,11 +23,11 @@
               <ion-item lines="none" class="ion-text-center">
                 <ion-label>
                   <p>Followers</p>
-                  <h2>{{ item.num_followers }}</h2>
+                  <h2>{{ item.num_followers | number}}</h2>
                 </ion-label>
                 <ion-label>
                   <p>Members</p>
-                  <h2>{{ item.num_members }}</h2>
+                  <h2>{{ item.num_members | number}}</h2>
                 </ion-label>
               </ion-item>
             </ion-card-subtitle>
@@ -45,32 +45,15 @@
   </ion-card>
 
   <ion-card *ngIf="showData">
-    <canvas
-      baseChart
-      height="300"
-      [datasets]="barChartData"
-      [labels]="barChartLabels"
-      [options]="barChartOptions"
-      [plugins]="barChartPlugins"
-      [legend]="barChartLegend"
-      [chartType]="barChartType"
-    >
+    <canvas baseChart height="300" [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+      [plugins]="barChartPlugins" [legend]="barChartLegend" [chartType]="barChartType">
     </canvas>
-    <div
-      style="text-align: center !important; padding: 10px"
-      (click)="randomize()"
-    >
-      <a
-        ><ion-icon
-          slot="start"
-          name="swap-horizontal"
-          color="primary"
-        ></ion-icon
-      ></a>
+    <div style="text-align: center !important; padding: 10px" (click)="randomize()">
+      <a>
+        <ion-icon slot="start" name="swap-horizontal" color="primary"></ion-icon>
+      </a>
       <ion-text color="primary" style="display: block !important">
-        <P style="font-size: 0.6em !important; margin: 0; padding: 0"
-          >Change Style</P
-        >
+        <P style="font-size: 0.6em !important; margin: 0; padding: 0">Change Style</P>
       </ion-text>
     </div>
   </ion-card>

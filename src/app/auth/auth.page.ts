@@ -11,7 +11,6 @@ import { ReCaptcha2Component } from 'ngx-captcha';
   styleUrls: ['./auth.page.scss'],
 })
 export class AuthPage implements OnInit {
-
   @ViewChild('captchaElem') captchaElem: ReCaptcha2Component;
   @ViewChild('langInput') langInput: ElementRef;
 
@@ -34,21 +33,20 @@ export class AuthPage implements OnInit {
     private router: Router,
     private authenticationService: AuthService,
     private loadingController: LoadingController,
-    private toastController: ToastController,
+    private toastController: ToastController
   ) {
     if (this.authenticationService.userValue) {
-			this.router.navigate(['/tabs']);
-		}
+      this.router.navigate(['/tabs']);
+    }
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   async presentToast(color, message) {
     const toast = await this.toastController.create({
       message,
       color,
-      duration: 1000
+      duration: 1000,
     });
     toast.present();
   }
@@ -56,40 +54,38 @@ export class AuthPage implements OnInit {
     // console.log(this.model);
     const loading = await this.loadingController.create({
       spinner: null,
-      cssClass: 'custom-loading'
-      });
+      cssClass: 'custom-loading',
+    });
     await loading.present();
-    	// this.loading = true;
-		  this.authenticationService
-			.login(this.model.email, this.model.password, this.model.gresponse)
-			.pipe(first())
-			.subscribe(
+    // this.loading = true;
+    this.authenticationService
+      .login(this.model.email, this.model.password, this.model.gresponse)
+      .pipe(first())
+      .subscribe(
         async (res: any) => {
           await loading.dismiss();
           if (res.status === 'success') {
             const color = 'success';
             this.presentToast(color, res.message);
-                // const api_token = res.result.api_token;
+            // const api_token = res.result.api_token;
             const returnUrl =
-                  this.route.snapshot.queryParams.returnUrl || '/tabs';
+              this.route.snapshot.queryParams.returnUrl || '/tabs';
             this.router.navigateByUrl(returnUrl);
           } else {
             const color = 'danger';
             this.presentToast(color, res.message);
             this.error = res.message;
-                // this.loading = false;
-              }
-				},
+            // this.loading = false;
+          }
+        },
         async (err) => {
           await loading.dismiss();
-					     this.error = err;
-				}
-			);
-
+          this.error = err;
+        }
+      );
   }
 
   handleSuccess(event) {
-    console.log('e', event);
+    // console.log('e', event);
   }
-
 }

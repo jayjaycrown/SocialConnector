@@ -22,6 +22,7 @@ export class AppService {
 
   // tslint:disable-next-line: variable-name
   getRoomDetails(data, api_token) {
+    console.log('getting');
     const formData = new FormData();
     formData.append('api_token', api_token);
     return this.http.post(this.api + data, formData).pipe(
@@ -283,6 +284,7 @@ export class AppService {
 
   // https://monitor.clubhousetools.xyz/api/room_stats?api_token=dfdfdfdf&channel=ffefe
   roomStats(api_token, channel) {
+    // console.log('getting stats');
     const formData = new FormData();
     formData.append('api_token', api_token);
     formData.append('channel', channel);

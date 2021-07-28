@@ -10,7 +10,7 @@ import { ReCaptcha2Component } from 'ngx-captcha';
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit {
-   @ViewChild('captchaElem') captchaElem: ReCaptcha2Component;
+  @ViewChild('captchaElem') captchaElem: ReCaptcha2Component;
   @ViewChild('langInput') langInput: ElementRef;
 
   public captchaIsLoaded = false;
@@ -46,14 +46,19 @@ export class RegisterComponent implements OnInit {
     toast.present();
   }
   async onSubmit() {
-    console.log(this.model);
+    // console.log(this.model);
     const loading = await this.loadingController.create({
       spinner: null,
       cssClass: 'custom-loading',
     });
     await loading.present();
     this.authenticationService
-      .register(this.model.email, this.model.password, this.model.name, this.model.gresponse)
+      .register(
+        this.model.email,
+        this.model.password,
+        this.model.name,
+        this.model.gresponse
+      )
       .pipe(first())
       .subscribe(
         async (res: any) => {
@@ -80,6 +85,6 @@ export class RegisterComponent implements OnInit {
       );
   }
   handleSuccess(event) {
-    console.log('e', event);
+    // console.log('e', event);
   }
 }

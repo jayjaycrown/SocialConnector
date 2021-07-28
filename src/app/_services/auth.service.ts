@@ -82,7 +82,10 @@ export class AuthService {
         const result = user.result;
         if (result.length !== 0) {
           localStorage.setItem('ch_token', JSON.stringify(result.ch_token));
-          localStorage.setItem('greenroom_token', JSON.stringify(result.greenroom_token));
+          localStorage.setItem(
+            'greenroom_token',
+            JSON.stringify(result.greenroom_token)
+          );
           localStorage.setItem('user', JSON.stringify(user));
         }
         this.userSubject.next(user);
@@ -117,7 +120,6 @@ export class AuthService {
     // 	});
   }
 
-
   // tslint:disable-next-line: variable-name
   getDetails(api_token) {
     const formData = new FormData();
@@ -133,6 +135,21 @@ export class AuthService {
       })
     );
   }
+  forgot(email) {
+    const formData = new FormData();
+    formData.append('email', email);
+    return this.http.post<any>(`${environment.apiUrl}/forgot`, formData).pipe();
+  }
+  reset(email, resetCode, newPassword) {
+    console.log('calling');
+    const formData = new FormData();
+    formData.append('email', email);
+    formData.append('resetCode', resetCode);
+    formData.append('newPassword', newPassword);
+    return this.http
+      .post<any>(`${environment.apiUrl}/reset_password`, formData)
+      .pipe();
+  }
 
   login(email: string, password: string, gresponse: string) {
     // const url = environment.apiUrl + '/register';
@@ -145,7 +162,10 @@ export class AuthService {
         const result = user.result;
         if (result.length !== 0) {
           localStorage.setItem('ch_token', JSON.stringify(result.ch_token));
-          localStorage.setItem('greenroom_token', JSON.stringify(result.greenroom_token));
+          localStorage.setItem(
+            'greenroom_token',
+            JSON.stringify(result.greenroom_token)
+          );
           localStorage.setItem('user', JSON.stringify(user));
         }
         this.userSubject.next(user);
@@ -156,17 +176,18 @@ export class AuthService {
   freeTrial(token) {
     const formData = new FormData();
     formData.append('api_token', token);
-    return this.http.post<any>(`${environment.apiUrl}/start_trial`, formData).pipe();
+    return this.http
+      .post<any>(`${environment.apiUrl}/start_trial`, formData)
+      .pipe();
   }
 
-
   logout(): void {
-		// remove user from local storage to log user out
+    // remove user from local storage to log user out
     localStorage.removeItem('user');
     localStorage.removeItem('data');
     localStorage.removeItem('ch_token');
     localStorage.removeItem('greenroom_token');
-		  this.userSubject.next(false);
-		  this.router.navigate(['/auth']);
-	}
+    this.userSubject.next(false);
+    this.router.navigate(['/auth']);
+  }
 }

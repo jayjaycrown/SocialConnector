@@ -3,19 +3,10 @@
     <ion-buttons slot="start">
       <ion-menu-button menu="rayo" autoHide="false"></ion-menu-button>
     </ion-buttons>
-    <ion-title> CH TOOLS </ion-title>
+    <ion-title> Track a Room</ion-title>
     <ion-buttons slot="end">
-      <ion-button
-        fill="clear"
-        [routerLink]="['/tabs']"
-        routerLinkActive="router-link-active"
-        routerDirection="back"
-      >
-        <ion-icon
-          name="close"
-          slot="icon-only"
-          style="width: 36px !important; height: 36px !important"
-        ></ion-icon>
+      <ion-button fill="clear" [routerLink]="['/tabs']" routerLinkActive="router-link-active" routerDirection="back">
+        <ion-icon name="close" slot="icon-only" style="width: 36px !important; height: 36px !important"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -24,31 +15,14 @@
 <ion-content>
   <ion-card class="ion-margin">
     <ion-card-content>
-      <form
-        name="form"
-        #trackForm="ngForm"
-        (ngSubmit)="trackForm.valid && onSubmit()"
-      >
+      <form name="form" #trackForm="ngForm" (ngSubmit)="trackForm.valid && onSubmit()">
         <ion-item class="ion-margin-bottom">
           <!-- <ion-label position="floating">Clubhouse room link</ion-label> -->
-          <ion-input
-            minlength="10"
-            name="roomLink"
-            class="form-control"
-            placeholder="Enter Clubhouse room link"
-            [(ngModel)]="model.roomLink"
-            #roomLink="ngModel"
-            [ngClass]="{ 'is-invalid': trackForm.submitted && roomLink.invalid }"
-            required
-          ></ion-input>
+          <ion-input minlength="10" name="roomLink" class="form-control" placeholder="Enter Clubhouse room link"
+            [(ngModel)]="model.roomLink" #roomLink="ngModel"
+            [ngClass]="{ 'is-invalid': trackForm.submitted && roomLink.invalid }" required></ion-input>
         </ion-item>
-        <ion-button
-          type="submit"
-          color="primary"
-          [disabled]="!trackForm.valid"
-          expand="full"
-          >Track Room</ion-button
-        >
+        <ion-button type="submit" color="primary" [disabled]="!trackForm.valid" expand="full">Track Room</ion-button>
       </form>
     </ion-card-content>
   </ion-card>
@@ -71,10 +45,7 @@
 
   <ion-item *ngFor="let allRoom of allRooms" lines="none">
     <ion-card class="test">
-      <ion-card-header
-        (click)="analyze(allRoom.channel)"
-        class="ion-text-center"
-      >
+      <ion-card-header (click)="analyze(allRoom.channel)" class="ion-text-center">
         <ion-card-title>{{ allRoom.topic }}</ion-card-title>
       </ion-card-header>
       <ion-card-content>
