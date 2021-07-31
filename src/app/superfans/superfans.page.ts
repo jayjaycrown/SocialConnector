@@ -1,3 +1,4 @@
+import { GrServiceService } from 'src/app/_services/gr-service.service';
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -19,15 +20,21 @@ export class SuperfansPage implements OnInit {
   date: string;
   results: any = [];
   data: any[];
-  key = '';
+  key = 'no_rooms';
+  key2 = 'no_rooms';
   reverse = true;
+  reverse2 = true;
   p = 1;
+  q = 1;
+  type = 'ch';
+  resultsgr: any = [];
 
   constructor(
     private app: AppService,
     private router: Router,
     private loadingController: LoadingController,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private gr: GrServiceService
   ) {}
 
   async ngOnInit() {
@@ -37,6 +44,7 @@ export class SuperfansPage implements OnInit {
 
     this.date = moment().format('YYYY-MM-DD');
     this.getSuperFans();
+    this.getSuperFansgr();
   }
 
   async getSuperFans() {
@@ -49,7 +57,7 @@ export class SuperfansPage implements OnInit {
     this.app
       .getSuperfans(this.api_token, this.date)
       .subscribe(async (res: any) => {
-        console.log(res);
+        // console.log(res);
         for (const key in res.result) {
           if (Object.prototype.hasOwnProperty.call(res.result, key)) {
             const element = res.result[key];
@@ -58,7 +66,37 @@ export class SuperfansPage implements OnInit {
           }
         }
         await loading.dismiss();
-        console.log(this.results);
+        // console.log(this.results);
       });
+  }
+
+  async getSuperFansgr() {
+    this.results = [];
+    this.gr
+      .getSuperfans(this.api_token, this.date)
+      .subscribe(async (res: any) => {
+        // console.log(res);
+        for (const key in res.result) {
+          if (Object.prototype.hasOwnProperty.call(res.result, key)) {
+            const element = res.result[key];
+            // console.log(element);
+            this.resultsgr.push(element);
+          }
+        }
+        // await loading.dismiss();
+        // console.log(this.resultsgr);
+      });
+  }
+
+  segmentChanged($event) {}
+
+  gotoUser(userid) {
+    // console.log(userid);
+    this.router.navigateByUrl('/tabs/chtools/profile/' + userid);
+  }
+
+  gotoUsergr(userid) {
+    // console.log(userid);
+    this.router.navigateByUrl('/tabs/grtools/profile/' + userid);
   }
 }

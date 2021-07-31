@@ -44,6 +44,12 @@
                 getDateDiff(item.date_started, item.date_ended)}}
               </ion-label>
             </ion-item>
+            <ion-item lines="none">
+
+              <ion-label>
+                <p>Date: {{ item.date_ended }}</p>
+              </ion-label>
+            </ion-item>
             <!-- <div class="image">
             <span *ngFor="let moderator of allmoderators">
               <img
@@ -72,6 +78,40 @@
       </div>
     </div>
 
-    <div *ngSwitchCase="'gr'"></div>
+    <div *ngSwitchCase="'gr'">
+      <div *ngFor="let item of fullDatagr">
+        <ion-card (click)="onClick2(item.channel)">
+          <ion-card-content>
+            <ion-item lines="none">
+              <ion-label class="ion-text-wrap">
+                <h2>{{ item.topic }}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-label>
+                <span class="ion-align-items-center">
+                  <ion-icon name="chatbox-ellipses-outline"></ion-icon>
+                </span>
+                {{ item.end_total_speakers }}
+              </ion-label>
+              <ion-label>
+                <ion-icon name="people-outline"></ion-icon> {{
+                item.end_total_listeners }}
+              </ion-label>
+              <ion-label>
+                <ion-icon name="time-outline"></ion-icon> {{
+                getDateDiff(item.date_started, item.date_ended)}}
+              </ion-label>
+            </ion-item>
+            <ion-item lines="none">
+
+              <ion-label>
+                <p>Date: {{ item.date_ended }}</p>
+              </ion-label>
+            </ion-item>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </div>
   </div>
 </ion-content>

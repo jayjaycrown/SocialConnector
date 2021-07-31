@@ -23,6 +23,7 @@ export class DashboardPage implements OnInit {
   showData = 'total_rooms';
   type = 'ch';
   type2 = 'ch';
+  type3 = 'ch';
   api_token: any;
   date: string;
   page = 1;
@@ -30,11 +31,14 @@ export class DashboardPage implements OnInit {
   current: any = {};
   currentgr: any = {};
   last: any = {};
+  lastgr: any = {};
   color = '';
   icon = '';
   show: boolean;
   percTotal: string;
+  percTotalgr: string;
   total_listeners: string;
+  total_listenersgr: any;
   avg: string;
   new: string;
   avggr: string;
@@ -48,40 +52,89 @@ export class DashboardPage implements OnInit {
   avgColorgr: string[];
   newColorgr: string[];
   total_roomsData: number[] = [];
+  total_roomsDatagr: number[] = [];
   total_listenersData: number[] = [];
+  total_listenersDatagr: number[] = [];
   total_listened: number[] = [];
+  total_listenedgr: number[] = [];
   avg_max_listeners: number[] = [];
   avgData: number[] = [];
   newData: number[] = [];
+  avgDatagr: number[] = [];
+  newDatagr: number[] = [];
+  avg_max_listenersgr: number[] = [];
   total_roomsWk1: number;
   total_roomsWk2: number;
   total_roomsWk3: number;
   total_roomsWk4: number;
+  total_roomsWk5: number;
+
+  total_roomsWk1gr: number;
+  total_roomsWk2gr: number;
+  total_roomsWk4gr: number;
+  total_roomsWk3gr: number;
+  total_roomsWk5gr: number;
 
   total_listenersData_1: number;
   total_listenersData_2: number;
   total_listenersData_3: number;
   total_listenersData_4: number;
+  total_listenersData_5: number;
+
+  total_listenersData_1gr: number;
+  total_listenersData_2gr: number;
+  total_listenersData_3gr: number;
+  total_listenersData_4gr: number;
+  total_listenersData_5gr: number;
 
   total_listened_1: number;
   total_listened_2: number;
   total_listened_3: number;
   total_listened_4: number;
+  total_listened_5: number;
+
+  total_listened_1gr: number;
+  total_listened_2gr: number;
+  total_listened_3gr: number;
+  total_listened_4gr: number;
+  total_listened_5gr: number;
 
   avg_max_listeners_1: number;
   avg_max_listeners_2: number;
   avg_max_listeners_3: number;
   avg_max_listeners_4: number;
+  avg_max_listeners_5: number;
+
+  avg_max_listeners_1gr: number;
+  avg_max_listeners_2gr: number;
+  avg_max_listeners_3gr: number;
+  avg_max_listeners_4gr: number;
+  avg_max_listeners_5gr: number;
 
   avg_1: number;
   avg_2: number;
   avg_3: number;
   avg_4: number;
+  avg_5: number;
+
+  avg_1gr: number;
+  avg_2gr: number;
+  avg_3gr: number;
+  avg_4gr: number;
+  avg_5gr: number;
 
   new_1: number;
   new_2: number;
   new_3: number;
   new_4: number;
+  new_5: number;
+
+  new_1gr: number;
+  new_2gr: number;
+  new_3gr: number;
+  new_4gr: number;
+  new_5gr: number;
+
   allmoderators: any[];
   public selectMonth: any = [
     { name: 'January', value: 1 },
@@ -98,7 +151,12 @@ export class DashboardPage implements OnInit {
     { name: 'December', value: 12 },
   ];
 
-  public lineChartData: ChartDataSets[] = [{ data: this.total_roomsData }];
+  public lineChartData: ChartDataSets[] = [
+    { data: this.total_roomsData, label: 'Total Rooms' },
+  ];
+  public lineChartDatagr: ChartDataSets[] = [
+    { data: this.total_roomsDatagr, label: 'Total Rooms' },
+  ];
   public lineChartLabels: Label[] = [
     'Week 1',
     'Week 2',
@@ -107,15 +165,40 @@ export class DashboardPage implements OnInit {
     'Week 5',
   ];
 
-  public lineChartData2: ChartDataSets[] = [{ data: this.total_listenersData }];
+  public lineChartData2: ChartDataSets[] = [
+    { data: this.total_listenersData, label: 'Total Listeners' },
+  ];
+  public lineChartData2gr: ChartDataSets[] = [
+    { data: this.total_listenersDatagr, label: 'Total Listeners' },
+  ];
 
-  public lineChartData3: ChartDataSets[] = [{ data: this.total_listened }];
+  public lineChartData3: ChartDataSets[] = [
+    { data: this.total_listened, label: 'Total Listened Time' },
+  ];
+  public lineChartData3gr: ChartDataSets[] = [
+    { data: this.total_listenedgr, label: 'Total Listened Time' },
+  ];
 
-  public lineChartData4: ChartDataSets[] = [{ data: this.avg_max_listeners }];
+  public lineChartData4: ChartDataSets[] = [
+    { data: this.avg_max_listeners, label: 'Max Listeners' },
+  ];
+  public lineChartData4gr: ChartDataSets[] = [
+    { data: this.avg_max_listenersgr, label: 'Max Listeners' },
+  ];
 
-  public lineChartData5: ChartDataSets[] = [{ data: this.avgData }];
+  public lineChartData5: ChartDataSets[] = [
+    { data: this.avgData, label: 'Avg Listened Time' },
+  ];
+  public lineChartData5gr: ChartDataSets[] = [
+    { data: this.avgDatagr, label: 'Avg Listened Time' },
+  ];
 
-  public lineChartData6: ChartDataSets[] = [{ data: this.newData }];
+  public lineChartData6: ChartDataSets[] = [
+    { data: this.newData, label: 'New Follower(s)' },
+  ];
+  public lineChartData6gr: ChartDataSets[] = [
+    { data: this.newDatagr, label: 'New Follower(s)' },
+  ];
 
   public lineChartOptions: ChartOptions = {
     responsive: true,
@@ -171,12 +254,8 @@ export class DashboardPage implements OnInit {
   public lineChartType: ChartType = 'line';
   public lineChartPlugins = [];
   month1: any = '';
-  total_roomsWk5: number;
-  total_listenersData_5: number;
-  total_listened_5: number;
-  avg_max_listeners_5: number;
-  avg_5: number;
-  new_5: number;
+  month2: any = '';
+
   customPopoverOptions: any = {
     subHeader: ' Filter by',
   };
@@ -187,12 +266,10 @@ export class DashboardPage implements OnInit {
   moderators: any;
   modLength: any;
   fullData: any = [];
+  fullDatagr: any = [];
   thisDay: Date;
   durationDays: string;
   name: any;
-  lastgr: any = {};
-  percTotalgr: any;
-  total_listenersgr: any;
 
   constructor(
     private router: Router,
@@ -210,18 +287,32 @@ export class DashboardPage implements OnInit {
     this.date = moment().format('YYYY-MM-DD');
     this.month = moment().format('MM');
     this.month1 = moment().format('MMMM');
+    this.month2 = moment().format('MMMM');
     // alert(this.month1);
     // alert(this.month);
     this.getPerformanceStats();
     this.getGRPerformanceStats();
     this.getWeeklyStats(this.month);
+    this.getWeeklyStatsgr(this.month);
     this.getWeeklyTopRooms();
+    this.getWeeklyTopRoomsgr();
+  }
+
+  async doRefresh(ev) {
+    await this.ngOnInit();
+    ev.target.complete();
   }
 
   async getPerformanceStats() {
     // this.date = '2021-04-07';
+    const loading = await this.loadingController.create({
+      spinner: null,
+      cssClass: 'custom-loading',
+    });
+    await loading.present();
     this.app.performanceStats(this.api_token, this.date, this.page).subscribe(
       async (res: any) => {
+        await loading.dismiss();
         // console.log(res);
         if (res.status === 'success') {
           this.show = true;
@@ -269,7 +360,7 @@ export class DashboardPage implements OnInit {
     // this.date = '2021-04-07';
     this.gr.performanceStats(this.api_token, this.date, this.page).subscribe(
       async (res: any) => {
-        console.log(res);
+        // console.log(res);
         if (res.status === 'success') {
           // this.show = true;
           this.currentgr = res.result.current;
@@ -313,11 +404,8 @@ export class DashboardPage implements OnInit {
   }
 
   async getWeeklyStats(month) {
-    const loading = await this.loadingController.create({
-      spinner: null,
-      cssClass: 'custom-loading',
-    });
-    await loading.present();
+    //
+
     this.total_roomsData.length = 0;
     this.total_listenersData.length = 0;
     this.total_listened.length = 0;
@@ -326,7 +414,7 @@ export class DashboardPage implements OnInit {
     this.newData.length = 0;
     this.app.weeklyStats(this.api_token, month, this.page).subscribe(
       async (res: any) => {
-        await loading.dismiss();
+        // await loading.dismiss();
         // console.log(res);
         if (res.status === 'success') {
           // console.log(res);
@@ -448,6 +536,139 @@ export class DashboardPage implements OnInit {
       }
     );
   }
+
+  async getWeeklyStatsgr(month) {
+    this.total_roomsDatagr.length = 0;
+    this.total_listenersDatagr.length = 0;
+    this.total_listenedgr.length = 0;
+    this.avgDatagr.length = 0;
+    this.avg_max_listenersgr.length = 0;
+    this.newDatagr.length = 0;
+    this.gr.weeklyStats(this.api_token, month, this.page).subscribe(
+      async (res: any) => {
+        // await loading.dismiss();
+        // console.log(res);
+        if (res.status === 'success') {
+          // console.log(res);
+          const sata = res.result;
+          this.total_roomsWk1gr = parseFloat(sata.week1.total_rooms);
+          this.total_roomsWk2gr = parseFloat(sata.week2.total_rooms);
+          this.total_roomsWk3gr = parseFloat(sata.week3.total_rooms);
+          this.total_roomsWk4gr = parseFloat(sata.week4.total_rooms);
+          this.total_roomsWk5gr = parseFloat(sata.week5.total_rooms) || 0;
+          this.total_roomsDatagr.push(
+            this.total_roomsWk1gr,
+            this.total_roomsWk2gr,
+            this.total_roomsWk3gr,
+            this.total_roomsWk4gr,
+            this.total_roomsWk5gr
+          );
+          // console.log(this.total_roomsData);
+
+          // total listeners
+          this.total_listenersData_1gr = parseFloat(sata.week1.total_listeners);
+          this.total_listenersData_2gr = parseFloat(sata.week2.total_listeners);
+          this.total_listenersData_3gr = parseFloat(sata.week3.total_listeners);
+          this.total_listenersData_4gr = parseFloat(sata.week4.total_listeners);
+          this.total_listenersData_5gr =
+            parseFloat(sata.week5.total_listeners) || 0;
+
+          this.total_listenersDatagr.push(
+            this.total_listenersData_1gr,
+            this.total_listenersData_2gr,
+            this.total_listenersData_3gr,
+            this.total_listenersData_4gr,
+            this.total_listenersData_5gr
+          );
+          // console.log(this.total_listenersData);
+
+          // total_listened
+          this.total_listened_1gr = parseFloat(sata.week1.total_listened);
+          this.total_listened_2gr = parseFloat(sata.week2.total_listened);
+          this.total_listened_3gr = parseFloat(sata.week3.total_listened);
+          this.total_listened_4gr = parseFloat(sata.week4.total_listened);
+          this.total_listened_5gr = parseFloat(sata.week4.total_listened) || 0;
+
+          this.total_listenedgr.push(
+            this.total_listened_1gr,
+            this.total_listened_2gr,
+            this.total_listened_3gr,
+            this.total_listened_4gr,
+            this.total_listened_5gr
+          );
+          // console.log(this.total_listened);
+
+          // avg_max_listeners
+          this.avg_max_listeners_1gr = parseFloat(sata.week1.avg_max_listeners);
+          this.avg_max_listeners_2gr = parseFloat(sata.week2.avg_max_listeners);
+          this.avg_max_listeners_3gr = parseFloat(sata.week3.avg_max_listeners);
+          this.avg_max_listeners_4gr = parseFloat(sata.week4.avg_max_listeners);
+          this.avg_max_listeners_5gr =
+            parseFloat(sata.week4.avg_max_listeners) || 0;
+
+          this.avg_max_listenersgr.push(
+            this.avg_max_listeners_1gr,
+            this.avg_max_listeners_2gr,
+            this.avg_max_listeners_3gr,
+            this.avg_max_listeners_4gr,
+            this.avg_max_listeners_5gr
+          );
+          // console.log(this.avg_max_listeners);
+
+          // avgData
+          this.avg_1gr = parseFloat(sata.week1.avg);
+          this.avg_2gr = parseFloat(sata.week2.avg);
+          this.avg_3gr = parseFloat(sata.week3.avg);
+          this.avg_4gr = parseFloat(sata.week4.avg);
+          this.avg_5gr = parseFloat(sata.week4.avg) || 0;
+
+          this.avgDatagr.push(
+            this.avg_1gr,
+            this.avg_2gr,
+            this.avg_3gr,
+            this.avg_4gr,
+            this.avg_5gr
+          );
+          // console.log(this.avgData);
+
+          // newData
+          this.new_1gr = parseFloat(sata.week1.new) || 0;
+          this.new_2gr = parseFloat(sata.week2.new) || 0;
+          this.new_3gr = parseFloat(sata.week3.new) || 0;
+          this.new_4gr = parseFloat(sata.week4.new) || 0;
+          this.new_5gr = parseFloat(sata.week4.new) || 0;
+
+          this.newDatagr.push(
+            this.new_1gr,
+            this.new_2gr,
+            this.new_3gr,
+            this.new_4gr,
+            this.new_5gr
+          );
+          // console.log(this.newData);
+        } else if (res.status === 'upgrade') {
+          const color = 'danger';
+          this.presentToast(color, res.message);
+          // this.alertService.danger(res.message);
+          this.router.navigateByUrl('/tabs/upgrade');
+        } else if (res.status === 'validate') {
+          // this.alertService.danger(res.message);
+          const color = 'danger';
+          this.presentToast(color, res.message);
+          this.router.navigateByUrl('/auth/validategr/ ' + this.api_token);
+        } else {
+          // this.alertService.danger(res.message);
+          const color = 'danger';
+          this.presentToast(color, res.message);
+        }
+      },
+      (err) => {
+        this.presentToast('danger', err.message);
+        // console.log(err);
+      }
+    );
+  }
+
   async getWeeklyTopRooms() {
     this.app
       .WeeklyTopRooms(this.api_token, this.date)
@@ -455,6 +676,21 @@ export class DashboardPage implements OnInit {
         if (res.status === 'success') {
           const arr = res.result;
           this.fullData = arr.slice(Math.max(arr.length - 3, 0));
+          //           date_ended: "2021-07-03 16:07:56"
+          // date_started: "2021-07-03 10:11:01"
+          // alert(this.thisDay);
+        } else {
+        }
+      });
+  }
+
+  async getWeeklyTopRoomsgr() {
+    this.gr
+      .WeeklyTopRooms(this.api_token, this.date)
+      .subscribe(async (res: any) => {
+        if (res.status === 'success') {
+          const arr = res.result;
+          this.fullDatagr = arr.slice(Math.max(arr.length - 3, 0));
           //           date_ended: "2021-07-03 16:07:56"
           // date_started: "2021-07-03 10:11:01"
           // alert(this.thisDay);
@@ -493,8 +729,8 @@ export class DashboardPage implements OnInit {
   }
 
   changedData(event) {
-    console.log(this.selectedData);
-    console.log(event);
+    // console.log(this.selectedData);
+    // console.log(event);
     this.showData = this.selectedData;
   }
   // transformMinute(value: number): string {
@@ -544,10 +780,15 @@ export class DashboardPage implements OnInit {
     return [this.color, this.icon];
   }
 
-  segmentChanged(ev) {}
+  segmentChanged(ev) {
+    // console.log(ev);
+  }
 
   gotoCHTOOLS() {
     this.router.navigateByUrl('/tabs/home');
+  }
+  onClick2(channel) {
+    this.router.navigateByUrl('/tabs/grtools/track/' + channel);
   }
 
   async presentToast(color, message) {
@@ -563,5 +804,11 @@ export class DashboardPage implements OnInit {
     const num = ev - 1;
     this.month1 = moment().month(num).format('MMMM');
     this.getWeeklyStats(ev);
+  }
+
+  async selectAMonthgr(ev: any) {
+    const num = ev - 1;
+    this.month2 = moment().month(num).format('MMMM');
+    this.getWeeklyStatsgr(ev);
   }
 }

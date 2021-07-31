@@ -264,6 +264,49 @@ export class GrServiceService {
     );
   }
 
+  weeklyStats(api_token, month, page) {
+    const formData = new FormData();
+    formData.append('api_token', api_token);
+    formData.append('month', month);
+    formData.append('page', page);
+    return this.http.post(this.url + '/week_stats', formData).pipe(
+      catchError(this.handleError('weeklyStats'))
+      // tap(() => {
+      //   this._refreshNeded$.next();
+      // })
+    );
+  }
+
+  WeeklyTopRooms(api_token, date) {
+    const formData = new FormData();
+    formData.append('api_token', api_token);
+    formData.append('date', date);
+    // formData.append('page', page);
+    return this.http
+      .post(this.url + '/top_rooms_week', formData)
+      .pipe(catchError(this.handleError('WeeklyTopRooms')));
+  }
+
+  roomStats(api_token, channel) {
+    // console.log('getting stats');
+    const formData = new FormData();
+    formData.append('api_token', api_token);
+    formData.append('channel', channel);
+    // formData.append('page', page);
+    return this.http
+      .post(this.url + '/room_stats', formData)
+      .pipe(catchError(this.handleError('roomStats')));
+  }
+
+  getSuperfans(api_token, date) {
+    const formData = new FormData();
+    formData.append('api_token', api_token);
+    formData.append('date', date);
+    return this.http
+      .post(this.url + '/superfans', formData)
+      .pipe(catchError(this.handleError('getSuperfans')));
+  }
+
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);

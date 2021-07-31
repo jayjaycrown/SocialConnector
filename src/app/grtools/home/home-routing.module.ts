@@ -66,6 +66,11 @@ const routes: Routes = [
             (m) => m.AccountStatPageModule
           ),
       },
+      {
+        path: 'profile/:id',
+        loadChildren: () =>
+          import('../profile/profile.module').then((m) => m.ProfilePageModule),
+      },
     ],
   },
 ];

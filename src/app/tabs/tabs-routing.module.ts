@@ -81,6 +81,13 @@ const routes: Routes = [
     loadChildren: () =>
       import('../upgrade/upgrade.module').then((m) => m.UpgradePageModule),
   },
+  {
+    path: 'details/:id',
+    loadChildren: () =>
+      import('../pages/details/details.module').then(
+        (m) => m.DetailsPageModule
+      ),
+  },
 
   // {
   //   path: '',

@@ -5,8 +5,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
 import * as moment from 'moment';
-import { AppService } from './../../_services/app.service';
-// import { GrServiceService } from 'src/app/_services/gr-service.service';
+// import { AppService } from './../../_services/app.service';
+import { GrServiceService } from 'src/app/_services/gr-service.service';
 import { Browser } from '@capacitor/browser';
 
 @Component({
@@ -29,7 +29,7 @@ export class ProfilePage implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private loadingController: LoadingController,
-    private app: AppService,
+    private app: GrServiceService,
     private router: Router
   ) {
     this.route.paramMap.subscribe((paramMap) => {
@@ -62,9 +62,7 @@ export class ProfilePage implements OnInit {
           this.showResult = true;
           this.details = res.result;
           this.profile = this.details.profile;
-          if (this.profile !== null) {
-            this.data = JSON.parse(this.profile.data);
-          }
+          this.data = JSON.parse(this.profile.data);
           // console.log(this.data);
           this.rooms = this.details.rooms;
         }
@@ -100,9 +98,8 @@ export class ProfilePage implements OnInit {
   async openInsta(insta) {
     await Browser.open({ url: 'https://www.instagram.com/' + insta });
   }
-
-  async openCh(clubhouse) {
-    await Browser.open({ url: 'https://joinclubhouse.com/@/' + clubhouse });
+  openGr(gr) {
+    // await Browser.open({ url: 'https://www.instagram.com/' + insta });
   }
 
   convert(value: number) {

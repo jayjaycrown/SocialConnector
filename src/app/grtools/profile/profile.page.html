@@ -12,6 +12,11 @@
   </ion-toolbar>
 </ion-header>
 
+
+<!-- <a target="blank" [href]="'https://www.twitter.com/'+ profile.twitter" class="btn btn-sm btn-info mr-4"
+  *ngIf=" profile?.twitter">{{ profile?.twitter }}</a>
+<a [href]="'https://www.instagram.com/'+profile.instagram" target="blank" class="btn btn-sm btn-insta float-right"
+  *ngIf=" profile?.instagram"> {{ profile.instagram }} </a> -->
 <ion-content>
   <div *ngIf="loaddata">
     <ion-card *ngIf="showResult">
@@ -19,13 +24,13 @@
         <ion-grid fixed>
           <ion-row>
             <ion-col size="4">
-              <img [src]="profile?.photo_url || 'http://placehold.it/500x500'" style="border-radius: 50% !important;" />
+              <img [src]="profile?.photo_url || 'http://placehold.it/500x500'" style="border-radius: 30% !important;" />
             </ion-col>
             <ion-col size="8">
               <ion-card-title class="ion-text-center">
                 {{ profile?.name }}
               </ion-card-title>
-              <ion-card-subtitle class="ion-text-center" (click)="openCh(profile.username)" color="primary">
+              <ion-card-subtitle class="ion-text-center" (click)="openGr(profile.username)" color="primary">
                 @{{ profile?.username }}
               </ion-card-subtitle>
               <ion-card-subtitle>
@@ -45,22 +50,22 @@
         </ion-grid>
       </ion-card-header>
       <div>
-        <ion-item lines="none" *ngIf="profile?.bio">
+        <ion-item lines="none" *ngIf="profile.bio">
           <ion-label class="ion-text-wrap">
             <p style="font-size: .8em !important;" [innerHTML]="profile?.bio | replaceLinebreaks"></p>
           </ion-label>
         </ion-item>
         <ion-grid fixed>
           <ion-row class="ion-text-center">
-            <ion-col size="6" *ngIf="profile?.twitter">
-              <p (click)="openTwitter(profile?.twitter)" color="primary">
+            <ion-col size="6" *ngIf="profile.twitter">
+              <p (click)="openTwitter(profile.twitter)" color="primary">
                 <ion-icon name="logo-twitter"></ion-icon> {{ profile?.twitter }}
               </p>
 
             </ion-col>
-            <ion-col size="6" *ngIf="profile?.instagram">
-              <p (click)="openInsta(profile?.instagram)" color="primary">
-                <ion-icon name="logo-instagram"></ion-icon> {{ profile?.instagram }}
+            <ion-col size="6" *ngIf="profile.instagram">
+              <p (click)="openInsta(profile.instagram)" color="primary">
+                <ion-icon name="logo-instagram"></ion-icon> {{ profile.instagram }}
               </p>
             </ion-col>
           </ion-row>
@@ -79,6 +84,16 @@
                 <ion-label class="ion-text-wrap">
                   <p style="font-size: .7em !important; text-transform: capitalize !important;">Total rooms entered</p>
                   <h3> {{ details.total_rooms }} </h3>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="12">
+              <ion-item lines="none">
+                <ion-label>
+                  <p>Gems</p>
+                  <h3> {{ profile.gems }} </h3>
                 </ion-label>
               </ion-item>
             </ion-col>

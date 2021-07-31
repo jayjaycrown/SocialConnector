@@ -294,6 +294,7 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
   channel: any;
   roomtrack: any;
   showChart = false;
+  searchUser = false;
 
   date_entered: any[] = [];
   listeners_data: number[] = [];
@@ -410,7 +411,9 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
     this.newTop = this.top;
     if (this.name2 === '') {
       this.newTop = this.top;
+      this.searchUser = false;
     } else {
+      this.searchUser = true;
       this.newTop = this.newTop.filter((resp) =>
         String(resp.name)
           .toLocaleLowerCase()
@@ -711,6 +714,74 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
+  exportFollowedBySpeakers() {
+    const header = [];
+    const data = this.followedBySpeaker[0];
+    for (const property in data) {
+      if (!data.hasOwnProperty(property)) {
+        continue;
+      }
+      header.push(property);
+    }
+    const csv = this.papa.unparse({
+      fields: header,
+      data: this.followedBySpeaker,
+    });
+    // console.log(csv)
+    if (this.plt.is('capacitor') || this.plt.is('cordova')) {
+      this.file
+        .writeFile(this.file.dataDirectory, 'Followed_by_speaker.csv', csv, {
+          replace: true,
+        })
+        .then((res) => {
+          this.socialSharing.share(null, null, res.nativeURL, null);
+        })
+        .catch();
+    } else {
+      const blob = new Blob([csv]);
+      const a = window.document.createElement('a');
+      a.href = window.URL.createObjectURL(blob);
+      a.download = 'Followed_by_speaker.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+  }
+
+  exportOthers() {
+    const header = [];
+    const data = this.othersInRoom[0];
+    for (const property in data) {
+      if (!data.hasOwnProperty(property)) {
+        continue;
+      }
+      header.push(property);
+    }
+    const csv = this.papa.unparse({
+      fields: header,
+      data: this.othersInRoom,
+    });
+    // console.log(csv)
+    if (this.plt.is('capacitor') || this.plt.is('cordova')) {
+      this.file
+        .writeFile(this.file.dataDirectory, 'others_in_the_room.csv', csv, {
+          replace: true,
+        })
+        .then((res) => {
+          this.socialSharing.share(null, null, res.nativeURL, null);
+        })
+        .catch();
+    } else {
+      const blob = new Blob([csv]);
+      const a = window.document.createElement('a');
+      a.href = window.URL.createObjectURL(blob);
+      a.download = 'others_in_the_room.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+  }
+
   // waitForElement() {
   //   console.log('calling');
   //   if (typeof this.roomStatus !== 'undefined') {
@@ -788,10 +859,12 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.fullData = {};
+    clearTimeout(this.refresh);
     if (this.refresh) {
       // console.log(this.refresh);
       console.log('clearing');
       clearInterval(this.refresh);
+      clearTimeout(this.refresh);
     }
     // if (this.roomtrack) {
     //   clearInterval(this.roomtrack);
@@ -802,7 +875,7 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
     const toast = await this.toastController.create({
       message,
       color,
-      duration: 3000,
+      duration: 2000,
     });
     toast.present();
   }
@@ -1418,10 +1491,16 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
   }
 
   pickRandom() {
-    this.showonlyone = true;
-    this.randomElement =
-      this.othersInRoom[Math.floor(Math.random() * this.othersInRoom.length)];
-    // console.log(this.randomElement);
+    if (this.othersInRoom.length === 0) {
+      this.showonlyone = false;
+      this.presentToast('danger', 'No audience in the room');
+      this.randomElement = null;
+    } else {
+      this.showonlyone = true;
+      this.randomElement =
+        this.othersInRoom[Math.floor(Math.random() * this.othersInRoom.length)];
+    }
+    console.log(this.randomElement);
   }
 
   gotoUser(userid) {

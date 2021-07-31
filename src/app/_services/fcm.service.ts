@@ -1,14 +1,18 @@
 import { Injectable } from '@angular/core';
 import {
   Plugins,
-  PushNotification,
-  PushNotificationToken,
-  PushNotificationActionPerformed,
   Capacitor
 } from '@capacitor/core';
+import {
+  ActionPerformed,
+  PushNotificationSchema,
+  PushNotifications,
+  Token,
+} from '@capacitor/push-notifications';
 import { Router } from '@angular/router';
+import { TokenResult } from '@stripe/stripe-js';
  
-const { PushNotifications } = Plugins;
+// const { PushNotifications } = Plugins;
  
 @Injectable({
   providedIn: 'root'
@@ -25,8 +29,8 @@ export class FcmService {
   }
  
   private registerPush() {
-    PushNotifications.requestPermission().then((permission) => {
-      if (permission.granted) {
+    PushNotifications.requestPermissions().then((permission) => {
+      if (permission.receive === 'granted') {
         // Register with Apple / Google to receive push via APNS/FCM
         PushNotifications.register();
       } else {
@@ -36,7 +40,7 @@ export class FcmService {
  
     PushNotifications.addListener(
       'registration',
-      (token: PushNotificationToken) => {
+      (token: Token) => {
         console.log('My token: ' + JSON.stringify(token));
       }
     );
@@ -47,7 +51,7 @@ export class FcmService {
  
     PushNotifications.addListener(
       'pushNotificationReceived',
-      async (notification: PushNotification) => {
+      async (notification: PushNotificationSchema) => {
         alert("New Notification")
         let data;
         if(notification.notification != undefined){
@@ -60,7 +64,7 @@ export class FcmService {
         if (data.detailsId) {
           data = encodeURIComponent(data.detailsId);
           // alert(JSON.stringify(data));
-          this.router.navigateByUrl(`/home/details/${data}`);
+          this.router.navigateByUrl(`/tabs/details/${data}`);
         }
         console.log('Push received: ' + JSON.stringify(notification));
       }
@@ -68,12 +72,12 @@ export class FcmService {
  
     PushNotifications.addListener(
       'pushNotificationActionPerformed',
-      async (notification: PushNotificationActionPerformed) => {
+      async (notification: ActionPerformed) => {
         const data = notification.notification.data;
         console.log('Action performed: ' + JSON.stringify(notification.notification));
         if (data.detailsId) {
          var d = encodeURIComponent(data.detailsId);
-          this.router.navigateByUrl(`/home/details/${d}`);
+          this.router.navigateByUrl(`/tabs/details/${d}`);
         }
       }
     );
