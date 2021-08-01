@@ -1,3 +1,4 @@
+import { ToggleService } from './_services/toggle.service';
 import { Component, ViewChild } from '@angular/core';
 import { IonTabs } from '@ionic/angular';
 // import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -30,11 +31,13 @@ export class AppComponent {
     private zone: NgZone,
     private analyticsService: AnalyticsService,
     private updateService: UpdateService,
-    private fcmService: FcmService
+    private fcmService: FcmService,
+    private toggle: ToggleService
   ) {
     this.initializeApp();
   }
   initializeApp() {
+    this.toggle.toggle();
     this.fcmService.initPush();
     // this.analyticsService.startTrackerWithId('UA-162534875-1');
     this.router.events.subscribe((event) => {
