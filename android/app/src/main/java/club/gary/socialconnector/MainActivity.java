@@ -1,0 +1,5 @@
+package club.gary.socialconnector;
+
+import com.getcapacitor.BridgeActivity;
+
+public class MainActivity extends BridgeActivity {}

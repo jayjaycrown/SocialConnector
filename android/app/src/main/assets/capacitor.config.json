@@ -1,0 +1,6 @@
+{
+	"appId": "club.gary.socialconnector",
+	"appName": "Social Connector",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "637224726364",
+    "firebase_url": "https://rayo-fe567.firebaseio.com",
+    "project_id": "rayo-fe567",
+    "storage_bucket": "rayo-fe567.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:637224726364:android:066079023546098689db99",
+        "android_client_info": {
+          "package_name": "club.gary.socialconnector"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "637224726364-dia5l84f8mbi5373j88l83mkb4aa4h0e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNwfUBYiH8gIwWbFTlOY6q6jHzSNDeQYs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "637224726364-dia5l84f8mbi5373j88l83mkb4aa4h0e.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "637224726364-ur3df98brc0pe0ijkogpiqtnvf205jf8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "club.gary.socialconnector"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
