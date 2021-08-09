@@ -50,36 +50,36 @@ export class AppComponent {
     });
     this.platform.ready().then(() => {
       this.updateService.checkForUpdate();
-      // App.addListener('appUrlOpen', (data: any) => {
-      //   this.zone.run(() => {
-      //     // Example url: https://beerswift.app/tabs/tab2
-      //     // slug = /tabs/tab2
+      App.addListener('appUrlOpen', (data: any) => {
+        this.zone.run(() => {
+          // Example url: https://beerswift.app/tabs/tab2
+          // slug = /tabs/tab2
 
-      //     // const slug = data.url.split('/room/').pop();
-      //     // alert(data.url);
-      //     // console.log(data.url)
-      //     if (data.url.search('clubhouse') >= 0) {
-      //       const slug = data.url.split('/room/').pop();
-      //       // alert(slug);
-      //       if (slug) {
-      //         this.router.navigateByUrl('/tabs/chtools/track/' + slug);
-      //       }
-      //       //
-      //     }
+          // const slug = data.url.split('/room/').pop();
+          // alert(data.url);
+          // console.log(data.url)
+          if (data.url.search('clubhouse') >= 0) {
+            const slug = data.url.split('/room/').pop();
+            // alert(slug);
+            if (slug) {
+              this.router.navigateByUrl('/tabs/chtools/track/' + slug);
+            }
+            //
+          }
 
-      //     if (data.url.search('spotifygr') >= 0) {
-      //       const slug = data.url.split('link/').pop();
-      //       // alert(slug);
-      //       if (slug) {
-      //         this.router.navigateByUrl('/tabs/grtools/track/' + slug);
-      //       }
-      //       //
-      //     }
+          if (data.url.search('spotifygr') >= 0) {
+            const slug = data.url.split('link/').pop();
+            // alert(slug);
+            if (slug) {
+              this.router.navigateByUrl('/tabs/grtools/track/' + slug);
+            }
+            //
+          }
 
-      //     // If no match, do nothing - let regular routing
-      //     // logic take over
-      //   });
-      // });
+          // If no match, do nothing - let regular routing
+          // logic take over
+        });
+      });
     });
   }
 }

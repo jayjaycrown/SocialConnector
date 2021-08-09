@@ -1,0 +1,62 @@
+<ion-header class="ion-no-border" mode="ios">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button menu="rayo" autoHide="false"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Stats
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" [routerLink]="['/tabs']" routerLinkActive="router-link-active" routerDirection="back">
+        <ion-icon name="close" slot="icon-only" style="width: 36px !important; height: 36px !important;"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- date_entered: "2021-03-26"
+dc: "2021-03-26T22:05:25Z"
+id: "3274"
+new: "0"
+num_followers: "15210"
+num_following: "1896"
+user_id: "5020" -->
+  <ion-card>
+    <ion-card-content>
+      <!-- <ion-list> -->
+      <ion-item class="nocolor"
+        *ngFor="let item of results| orderBy: key: reverse | paginate: {id: 'pagination1', itemsPerPage:7, currentPage: p}">
+        <ion-label>
+          <h3>
+            <span class="ion-float-left">Date</span>
+            <span class="ion-float-right">{{ item.date_entered | date: 'MMM, dd' }}</span>
+          </h3>
+
+          <h3>
+            <span class="ion-float-left">Followers</span>
+            <span class="ion-float-right">{{ item.num_followers }}</span>
+          </h3>
+          <h3>
+            <span class="ion-float-left">Following</span>
+            <span class="ion-float-right">{{ item.num_following }}</span>
+          </h3>
+          <h2>
+            <span class="ion-float-left">New Followers</span>
+            <span class="ion-float-right" style="font-weight: 900;"><span *ngIf="item.new > 0">+</span>{{
+              item.new}}</span>
+          </h2>
+        </ion-label>
+      </ion-item>
+      <!-- </ion-list> -->
+      <ion-item class="ion-text-center nocolor">
+        <div class="ion-text-center" style="width: 100%;">
+          <pagination-controls class="my-pagination" id="pagination1" (pageChange)="p = $event" previousLabel=""
+            nextLabel="">
+          </pagination-controls>
+        </div>
+
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { ToproomsPage } from './toprooms.page';
+import { GrValidateComponent } from './gr-validate.component';
 
-describe('ToproomsPage', () => {
-  let component: ToproomsPage;
-  let fixture: ComponentFixture<ToproomsPage>;
+describe('GrValidateComponent', () => {
+  let component: GrValidateComponent;
+  let fixture: ComponentFixture<GrValidateComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ToproomsPage ],
+      declarations: [ GrValidateComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ToproomsPage);
+    fixture = TestBed.createComponent(GrValidateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

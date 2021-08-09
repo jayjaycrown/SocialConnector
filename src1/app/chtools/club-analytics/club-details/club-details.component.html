@@ -1,0 +1,96 @@
+<ion-header class="ion-no-border" mode="ios">
+  <ion-toolbar >
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/chtools/club-analytics"></ion-back-button>
+    </ion-buttons>
+    <ion-title> {{results.name}} </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div>
+    <ion-card>
+      <ion-card-content>
+        <form name="form" #historyForm="ngForm" (ngSubmit)="historyForm.valid && onSubmit()">
+          <ion-item>
+            <ion-label position="floating">MM/DD/YYYY</ion-label>
+            <ion-datetime name="date" [(ngModel)]="model.date" #email="ngModel" displayFormat="MM/DD/YYYY"
+              min="2016-01-01" max="2022-12-31" required>
+            </ion-datetime>
+          </ion-item>
+          <ion-button type="submit" [disabled]="!historyForm.valid" expand="full" color="primary">Get History</ion-button>
+        </form>
+
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <br>
+  <ion-list>
+    <ion-item *ngIf="results?.length ===0">
+      <ion-label>No data available</ion-label>
+    </ion-item>
+  </ion-list>
+  <div *ngIf="results?.length !== 0">
+    <ion-card>
+      <ion-img [src]="results.photo_url"></ion-img>
+      <ion-card-content class="ion-text-center">
+        <ion-text class="ion-text-justify">
+          {{ results.description }}
+        </ion-text>
+        <ion-list class="ion-text-center">
+          <ion-item class="ion-text-center">
+            <ion-label>
+              <p>Total Rooms Tracked</p>
+              <h2>{{ results.total_rooms || 0  }}</h2>
+            </ion-label>
+          </ion-item>
+          <ion-item class="ion-text-center">
+            <ion-label>
+              <p>Total Listeners</p>
+              <h2>{{ results.total_listeners || 0 }}</h2>
+            </ion-label>
+          </ion-item>
+          <ion-item class="ion-text-center">
+            <ion-label>
+              <p>Total Listened</p>
+              <h2>{{transformMinute(results.total_listened) || 0}}</h2>
+              <!-- <h2>{{ results.total_listened || 0 }}</h2> -->
+            </ion-label>
+          </ion-item>
+          <ion-item class="ion-text-center">
+            <ion-label>
+              <p>Average Listened Time</p>
+              <h2>{{ results.avg || 0 }} mins</h2>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+  </div>
+  <br>
+  <div class="ion-padding">
+    <ion-item-divider color="secondary ion-padding" *ngIf="results?.length !== 0">
+      <ion-label>
+        <h2>Top Rooms</h2>
+      </ion-label>
+    </ion-item-divider>
+  </div>
+
+   <ion-item *ngFor="let item of results.rooms">
+      <ion-card class="test">
+        <ion-card-header class="ion-text-center">
+          <ion-card-title>{{ item.topic }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content class="ion-text-center">
+          <ion-item class="ion-text-center">
+            <ion-label>
+              <h2>{{ item.end_total_listeners }} listeners</h2>
+              <p>{{ item.date_started }}</p>
+            </ion-label>
+          </ion-item>
+          <ion-button expand="full" color="primary" (click)="analyze(item.channel)">View Stats</ion-button>
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+</ion-content>

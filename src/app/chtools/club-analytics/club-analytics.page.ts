@@ -74,8 +74,8 @@ export class ClubAnalyticsPage implements OnInit {
 
   // tslint:disable-next-line: variable-name
   claimRoom(club_id) {
-		this.router.navigateByUrl('/home/verify-club/' + club_id);
-	}
+    this.router.navigateByUrl('/tabs/chtools/verify-club/' + club_id);
+  }
 
 	// tslint:disable-next-line: variable-name
 	redirect(club_id) {

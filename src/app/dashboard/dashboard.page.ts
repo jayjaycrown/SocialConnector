@@ -43,8 +43,8 @@ export class DashboardPage implements OnInit {
   new: string;
   avggr: string;
   newgr: string;
-  totalColor: string[];
-  totalColorgr: string[];
+  totalColor: any[];
+  totalColorgr: any[];
   listenerColor: string[];
   listenerColorgr: string[];
   avgColor: string[];
@@ -270,6 +270,7 @@ export class DashboardPage implements OnInit {
   thisDay: Date;
   durationDays: string;
   name: any;
+  shownone = true;
 
   constructor(
     private router: Router,
@@ -315,6 +316,7 @@ export class DashboardPage implements OnInit {
         await loading.dismiss();
         // console.log(res);
         if (res.status === 'success') {
+          // this.shownone = false;
           this.show = true;
           this.current = res.result.current;
           this.last = res.result.last;
@@ -323,7 +325,7 @@ export class DashboardPage implements OnInit {
             this.last.total_rooms
           );
           this.totalColor = this.getColor(this.percTotal);
-          // console.log(this.totalColor);
+          console.log(this.totalColor);
           this.total_listeners = this.relDiff(
             this.current.total_listeners,
             this.last.total_listeners
@@ -336,17 +338,25 @@ export class DashboardPage implements OnInit {
         } else if (res.status === 'upgrade') {
           const color = 'danger';
           this.presentToast(color, res.message);
+          // this.shownone = true;
+          this.show = false;
+          // this.presentToast('danger',res.message);
           // this.alertService.danger(res.message);
-          this.router.navigateByUrl('/tabs/upgrade');
+          // this.router.navigateByUrl('/tabs/upgrade');
         } else if (res.status === 'validate') {
           // this.alertService.danger(res.message);
           const color = 'danger';
           this.presentToast(color, res.message);
-          this.router.navigateByUrl('/auth/validate/ ' + this.api_token);
+          // this.router.navigateByUrl('/auth/validate/ ' + this.api_token);
+          this.presentToast(color, res.message);
+          //  this.shownone = true;
+          this.show = false;
         } else {
           // this.alertService.danger(res.message);
           const color = 'danger';
           this.presentToast(color, res.message);
+          // this.shownone = true;
+          this.show = false;
         }
       },
       (err) => {
@@ -363,6 +373,7 @@ export class DashboardPage implements OnInit {
         // console.log(res);
         if (res.status === 'success') {
           // this.show = true;
+          this.shownone = false;
           this.currentgr = res.result.current;
           this.lastgr = res.result.last;
           this.percTotalgr = this.relDiff(
@@ -384,20 +395,24 @@ export class DashboardPage implements OnInit {
           const color = 'danger';
           this.presentToast(color, res.message);
           // this.alertService.danger(res.message);
-          this.router.navigateByUrl('/tabs/upgrade');
+          // this.router.navigateByUrl('/tabs/upgrade');
+          this.shownone = true;
         } else if (res.status === 'validate') {
           // this.alertService.danger(res.message);
           const color = 'danger';
           this.presentToast(color, res.message);
-          this.router.navigateByUrl('/auth/validate/ ' + this.api_token);
+          // this.router.navigateByUrl('/auth/validate/ ' + this.api_token);
+          this.shownone = true;
         } else {
           // this.alertService.danger(res.message);
           const color = 'danger';
           this.presentToast(color, res.message);
+          this.shownone = true;
         }
       },
       (err) => {
         this.presentToast('danger', err.message);
+        this.shownone = true;
         // console.log(err);
       }
     );
@@ -418,6 +433,7 @@ export class DashboardPage implements OnInit {
         // console.log(res);
         if (res.status === 'success') {
           // console.log(res);
+          this.show = true;
           const sata = res.result;
           this.total_roomsWk1 = parseFloat(sata.week1.total_rooms);
           this.total_roomsWk2 = parseFloat(sata.week2.total_rooms);
@@ -517,21 +533,26 @@ export class DashboardPage implements OnInit {
         } else if (res.status === 'upgrade') {
           const color = 'danger';
           this.presentToast(color, res.message);
+          this.show = false;
           // this.alertService.danger(res.message);
-          this.router.navigateByUrl('/tabs/upgrade');
+          // this.router.navigateByUrl('/tabs/upgrade');
         } else if (res.status === 'validate') {
           // this.alertService.danger(res.message);
           const color = 'danger';
+          this.show = false;
           this.presentToast(color, res.message);
-          this.router.navigateByUrl('/auth/validate/ ' + this.api_token);
+          // this.router.navigateByUrl('/auth/validate/ ' + this.api_token);
         } else {
           // this.alertService.danger(res.message);
+          this.show = false;
           const color = 'danger';
           this.presentToast(color, res.message);
+          this.show = false;
         }
       },
       (err) => {
         this.presentToast('danger', err.message);
+        this.show = false;
         // console.log(err);
       }
     );
@@ -549,6 +570,7 @@ export class DashboardPage implements OnInit {
         // await loading.dismiss();
         // console.log(res);
         if (res.status === 'success') {
+          this.shownone = false;
           // console.log(res);
           const sata = res.result;
           this.total_roomsWk1gr = parseFloat(sata.week1.total_rooms);
@@ -649,21 +671,25 @@ export class DashboardPage implements OnInit {
         } else if (res.status === 'upgrade') {
           const color = 'danger';
           this.presentToast(color, res.message);
+          this.shownone = true;
           // this.alertService.danger(res.message);
-          this.router.navigateByUrl('/tabs/upgrade');
+          // this.router.navigateByUrl('/tabs/upgrade');
         } else if (res.status === 'validate') {
           // this.alertService.danger(res.message);
           const color = 'danger';
           this.presentToast(color, res.message);
-          this.router.navigateByUrl('/auth/validategr/ ' + this.api_token);
+          this.shownone = true;
+          // this.router.navigateByUrl('/auth/validategr/ ' + this.api_token);
         } else {
           // this.alertService.danger(res.message);
           const color = 'danger';
           this.presentToast(color, res.message);
+          this.shownone = true;
         }
       },
       (err) => {
         this.presentToast('danger', err.message);
+        this.shownone = true;
         // console.log(err);
       }
     );

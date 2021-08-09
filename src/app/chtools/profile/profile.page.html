@@ -19,7 +19,8 @@
         <ion-grid fixed>
           <ion-row>
             <ion-col size="4">
-              <img [src]="profile?.photo_url || 'http://placehold.it/500x500'" style="border-radius: 30% !important;" />
+              <img [src]="profile?.photo_url || 'https://via.placeholder.com/500'"
+                style="border-radius: 30% !important;" />
             </ion-col>
             <ion-col size="8">
               <ion-card-title class="ion-text-center">
@@ -66,19 +67,30 @@
           </ion-row>
           <ion-row>
             <ion-col size="6">
-              <ion-item lines="none">
+              <ion-item lines="none" class="ion-text-center">
                 <ion-label class="ion-text-wrap">
-                  <p style="font-size: .7em !important; text-transform: capitalize !important;">Avg Time in your room
+                  <p style="font-size: .7em !important; text-transform: capitalize !important;">Avg Time in your
+                    rooms[this week]
                   </p>
                   <h3> {{ convert(details.avg) }} </h3>
                 </ion-label>
               </ion-item>
             </ion-col>
             <ion-col size="6">
-              <ion-item lines="none">
+              <ion-item lines="none" class="ion-text-center">
                 <ion-label class="ion-text-wrap">
-                  <p style="font-size: .7em !important; text-transform: capitalize !important;">Total rooms entered</p>
+                  <p style="font-size: .7em !important; text-transform: capitalize !important;">Rooms entered[this week]
+                  </p>
                   <h3> {{ details.total_rooms }} </h3>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+            <ion-col size="12">
+              <ion-item lines="none" class="ion-text-center">
+                <ion-label class="ion-text-wrap">
+                  <p style="font-size: .7em !important; text-transform: capitalize !important;">All-time rooms entered
+                  </p>
+                  <h3> {{ details.alltime_rooms }} </h3>
                 </ion-label>
               </ion-item>
             </ion-col>

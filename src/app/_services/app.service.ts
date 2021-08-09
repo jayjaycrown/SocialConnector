@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/member-ordering */
 /* eslint-disable max-len */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -6,6 +7,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, from, Observable, of, Subject } from 'rxjs';
 import { catchError, retry, map, switchMap, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
+import { ToastController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root',
@@ -18,11 +20,14 @@ export class AppService {
   get refreshNeded$() {
     return this._refreshNeded$;
   }
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private toastController: ToastController
+  ) {}
 
   // tslint:disable-next-line: variable-name
   getRoomDetails(data, api_token) {
-    console.log('getting');
+    // console.log('getting');
     const formData = new FormData();
     formData.append('api_token', api_token);
     return this.http.post(this.api + data, formData).pipe(
@@ -338,14 +343,65 @@ export class AppService {
       .pipe(catchError(this.handleError('getSuperfans')));
   }
 
+  // https://monitor.clubhousetools.xyz/api/max_rooms?api_token=apRCOa9jBmJvgr7X7C0Y6EzHcgCSv66hrVT39AWAnjoWJlKGxm&date=2021-08-01
+  getMaxroomsinWeek(api_token, date) {
+    const formData = new FormData();
+    formData.append('api_token', api_token);
+    formData.append('date', date);
+    return this.http
+      .post(this.url + '/max_rooms', formData)
+      .pipe(catchError(this.handleError('getMaxroomsinWeek')));
+  }
+
+  // https://monitor.clubhousetools.xyz/api/max_rooms_time?api_token=apRCOa9jBmJvgr7X7C0Y6EzHcgCSv66hrVT39AWAnjoWJlKGxm&date=2021-08-01
+
+  getRoomsCount(api_token, date) {
+    const formData = new FormData();
+    formData.append('api_token', api_token);
+    formData.append('date', date);
+    return this.http
+      .post(this.url + '/max_rooms_time', formData)
+      .pipe(catchError(this.handleError('gerRoomsCount')));
+  }
+  // https://monitor.clubhousetools.xyz/api/max_users_time?api_token=apRCOa9jBmJvgr7X7C0Y6EzHcgCSv66hrVT39AWAnjoWJlKGxm&date=2021-08-02
+
+  getUsersCount(api_token, date) {
+    const formData = new FormData();
+    formData.append('api_token', api_token);
+    formData.append('date', date);
+    return this.http
+      .post(this.url + '/max_users_time', formData)
+      .pipe(catchError(this.handleError('gerUsersCount')));
+  }
+
+  // https://monitor.clubhousetools.xyz/api/max_users?api_token=apRCOa9jBmJvgr7X7C0Y6EzHcgCSv66hrVT39AWAnjoWJlKGxm&date=2021-08-01
+
+  getusersinweek(api_token, date) {
+    const formData = new FormData();
+    formData.append('api_token', api_token);
+    formData.append('date', date);
+    return this.http
+      .post(this.url + '/max_users', formData)
+      .pipe(catchError(this.handleError('getusersinweek')));
+  }
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-      console.error(error);
+      // console.error(error);
       this.log(`${operation} failed: ${error.message}`);
       return of(result as T);
     };
   }
   private log(message: string) {
+    // this.presentToast(message, 'danger');
     console.log(message);
+  }
+
+  async presentToast(message, color) {
+    const toast = await this.toastController.create({
+      message,
+      color,
+      duration: 2000,
+    });
+    toast.present();
   }
 }

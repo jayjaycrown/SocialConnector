@@ -1,3 +1,4 @@
+/* eslint-disable guard-for-in */
 /* eslint-disable eqeqeq */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable @typescript-eslint/prefer-for-of */
@@ -157,6 +158,11 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
   customActionSheetOptions: any = {
     header: 'Sort',
     subHeader: 'Sort by',
+  };
+
+  customActionSheetOptions2: any = {
+    header: 'Show',
+    subHeader: 'Show only',
   };
 
   loadMore = false;
@@ -327,12 +333,23 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
   followedBySpeaker: any[];
   othersInRoom: any[];
   activeMods: any[];
-  roomOn: boolean;
+  roomOn = false;
   showDisplay: any;
   sortKey = '';
   randomElement: any = {};
   showonlyone = false;
   event = false;
+  showcoin = false;
+  coin: any;
+  peak: number;
+  listeners_data2: number[] = [];
+  coinHoders: any[];
+  totalCoins: number;
+  superfansArray: any[];
+  show: string;
+  showonly: string;
+  displayFilter = false;
+  showAllData = false;
   // sortby = '';
 
   constructor(
@@ -414,6 +431,8 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
       this.searchUser = false;
     } else {
       this.searchUser = true;
+      this.displayFilter = false;
+      this.showonlyone = false;
       this.newTop = this.newTop.filter((resp) =>
         String(resp.name)
           .toLocaleLowerCase()
@@ -783,10 +802,10 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
   }
 
   // waitForElement() {
-  //   console.log('calling');
+  //   // console.log('calling');
   //   if (typeof this.roomStatus !== 'undefined') {
   //     //variable exists, do what you want
-  //     console.log(this.roomStatus);
+  //     // console.log(this.roomStatus);
   //     if (this.roomStatus === 'ongoing') {
   //       this.refresh = setInterval(() => {
   //         // console.log('Setting');
@@ -802,7 +821,7 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
   // }
 
   // checkVariable() {
-  //   console.log('checking');
+  //   // console.log('checking');
   //   if (this.roomStatus !== 'undefined') {
   //     if (this.roomStatus === 'ongoing') {
   //       this.refresh = setInterval(() => {
@@ -820,7 +839,7 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
     const result = user.result;
     this.api_token = result.api_token;
     this.userId = result.ch_user_id;
-
+    this.coin = result.coin;
     this.route.paramMap.subscribe((paramMap) => {
       this.id = paramMap.get('id');
     });
@@ -829,27 +848,25 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
       cssClass: 'custom-loading',
     });
     await this.loading.present();
-
-    await this.getAppData(this.id, this.api_token);
-    // setTimeout(this.checkVariable, 10000);
-    // this.waitForElement();
-    // setTimeout(() => {
-    //   console.log(this.roomStatus);
-    //   if (this.roomStatus === 'ongoing') {
-    //     this.refresh = setInterval(() => {
-    //       // console.log('Setting');
-    //       this.getAppData(this.id, this.api_token);
-    //     }, 30000);
-    //   } else {
-    //     clearInterval(this.refresh);
-    //   }
-    // }, 30000);
-
+    this.getAppData();
     this.getDetails();
+  }
+
+  async ionViewDidEnter() {
+    this.secondFunction();
+  }
+  ionViewWillLeave() {
+    // clearTimeout(this.refresh);
+    if (this.refresh) {
+      // console.log('clearing');
+      clearInterval(this.refresh);
+      // clearTimeout(this.refresh);
+    }
+    clearInterval(this.refresh);
   }
   async doRefresh(event) {
     // console.log(event)
-    await this.getAppData(this.id, this.api_token);
+    await this.getAppData();
     // this.event = event;
     // console.log(this.event);
     if (this.event === true) {
@@ -862,13 +879,10 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
     clearTimeout(this.refresh);
     if (this.refresh) {
       // console.log(this.refresh);
-      console.log('clearing');
+      // console.log('clearing');
       clearInterval(this.refresh);
       clearTimeout(this.refresh);
     }
-    // if (this.roomtrack) {
-    //   clearInterval(this.roomtrack);
-    // }
     clearInterval(this.refresh);
   }
   async presentToast(color, message) {
@@ -889,392 +903,430 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
       this.loadMore = true;
     }
   }
-
-  async getAppData(data, api_token) {
-    // const loading = await this.loadingController.create({
-    //   spinner: null,
-    //   cssClass: 'custom-loading',
-    // });
-    // await loading.present();
+  async getAppData() {
     this.superFans = [];
     const fields: string[] = [];
-    this.app.getRoomDetails(data, api_token).subscribe(async (res: any) => {
-      // await loading.dismiss();
-      // console.log(res);
-      await this.loading.dismiss();
-      this.event = true;
-      if (res.status === 'success') {
-        this.showData = true;
-        this.fullData = res.result;
-        this.channel = this.fullData.channel;
-        this.getRoomStats();
-        this.Fans = this.fullData.fans;
-        this.newFans = this.Fans;
-        this.followers_gained = this.fullData.followers_gained;
-        this.newFollowers_gained = this.followers_gained;
-        // eslint-disable-next-line eqeqeq
-        if (this.fullData.total_listeners_new_3 == 0) {
-          this.hideSkintone = true;
-        } else {
-          this.hideSkintone = false;
-        }
-        this.top = this.fullData.top;
-        this.newTop = this.top;
-        if (this.newTop.length > 0) {
-          if ('twitter' in this.newTop[0]) {
-            this.showTwitter = true;
+    this.app.getRoomDetails(this.id, this.api_token).subscribe(
+      async (res: any) => {
+        // await loading.dismiss();
+        // console.log(res);
+        await this.loading.dismiss();
+        this.event = true;
+        if (res.status === 'success') {
+          this.showData = true;
+          this.fullData = res.result;
+          this.channel = this.fullData.channel;
+          this.getRoomStats();
+          this.Fans = this.fullData.fans;
+          this.newFans = this.Fans;
+          this.followers_gained = this.fullData.followers_gained;
+          this.newFollowers_gained = this.followers_gained;
+          // eslint-disable-next-line eqeqeq
+          if (this.fullData.total_listeners_new_3 == 0) {
+            this.hideSkintone = true;
           } else {
-            this.showTwitter = false;
+            this.hideSkintone = false;
           }
-          if ('instagram' in this.newTop[0]) {
-            this.showInsta = true;
-          } else {
-            this.showInsta = false;
-          }
-        }
-
-        for (let i = 0; i < this.top.length; i++) {
-          const element = this.top[i];
-          if (element.fan === true) {
-            this.superFans.push(element);
-          }
-          this.newSuperFans = this.superFans;
-
-          if (this.newSuperFans.length > 0) {
-            if (this.newSuperFans[0].hasOwnProperty('twitter')) {
-              this.showSuperTwitter = true;
+          this.top = this.fullData.top;
+          this.newTop = this.top;
+          if (this.newTop.length > 0) {
+            if ('twitter' in this.newTop[0]) {
+              this.showTwitter = true;
             } else {
-              this.showSuperTwitter = false;
+              this.showTwitter = false;
             }
-
-            if (this.newSuperFans[0].hasOwnProperty('instagram')) {
-              this.showSuperInsta = true;
+            if ('instagram' in this.newTop[0]) {
+              this.showInsta = true;
             } else {
-              this.showSuperInsta = false;
+              this.showInsta = false;
             }
           }
-        }
-        // for (const iterator of this.top) {
-        // 	if (iterator.fan === true) {
-        // 		this.superFans.push(iterator)
-        // 	}
-        // }
-        this.setDisplay = true;
-        this.roomStatus = this.fullData.room_status;
-        // console.log(this.roomStatus);
 
-        // alert(this.roomStatus);
-        if (this.roomStatus === 'ongoing') {
-          console.log('checking');
-          this.roomOn = true;
-          this.refresh = setTimeout(() => {
-            this.getAppData(this.id, this.api_token);
-          }, 30000);
-          this.imageLight = this.greenImg;
-        } else {
-          this.roomOn = false;
-          clearTimeout(this.refresh);
-          this.imageLight = this.redImg;
-        }
-        const size = 5;
-        this.moderators = this.fullData.moderators;
-        // eslint-disable-next-line @typescript-eslint/no-shadow
-        for (const data of this.moderators) {
-          // eslint-disable-next-line radix
-          if (data.user_id === parseInt(this.userId)) {
-            if (this.hs_portal_id != null || this.hs_portal_id != undefined) {
-              this.exportToHs = true;
+          for (let i = 0; i < this.top.length; i++) {
+            const element = this.top[i];
+            if (element.fan === true) {
+              this.superFans.push(element);
+            }
+            this.newSuperFans = this.superFans;
+
+            if (this.newSuperFans.length > 0) {
+              if (this.newSuperFans[0].hasOwnProperty('twitter')) {
+                this.showSuperTwitter = true;
+              } else {
+                this.showSuperTwitter = false;
+              }
+
+              if (this.newSuperFans[0].hasOwnProperty('instagram')) {
+                this.showSuperInsta = true;
+              } else {
+                this.showSuperInsta = false;
+              }
+            }
+          }
+          // for (const iterator of this.top) {
+          // 	if (iterator.fan === true) {
+          // 		this.superFans.push(iterator)
+          // 	}
+          // }
+          this.setDisplay = true;
+          this.roomStatus = this.fullData.room_status;
+          // console.log(this.roomStatus);
+
+          // alert(this.roomStatus);
+          if (this.roomStatus === 'ongoing') {
+            // console.log('checking');
+            this.roomOn = true;
+            // this.secondFunction();
+            // this.refresh = setTimeout(() => {
+            //   this.getAppData();
+            //   this.getRoomStats();
+            // }, 30000);
+            this.imageLight = this.greenImg;
+          } else {
+            this.roomOn = false;
+            this.imageLight = this.redImg;
+          }
+          const size = 5;
+          this.moderators = this.fullData.moderators;
+          // eslint-disable-next-line @typescript-eslint/no-shadow
+          for (const data of this.moderators) {
+            // eslint-disable-next-line radix
+            if (data.user_id === parseInt(this.userId)) {
+              if (this.hs_portal_id != null || this.hs_portal_id != undefined) {
+                this.exportToHs = true;
+              } else {
+                this.exportToHs = false;
+              }
             } else {
               this.exportToHs = false;
             }
-          } else {
-            this.exportToHs = false;
           }
-        }
-        this.spdData = this.fullData.spd_data;
-        if (this.spdData && this.spdData.length > 0) {
-          this.showSpd = true;
+          this.spdData = this.fullData.spd_data;
+          if (this.spdData && this.spdData.length > 0) {
+            this.showSpd = true;
+          } else {
+            this.showSpd = false;
+          }
+          this.newSpdData = this.spdData;
+          this.newModerators = this.moderators;
+          this.speakers = this.fullData.speakers;
+          this.speakerWithMod();
+          this.getActiveMods();
+          this.getAllCoinHolder();
+          this.getAllSuperfans();
+          if (this.speakers) {
+            this.showSpeaker = true;
+          }
+          this.newSpeakers = this.speakers;
+          if (this.speakers && this.speakers.length > 0) {
+            if (this.speakers[0].hasOwnProperty('twitter')) {
+              this.speakersshowTwitter = true;
+            } else {
+              this.speakersshowTwitter = false;
+            }
+            const a = 'instagram';
+            // alert(this.moderators[0].hasOwnProperty('instagram'));
+            if (this.speakers[0].hasOwnProperty(a)) {
+              this.speakershowInsta = true;
+            } else {
+              this.speakershowInsta = false;
+            }
+          }
+
+          if (this.moderators.length > 0) {
+            if (this.moderators[0].hasOwnProperty('twitter')) {
+              this.modshowTwitter = true;
+            } else {
+              this.modshowTwitter = false;
+            }
+            const a = 'instagram';
+            // alert(this.moderators[0].hasOwnProperty('instagram'));
+            if (this.moderators[0].hasOwnProperty(a)) {
+              this.modshowInsta = true;
+            } else {
+              this.modshowInsta = false;
+            }
+          }
+          this.allmoderators = this.moderators.slice(0, size);
+          // alert(this.moderators.length)
+          this.modLength = this.moderators.length;
+          // this.moderators = JSON.parse(this.fullData.moderators);
+          this.percentListenerNew = parseFloat(
+            this.fullData.percent_listeners_new
+          );
+          this.percentListenerOld = parseFloat(
+            this.fullData.percent_listeners_old
+          );
+          this.dataListener.length = 0;
+          this.dataListener.push(
+            this.percentListenerNew,
+            this.percentListenerOld
+          );
+          // console.log(this.data);
+          this.percentSpeakerNew = parseFloat(
+            this.fullData.percent_speakers_new
+          );
+          this.percentSpeakerOld = parseFloat(
+            this.fullData.percent_speakers_old
+          );
+          this.dataSpeaker.length = 0;
+          this.dataSpeaker.push(this.percentSpeakerNew, this.percentSpeakerOld);
+          // console.log(this.dataSpeaker);
+          this.percentModeratorNew = parseFloat(
+            this.fullData.percent_moderators_new
+          );
+          this.percentModeratorrOld = parseFloat(
+            this.fullData.percent_moderators_old
+          );
+          this.dataModerator.length = 0;
+          this.dataModerator.push(
+            this.percentModeratorNew,
+            this.percentModeratorrOld
+          );
+          // console.log(JSON.parse(this.moderators));
+          // Listeners % Skintone
+          this.percentST1 = parseFloat(this.fullData.percent_listeners_1);
+          this.percentST2 = parseFloat(this.fullData.percent_listeners_2);
+          this.percentST3 = parseFloat(this.fullData.percent_listeners_3);
+          this.percentST4 = parseFloat(this.fullData.percent_listeners_4);
+          this.percentST5 = parseFloat(this.fullData.percent_listeners_5);
+          this.dataSkinTone.length = 0;
+          this.dataSkinTone.push(
+            this.percentST1,
+            this.percentST2,
+            this.percentST3,
+            this.percentST4,
+            this.percentST5
+          );
+
+          // Speakers % skintones
+          this.spST1 = parseFloat(this.fullData.percent_speakers_1);
+          this.spST2 = parseFloat(this.fullData.percent_speakers_2);
+          this.spST3 = parseFloat(this.fullData.percent_speakers_3);
+          this.spST4 = parseFloat(this.fullData.percent_speakers_4);
+          this.spST5 = parseFloat(this.fullData.percent_speakers_5);
+          this.dataSpeakerSkinTone.length = 0;
+          this.dataSpeakerSkinTone.push(
+            this.spST1,
+            this.spST2,
+            this.spST3,
+            this.spST4,
+            this.spST5
+          );
+
+          // Moderators % Skintones
+          this.modST1 = parseFloat(this.fullData.percent_moderators_1);
+          this.modST2 = parseFloat(this.fullData.percent_moderators_2);
+          this.modST3 = parseFloat(this.fullData.percent_moderators_3);
+          this.modST4 = parseFloat(this.fullData.percent_moderators_4);
+          this.modST5 = parseFloat(this.fullData.percent_moderators_5);
+          this.dataModSkinTone.length = 0;
+          this.dataModSkinTone.push(
+            this.modST1,
+            this.modST2,
+            this.modST3,
+            this.modST4,
+            this.modST5
+          );
+
+          // Listened Time Skintone
+          this.modLT1 = parseFloat(this.fullData.avg_listened_1);
+          this.modLT2 = parseFloat(this.fullData.avg_listened_2);
+          this.modLT3 = parseFloat(this.fullData.avg_listened_3);
+          this.modLT4 = parseFloat(this.fullData.avg_listened_4);
+          this.modLT5 = parseFloat(this.fullData.avg_listened_5);
+          this.dataLTSkinTone.length = 0;
+          this.dataLTSkinTone.push(
+            this.modLT1,
+            this.modLT2,
+            this.modLT3,
+            this.modLT4,
+            this.modLT5
+          );
+
+          // Listener New Skintone Data
+          this.listenerNewSK1 = parseFloat(
+            this.fullData.percent_listeners_new_1
+          );
+          this.listenerNewSK2 = parseFloat(
+            this.fullData.percent_listeners_new_2
+          );
+          this.listenerNewSK3 = parseFloat(
+            this.fullData.percent_listeners_new_3
+          );
+          this.listenerNewSK4 = parseFloat(
+            this.fullData.percent_listeners_new_4
+          );
+          this.listenerNewSK5 = parseFloat(
+            this.fullData.percent_listeners_new_5
+          );
+          this.listenerNewSTData.length = 0;
+          // tslint:disable-next-line: max-line-length
+          this.listenerNewSTData.push(
+            this.listenerNewSK1,
+            this.listenerNewSK2,
+            this.listenerNewSK3,
+            this.listenerNewSK4,
+            this.listenerNewSK5
+          );
+          // console.log(this.fullData.room_ended);
+          // console.log(this.fullData.room_start);
+          // Duration
+          if (this.fullData.room_ended) {
+            const today: string = this.fullData.room_ended;
+            const testing = today.replace(/-/g, '/');
+            const newDates = new Date(testing);
+            this.thisDay = new Date(newDates.toUTCString());
+          } else {
+            const today = new Date(this.fullData.now);
+            this.thisDay = new Date(today.toUTCString());
+          }
+          // alert(this.thisDay);
+          const test: string = this.fullData.room_start;
+          const dattta = test.split('.');
+          const datta2 = dattta[0].replace(/T/g, ' ');
+          // tslint:disable-next-line: no-shadowed-variable
+          const rest = datta2.replace(/-/g, '/');
+          const newDate = new Date(rest);
+          const anotherDate = new Date(newDate.toUTCString());
+          // alert(anotherDate);
+          const ms = moment(this.thisDay, 'DD/MM/YYYY HH:mm:ss').diff(
+            moment(anotherDate, 'DD/MM/YYYY HH:mm:ss')
+          );
+          const value = ms;
+          const now = moment();
+          const secssss = moment.duration(value).seconds();
+          const minsss = moment.duration(value).minutes();
+          const hrsss = Math.trunc(moment.duration(value).asHours());
+
+          this.durationDays = hrsss + ':' + minsss + ':' + secssss;
+
+          // console.log(this.durationDays);
+          // const d = moment.duration(ms);
+          // this.duration = d;
+          // console.log(this.duration);
+          // this.durationDays = moment.utc(this.duration).format('HH:mm');
+          // console.log(this.durationDays);
+          // this.durationMonth = this.duration._data.months;
+          // this.durationDays = this.duration._data.days;
+          // this.durationhrs = this.duration._data.hours;
+          // this.durationMins = this.duration._data.minutes;
+          // this.durationSecs = this.duration._data.seconds;
+
+          // Tracking Duration
+          if (this.fullData.room_ended) {
+            const today1: string = this.fullData.room_ended;
+            // alert(today1)
+            // var str = this.fullData.room_ended;
+            // var res = str.replace(/-/g, "/");
+            const test11 = today1.replace(/-/g, '/');
+            // console.log(today.toUTCString());
+            // alert(test);
+            const newDate11 = new Date(test11);
+            this.thisDay1 = new Date(newDate11.toUTCString());
+          } else {
+            const today = new Date(this.fullData.now);
+            // alert(today);
+            // console.log(today.toUTCString());
+            this.thisDay1 = new Date(today.toUTCString());
+          }
+          const test1: string = this.fullData.tracking_start;
+          const ress = test1.replace(/-/g, '/');
+          const newDate1 = new Date(ress);
+          const anotherDate1 = new Date(newDate1.toUTCString());
+          const ms1 = moment(this.thisDay1, 'DD/MM/YYYY HH:mm:ss').diff(
+            moment(anotherDate1, 'DD/MM/YYYY HH:mm:ss')
+          );
+          const d1 = moment.duration(ms1);
+
+          const value1 = ms1;
+          const secssss1 = moment.duration(value1).seconds();
+          const minsss1 = moment.duration(value1).minutes();
+          const hrsss1 = Math.trunc(moment.duration(value1).asHours());
+
+          this.durationDays1 = hrsss1 + ':' + minsss1 + ':' + secssss1;
+
+          // console.log(this.durationDays1);
+
+          // this.duration1 = d1;
+          // alert(s);
+          // console.log(this.duration1);
+          // this.durationMonth1 = this.duration1._data.months;
+          // this.durationDays1 = this.duration1._data.days;
+          // this.durationhrs1 = this.duration1._data.hours;
+          // this.durationMins1 = this.duration1._data.minutes;
+          // this.durationSecs1 = this.duration1._data.seconds;
+          // outputs: "48:39:30"
+
+          // Avg Listened Conversion
+          const num = this.fullData.avg_listened;
+          const secs = num * 60;
+          const hr = Math.floor(num / 60);
+          const minutes = Math.round(num % 60);
+          const rseconds = Math.floor(secs % 60);
+          // const rminutes = Math.round(minutes);
+          this.avgListend = `${hr}:${minutes}:00`;
+
+          // alert(this.fullData.total_listened);
+          const num1 = this.fullData.total_listened;
+          // const hours1 = (num1 / 60);
+          // const rhours1 = Math.floor(hours1);
+          // const days = Math.floor(rhours1 / 24);
+          // const minutes1 = (hours1 - rhours1) * 60;
+          // const rminutes1 = Math.round(minutes1);
+          // this.avgListend = days + ' days, ' + rhours1 + ' hr(s), ' + rminutes1 + ' min(s).';
+          const h = Math.floor(num1 / 60);
+          const days = Math.floor(h / 24);
+          const m = Math.round(num1 % 60);
+          const s = ((num1 - days * 24 * 60 - h * 60 - m) * 60).toFixed(2);
+          this.avgListend1 = `${h}:${m}:00`;
+          // console.log(this.avgListend1);
+        } else if (res.status === 'upgrade') {
+          const color = 'danger';
+          this.presentToast(color, res.message);
+          // this.alertService.danger(res.message);
+          this.router.navigateByUrl('/tabs/upgrade');
+        } else if (res.status === 'validate') {
+          // this.alertService.danger(res.message);
+          const color = 'danger';
+          this.presentToast(color, res.message);
+          this.router.navigateByUrl('/auth/validate/ ' + this.api_token);
+        } else if (res.status === 'error') {
+          this.presentToast('danger', res.message);
+          this.router.navigateByUrl('/tabs/chtools/track/');
         } else {
-          this.showSpd = false;
+          // setTimeout(() => {
+          //   this.getAppData();
+          // }, 30000);
+          this.setDisplay = false;
+          const color = 'danger';
+          this.presentToast(color, res.message);
+          // this.alertService.danger(res.message);
         }
-        this.newSpdData = this.spdData;
-        this.newModerators = this.moderators;
-        this.speakers = this.fullData.speakers;
-        this.speakerWithMod();
-        this.getActiveMods();
-        if (this.speakers) {
-          this.showSpeaker = true;
-        }
-        this.newSpeakers = this.speakers;
-        if (this.speakers && this.speakers.length > 0) {
-          if (this.speakers[0].hasOwnProperty('twitter')) {
-            this.speakersshowTwitter = true;
-          } else {
-            this.speakersshowTwitter = false;
-          }
-          const a = 'instagram';
-          // alert(this.moderators[0].hasOwnProperty('instagram'));
-          if (this.speakers[0].hasOwnProperty(a)) {
-            this.speakershowInsta = true;
-          } else {
-            this.speakershowInsta = false;
-          }
-        }
-
-        if (this.moderators.length > 0) {
-          if (this.moderators[0].hasOwnProperty('twitter')) {
-            this.modshowTwitter = true;
-          } else {
-            this.modshowTwitter = false;
-          }
-          const a = 'instagram';
-          // alert(this.moderators[0].hasOwnProperty('instagram'));
-          if (this.moderators[0].hasOwnProperty(a)) {
-            this.modshowInsta = true;
-          } else {
-            this.modshowInsta = false;
-          }
-        }
-        this.allmoderators = this.moderators.slice(0, size);
-        // alert(this.moderators.length)
-        this.modLength = this.moderators.length;
-        // this.moderators = JSON.parse(this.fullData.moderators);
-        this.percentListenerNew = parseFloat(
-          this.fullData.percent_listeners_new
-        );
-        this.percentListenerOld = parseFloat(
-          this.fullData.percent_listeners_old
-        );
-        this.dataListener.length = 0;
-        this.dataListener.push(
-          this.percentListenerNew,
-          this.percentListenerOld
-        );
-        // // console.log(this.data);
-        this.percentSpeakerNew = parseFloat(this.fullData.percent_speakers_new);
-        this.percentSpeakerOld = parseFloat(this.fullData.percent_speakers_old);
-        this.dataSpeaker.length = 0;
-        this.dataSpeaker.push(this.percentSpeakerNew, this.percentSpeakerOld);
-        // // console.log(this.dataSpeaker);
-        this.percentModeratorNew = parseFloat(
-          this.fullData.percent_moderators_new
-        );
-        this.percentModeratorrOld = parseFloat(
-          this.fullData.percent_moderators_old
-        );
-        this.dataModerator.length = 0;
-        this.dataModerator.push(
-          this.percentModeratorNew,
-          this.percentModeratorrOld
-        );
-        // console.log(JSON.parse(this.moderators));
-        // Listeners % Skintone
-        this.percentST1 = parseFloat(this.fullData.percent_listeners_1);
-        this.percentST2 = parseFloat(this.fullData.percent_listeners_2);
-        this.percentST3 = parseFloat(this.fullData.percent_listeners_3);
-        this.percentST4 = parseFloat(this.fullData.percent_listeners_4);
-        this.percentST5 = parseFloat(this.fullData.percent_listeners_5);
-        this.dataSkinTone.length = 0;
-        this.dataSkinTone.push(
-          this.percentST1,
-          this.percentST2,
-          this.percentST3,
-          this.percentST4,
-          this.percentST5
-        );
-
-        // Speakers % skintones
-        this.spST1 = parseFloat(this.fullData.percent_speakers_1);
-        this.spST2 = parseFloat(this.fullData.percent_speakers_2);
-        this.spST3 = parseFloat(this.fullData.percent_speakers_3);
-        this.spST4 = parseFloat(this.fullData.percent_speakers_4);
-        this.spST5 = parseFloat(this.fullData.percent_speakers_5);
-        this.dataSpeakerSkinTone.length = 0;
-        this.dataSpeakerSkinTone.push(
-          this.spST1,
-          this.spST2,
-          this.spST3,
-          this.spST4,
-          this.spST5
-        );
-
-        // Moderators % Skintones
-        this.modST1 = parseFloat(this.fullData.percent_moderators_1);
-        this.modST2 = parseFloat(this.fullData.percent_moderators_2);
-        this.modST3 = parseFloat(this.fullData.percent_moderators_3);
-        this.modST4 = parseFloat(this.fullData.percent_moderators_4);
-        this.modST5 = parseFloat(this.fullData.percent_moderators_5);
-        this.dataModSkinTone.length = 0;
-        this.dataModSkinTone.push(
-          this.modST1,
-          this.modST2,
-          this.modST3,
-          this.modST4,
-          this.modST5
-        );
-
-        // Listened Time Skintone
-        this.modLT1 = parseFloat(this.fullData.avg_listened_1);
-        this.modLT2 = parseFloat(this.fullData.avg_listened_2);
-        this.modLT3 = parseFloat(this.fullData.avg_listened_3);
-        this.modLT4 = parseFloat(this.fullData.avg_listened_4);
-        this.modLT5 = parseFloat(this.fullData.avg_listened_5);
-        this.dataLTSkinTone.length = 0;
-        this.dataLTSkinTone.push(
-          this.modLT1,
-          this.modLT2,
-          this.modLT3,
-          this.modLT4,
-          this.modLT5
-        );
-
-        // Listener New Skintone Data
-        this.listenerNewSK1 = parseFloat(this.fullData.percent_listeners_new_1);
-        this.listenerNewSK2 = parseFloat(this.fullData.percent_listeners_new_2);
-        this.listenerNewSK3 = parseFloat(this.fullData.percent_listeners_new_3);
-        this.listenerNewSK4 = parseFloat(this.fullData.percent_listeners_new_4);
-        this.listenerNewSK5 = parseFloat(this.fullData.percent_listeners_new_5);
-        this.listenerNewSTData.length = 0;
-        // tslint:disable-next-line: max-line-length
-        this.listenerNewSTData.push(
-          this.listenerNewSK1,
-          this.listenerNewSK2,
-          this.listenerNewSK3,
-          this.listenerNewSK4,
-          this.listenerNewSK5
-        );
-        // console.log(this.fullData.room_ended);
-        // console.log(this.fullData.room_start);
-        // Duration
-        if (this.fullData.room_ended) {
-          const today: string = this.fullData.room_ended;
-          const testing = today.replace(/-/g, '/');
-          const newDates = new Date(testing);
-          this.thisDay = new Date(newDates.toUTCString());
-        } else {
-          const today = new Date(this.fullData.now);
-          this.thisDay = new Date(today.toUTCString());
-        }
-        // alert(this.thisDay);
-        const test: string = this.fullData.room_start;
-        const dattta = test.split('.');
-        const datta2 = dattta[0].replace(/T/g, ' ');
-        // tslint:disable-next-line: no-shadowed-variable
-        const rest = datta2.replace(/-/g, '/');
-        const newDate = new Date(rest);
-        const anotherDate = new Date(newDate.toUTCString());
-        // alert(anotherDate);
-        const ms = moment(this.thisDay, 'DD/MM/YYYY HH:mm:ss').diff(
-          moment(anotherDate, 'DD/MM/YYYY HH:mm:ss')
-        );
-        const value = ms;
-        const now = moment();
-        const secssss = moment.duration(value).seconds();
-        const minsss = moment.duration(value).minutes();
-        const hrsss = Math.trunc(moment.duration(value).asHours());
-
-        this.durationDays = hrsss + ':' + minsss + ':' + secssss;
-
-        // console.log(this.durationDays);
-        // const d = moment.duration(ms);
-        // this.duration = d;
-        // console.log(this.duration);
-        // this.durationDays = moment.utc(this.duration).format('HH:mm');
-        // console.log(this.durationDays);
-        // this.durationMonth = this.duration._data.months;
-        // this.durationDays = this.duration._data.days;
-        // this.durationhrs = this.duration._data.hours;
-        // this.durationMins = this.duration._data.minutes;
-        // this.durationSecs = this.duration._data.seconds;
-
-        // Tracking Duration
-        if (this.fullData.room_ended) {
-          const today1: string = this.fullData.room_ended;
-          // alert(today1)
-          // var str = this.fullData.room_ended;
-          // var res = str.replace(/-/g, "/");
-          const test11 = today1.replace(/-/g, '/');
-          // console.log(today.toUTCString());
-          // alert(test);
-          const newDate11 = new Date(test11);
-          this.thisDay1 = new Date(newDate11.toUTCString());
-        } else {
-          const today = new Date(this.fullData.now);
-          // alert(today);
-          // console.log(today.toUTCString());
-          this.thisDay1 = new Date(today.toUTCString());
-        }
-        const test1: string = this.fullData.tracking_start;
-        const ress = test1.replace(/-/g, '/');
-        const newDate1 = new Date(ress);
-        const anotherDate1 = new Date(newDate1.toUTCString());
-        const ms1 = moment(this.thisDay1, 'DD/MM/YYYY HH:mm:ss').diff(
-          moment(anotherDate1, 'DD/MM/YYYY HH:mm:ss')
-        );
-        const d1 = moment.duration(ms1);
-
-        const value1 = ms1;
-        const secssss1 = moment.duration(value1).seconds();
-        const minsss1 = moment.duration(value1).minutes();
-        const hrsss1 = Math.trunc(moment.duration(value1).asHours());
-
-        this.durationDays1 = hrsss1 + ':' + minsss1 + ':' + secssss1;
-
-        // console.log(this.durationDays1);
-
-        // this.duration1 = d1;
-        // // alert(s);
-        // // console.log(this.duration1);
-        // this.durationMonth1 = this.duration1._data.months;
-        // this.durationDays1 = this.duration1._data.days;
-        // this.durationhrs1 = this.duration1._data.hours;
-        // this.durationMins1 = this.duration1._data.minutes;
-        // this.durationSecs1 = this.duration1._data.seconds;
-        // outputs: "48:39:30"
-
-        // Avg Listened Conversion
-        const num = this.fullData.avg_listened;
-        const secs = num * 60;
-        const hr = Math.floor(num / 60);
-        const minutes = Math.round(num % 60);
-        const rseconds = Math.floor(secs % 60);
-        // const rminutes = Math.round(minutes);
-        this.avgListend = `${hr}:${minutes}:00`;
-
-        // alert(this.fullData.total_listened);
-        const num1 = this.fullData.total_listened;
-        // const hours1 = (num1 / 60);
-        // const rhours1 = Math.floor(hours1);
-        // const days = Math.floor(rhours1 / 24);
-        // const minutes1 = (hours1 - rhours1) * 60;
-        // const rminutes1 = Math.round(minutes1);
-        // this.avgListend = days + ' days, ' + rhours1 + ' hr(s), ' + rminutes1 + ' min(s).';
-        const h = Math.floor(num1 / 60);
-        const days = Math.floor(h / 24);
-        const m = Math.round(num1 % 60);
-        const s = ((num1 - days * 24 * 60 - h * 60 - m) * 60).toFixed(2);
-        this.avgListend1 = `${h}:${m}:00`;
-        // console.log(this.avgListend1);
-      } else if (res.status === 'upgrade') {
-        const color = 'danger';
-        this.presentToast(color, res.message);
-        // this.alertService.danger(res.message);
-        this.router.navigateByUrl('/tabs/upgrade');
-      } else if (res.status === 'validate') {
-        // this.alertService.danger(res.message);
-        const color = 'danger';
-        this.presentToast(color, res.message);
-        this.router.navigateByUrl('/auth/validate/ ' + this.api_token);
-      } else {
-        setTimeout(() => {
-          this.getAppData(this.id, this.api_token);
-        }, 30000);
-        this.setDisplay = false;
-        const color = 'danger';
-        this.presentToast(color, res.message);
-        // this.alertService.danger(res.message);
+      },
+      (err) => {
+        console.log(err);
+        this.secondFunction();
+        // setTimeout(() => {
+        //   this.getAppData();
+        // }, 30000);
       }
-    });
+    );
+  }
+
+  async secondFunction() {
+    // console.log(this.roomOn);
+    if (this.roomOn === true) {
+      this.refresh = setInterval(() => {
+        // console.log('calling now');
+        this.getAppData();
+      }, 30000);
+    } else {
+      setTimeout(() => {
+        // console.log('calling in 1 minute');
+        this.secondFunction();
+      }, 100000);
+    }
   }
 
   getDetails() {
@@ -1282,8 +1334,6 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
       (res: any) => {
         if (res.status === 'success') {
           this.result = res.result;
-          // console.log(res);
-          // this.data = JSON.parse(this.result.data);
           if (this.result.subscription_expiry < this.date2) {
             this.upgrade = true;
           } else {
@@ -1336,33 +1386,44 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
   }
 
   getRoomStats() {
-    // this.date_entered = [];
-    // console.log(this.channel, this.api_token);
-    setTimeout(() => {
-      this.app
-        .roomStats(this.api_token, this.channel)
-        .subscribe((resp: any) => {
-          // console.log(resp);
-          const arr = resp.result;
-          // console.log(arr);
-          const data = arr.slice(Math.max(arr.length - 10, 0));
-          // console.log(data);
-          this.date_entered.length = 0;
-          this.listeners_data.length = 0;
-          for (const x of data) {
-            const datepipe: DatePipe = new DatePipe('en-US');
-            const formattedDate = datepipe.transform(x.date_entered, 'h:mm a');
-            // console.log(formattedDate);
-            const listenersData: number = parseFloat(x.listeners);
-            this.listeners_data.push(listenersData);
-            this.date_entered.push(formattedDate);
-          }
-          // console.log(this.date_entered);
-          // console.log(this.listeners_data);
-          this.showChart = true;
-          // this.date_entered = data.date_entered;
-          // this.listeners_data = data.listeners;
-        });
+    this.app.roomStats(this.api_token, this.channel).subscribe((resp: any) => {
+      const arr = resp.result;
+      this.listeners_data2.length = 0;
+      for (const x of arr) {
+        const listenersData2: number = parseFloat(x.listeners);
+        this.listeners_data2.push(listenersData2);
+      }
+      // console.log(this.listeners_data2);
+      this.peak = 0;
+
+      for (let i = 0; i <= this.peak; i++) {
+        if (this.listeners_data2[i] > this.peak) {
+          this.peak = this.listeners_data2[i];
+        }
+      }
+      // console.log(this.peak);
+      //
+      const data = arr.slice(Math.max(arr.length - 10, 0));
+      this.date_entered.length = 0;
+      this.listeners_data.length = 0;
+      for (const x of data) {
+        const datepipe: DatePipe = new DatePipe('en-US');
+        const ress = x.date_entered.replace(/-/g, '/');
+        const newDate1 = new Date(ress);
+        const anotherDate1 = new Date(newDate1.toUTCString());
+        // const ms1 = moment(this.thisDay1, 'DD/MM/YYYY HH:mm:ss')
+        const formattedDate = datepipe.transform(anotherDate1, 'h:mm a');
+        // const formattedDate = datepipe.transform(x.date_entered, 'h:mm a');
+        // console.log(formattedDate);
+        const listenersData: number = parseFloat(x.listeners);
+        this.listeners_data.push(listenersData);
+        this.date_entered.push(formattedDate);
+      }
+      // console.log(this.date_entered);
+
+      this.showChart = true;
+      // this.date_entered = data.date_entered;
+      // this.listeners_data = data.listeners;
     });
   }
 
@@ -1438,6 +1499,64 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
     // console.log('Others in room', this.othersInRoom);
   }
 
+  getAllCoinHolder() {
+    // coin_balance
+    this.coinHoders = [];
+    for (let i = 0; i < this.top.length; i++) {
+      const element = this.newTop[i];
+      let total = 0;
+      // total += element.coin_balance;
+      // this.totalCoins = total;
+      if (parseFloat(element.coin_balance) > 0) {
+        this.coinHoders.push(element);
+      }
+      //
+      for (const key in this.coinHoders) {
+        if (Object.prototype.hasOwnProperty.call(this.coinHoders, key)) {
+          const test = this.coinHoders[key];
+          if (test.user_id !== this.userId) {
+            total += test.coin_balance;
+            this.totalCoins = total;
+          }
+        }
+      }
+    }
+    // console.log(this.totalCoins);
+    // console.log(this.coinHoders);
+  }
+
+  getAllSuperfans() {
+    // fan: false
+    this.superfansArray = [];
+    for (let i = 0; i < this.top.length; i++) {
+      const element = this.top[i];
+      if (element.fan === true) {
+        this.superfansArray.push(element);
+      }
+    }
+    // console.log(this.superfansArray);
+    // console.log(this.superfansArray.length);
+  }
+
+  showOnly(ev) {
+    this.show = '';
+    this.show = ev;
+    this.searchUser = false;
+    this.displayFilter = false;
+    this.showonlyone = false;
+    this.name2 = '';
+    // this.displayFilter = true;
+    if (this.show === 'coin') {
+      this.displayFilter = true;
+      this.showonly = 'coin';
+    } else if (this.show === 'fan') {
+      this.displayFilter = true;
+      this.showonly = 'fan';
+    } else {
+      this.clearFilter();
+    }
+  }
+
   checkIfMod(username: string) {
     for (let i = 0; i < this.moderators.length; i++) {
       const element = this.moderators[i];
@@ -1461,50 +1580,57 @@ export class TrackDetailsComponent implements OnInit, OnDestroy {
     this.showDisplay = '';
     // console.log(ev);
     this.showDisplay = ev;
+    if (this.showDisplay === 'coin') {
+      this.showcoin = true;
+    } else {
+      this.showcoin = false;
+    }
   }
 
-  // selectFilter(ev: any) {
-  //   this.showDisplay = '';
-  //   console.log(String(ev));
-  //   this.showDisplay = String(ev);
-  //   if (this.showDisplay === 'superfan') {
-  //     this.setSuper = true;
-  //     this.setnewUser = false;
-  //   } else if (this.showDisplay === 'newuser') {
-  //     this.setSuper = false;
-  //     this.setnewUser = true;
-  //   } else {
-  //     this.setSuper = false;
-  //     this.setnewUser = false;
-  //   }
-  // }
   orderBy(ev) {
-    console.log(ev);
+    // console.log(ev);
     this.sortKey = '';
     this.sortKey = String(ev);
   }
 
   clearFilter() {
     this.sortKey = '';
+    // this.showonlyone = false;
+    this.showDisplay = '';
+    this.show = '';
+    this.showonly = '';
+    this.searchUser = false;
+    this.showAllData = false;
+    this.displayFilter = false;
     this.showonlyone = false;
+    this.name2 = '';
+    //  this.searchUser = false;
     // console.log(this.showonlyone);
   }
 
   pickRandom() {
     if (this.othersInRoom.length === 0) {
       this.showonlyone = false;
+      this.searchUser = false;
+      this.displayFilter = false;
       this.presentToast('danger', 'No audience in the room');
       this.randomElement = null;
     } else {
       this.showonlyone = true;
+      this.searchUser = false;
+      this.displayFilter = false;
       this.randomElement =
         this.othersInRoom[Math.floor(Math.random() * this.othersInRoom.length)];
     }
-    console.log(this.randomElement);
+    // console.log(this.randomElement);
   }
 
   gotoUser(userid) {
-    console.log(userid);
+    // console.log(userid);
     this.router.navigateByUrl('/tabs/chtools/profile/' + userid);
+  }
+  share() {
+    const url = 'https://clubhouse.socialconnector.io/r/';
+    window.open(url + this.channel, '_blank');
   }
 }

@@ -80,7 +80,7 @@
           <ion-col size="6">
             <ion-item class="ion-text-center ion-border-radius" lines="none">
               <ion-label>
-                <p>Max Listeners</p>
+                <p>Unique Listeners</p>
                 <h2>{{ fullData.total_listeners | number }}</h2>
               </ion-label>
             </ion-item>
@@ -122,6 +122,15 @@
               <ion-label>
                 <p>Active Listeners</p>
                 <h2>{{ fullData.total_active | number }}</h2>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+
+          <ion-col size="6" *ngIf="!roomOn">
+            <ion-item class="ion-text-center ion-border-radius" lines="none">
+              <ion-label>
+                <p>Peak Listeners</p>
+                <h2>{{ peak }}</h2>
               </ion-label>
             </ion-item>
           </ion-col>
@@ -185,6 +194,12 @@
             </ion-item>
           </ion-col>
         </ion-row>
+
+        <ion-row *ngIf="!roomOn">
+          <ion-col size="12">
+            <ion-button expand="full" color="primary" (click)="share()">Share</ion-button>
+          </ion-col>
+        </ion-row>
       </ion-grid>
 
       <ion-grid fixed>
@@ -241,7 +256,35 @@
                 (ngModelChange)="selectFilter($event)">
                 <ion-select-option value="newuser">New Users</ion-select-option>
                 <ion-select-option value="superfan">Super fans</ion-select-option>
+                <ion-select-option *ngIf="coin !== null" value="coin">Show coin balance</ion-select-option>
               </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="ion-text-center" *ngIf="coin !== null">
+          <ion-col size="6">
+            <ion-item lines="none">
+              <ion-label position="floating">
+                Sort by
+              </ion-label>
+              <ion-select [interfaceOptions]="customActionSheetOptions" interface="action-sheet"
+                placeholder="Display filter" [ngModel]="show" (ngModelChange)="showOnly($event)">
+                <!-- <ion-select-option value="">None</ion-select-option> -->
+                <ion-select-option value="coin">Coin holders</ion-select-option>
+                <ion-select-option value="fan">Super fans</ion-select-option>
+                <!-- <ion-select-option value="desc">Z - A</ion-select-option> -->
+              </ion-select>
+            </ion-item>
+          </ion-col>
+
+          <ion-col size="6">
+            <ion-item lines="none">
+              <ion-label position="floating">
+                Coin Balance
+              </ion-label>
+              <ion-input type="number" readonly [value]='totalCoins || 0'></ion-input>
+              <!-- <h3> {{ totalCoins || 0 }} </h3> -->
             </ion-item>
           </ion-col>
         </ion-row>
@@ -275,9 +318,9 @@
       <div *ngIf="searchUser">
         <ion-card>
           <ion-card-header>
-            <!-- <ion-card-subtitle class="ion-margin-bottom">
-              Followed by the speakers <span class="badge"> ({{ followedBySpeaker.length}}) </span>
-            </ion-card-subtitle> -->
+            <ion-card-subtitle class="ion-margin-bottom">
+              Search Result <span class="badge"> ({{ newTop.length}}) </span>
+            </ion-card-subtitle>
           </ion-card-header>
           <ion-grid fixed>
             <ion-row>
@@ -287,7 +330,7 @@
                   <div class="flex justify-center">
                     <div class="relative">
                       <span class="overflow-hidden block  ">
-                        <img [src]="item.photo_url || 'http://placehold.it/500x500'" alt="photo" class="userImg">
+                        <img [src]="item.photo_url || 'https://via.placeholder.com/500'" alt="photo" class="userImg">
                       </span>
                       <span *ngIf="showDisplay==='superfan'">
                         <span class="text-xs font-semibold new-user" *ngIf="item.fan === true">⭐</span>
@@ -300,7 +343,13 @@
                   <p class="ion-text-nowrap clamp">
                     <span style="font-weight: 600 !important; font-size: 1em !important;"> {{ item.first_name }} </span>
                   </p>
-                  <p> {{ convert(item.minutes) }} </p>
+                  <div *ngIf="showcoin">
+                    <p> {{ item.coin_balance }} ${{coin}}</p>
+                  </div>
+                  <div *ngIf="!showcoin">
+                    <p> {{ convert(item.minutes) }} </p>
+                  </div>
+
                 </div>
               </ion-col>
             </ion-row>
@@ -309,192 +358,320 @@
       </div>
 
       <div *ngIf="!searchUser">
-        <div *ngIf="showonlyone">
-          <ion-card>
-            <ion-grid fixed>
-              <ion-row>
-                <ion-col size="3" (click)="gotoUser(randomElement?.user_id)">
-                  <div class="userlist">
-                    <div class="flex justify-center">
-                      <div class="relative">
-                        <span class="overflow-hidden block  ">
-                          <img [src]="randomElement?.photo_url || 'http://placehold.it/500x500'" alt="photo"
-                            class="userImg">
-                        </span>
-
-                        <span *ngIf="showDisplay==='superfan'">
-                          <span class="text-xs font-semibold new-user" *ngIf="randomElement?.fan === true">⭐</span>
-                        </span>
-                        <span *ngIf="showDisplay==='newuser'">
-                          <span class="text-xs font-semibold new-user"
-                            *ngIf="randomElement?.is_new === 'true'">🎉️</span>
-                        </span>
-
+        <div *ngIf="displayFilter">
+          <div *ngIf="show === 'coin'">
+            <ion-card>
+              <ion-card-header>
+                <ion-card-subtitle class="ion-margin-bottom">
+                  Coin holders <span class="badge"> ({{ coinHoders.length}}) </span>
+                </ion-card-subtitle>
+              </ion-card-header>
+              <ion-grid fixed>
+                <ion-row>
+                  <ion-col size="3" *ngFor="let  item of coinHoders | orderBy: sortKey:rrverse">
+                    <div class="userlist" [ngClass]="{blink_me: item.is_invited_as_speaker === 'true'}"
+                      (click)="gotoUser(item.user_id)">
+                      <div class="flex justify-center">
+                        <div class="relative">
+                          <span class="overflow-hidden block  ">
+                            <img [src]="item.photo_url || 'https://via.placeholder.com/500'" alt="photo_url"
+                              class="userImg">
+                          </span>
+                          <span *ngIf="showDisplay==='superfan'">
+                            <span class="text-xs font-semibold new-user" *ngIf="item.fan === true">⭐</span>
+                          </span>
+                          <span *ngIf="showDisplay==='newuser'">
+                            <span class="text-xs font-semibold new-user" *ngIf="item.is_new === 'true'">🎉️</span>
+                          </span>
+                        </div>
                       </div>
+                      <p class="ion-text-nowrap clamp">
+                        <span style="font-weight: 600 !important; font-size: 1em !important;"> {{ item.first_name }}
+                        </span>
+                      </p>
+                      <div *ngIf="showcoin">
+                        <p> {{ item.coin_balance }} ${{coin}}</p>
+                      </div>
+                      <div *ngIf="!showcoin">
+                        <p> {{ convert(item.minutes) }} </p>
+                      </div>
+
                     </div>
-                    <p class="ion-text-nowrap clamp">
-                      <span class="mr-1 mb-1" *ngIf="randomElement?.is_moderator === 'true'">✳️️</span>
-                      <span style="font-weight: 600 !important; font-size: 1em !important;"> {{
-                        randomElement?.first_name
-                        }} </span>
-                    </p>
-                    <p> {{ convert(randomElement?.minutes) }} </p>
-                  </div>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-card>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-card>
+          </div>
+
+          <div *ngIf="show === 'fan'">
+            <ion-card>
+              <ion-card-header>
+                <ion-card-subtitle class="ion-margin-bottom">
+                  Super fans <span class="badge"> ({{ superfansArray.length}}) </span>
+                </ion-card-subtitle>
+              </ion-card-header>
+              <ion-grid fixed>
+                <ion-row>
+                  <ion-col size="3" *ngFor="let  item of superfansArray | orderBy: sortKey:rrverse">
+                    <div class="userlist" [ngClass]="{blink_me: item.is_invited_as_speaker === 'true'}"
+                      (click)="gotoUser(item.user_id)">
+                      <div class="flex justify-center">
+                        <div class="relative">
+                          <span class="overflow-hidden block  ">
+                            <img [src]="item.photo_url || 'https://via.placeholder.com/500'" alt="photo_url"
+                              class="userImg">
+                          </span>
+                          <span *ngIf="showDisplay==='superfan'">
+                            <span class="text-xs font-semibold new-user" *ngIf="item.fan === true">⭐</span>
+                          </span>
+                          <span *ngIf="showDisplay==='newuser'">
+                            <span class="text-xs font-semibold new-user" *ngIf="item.is_new === 'true'">🎉️</span>
+                          </span>
+                        </div>
+                      </div>
+                      <p class="ion-text-nowrap clamp">
+                        <span style="font-weight: 600 !important; font-size: 1em !important;"> {{ item.first_name }}
+                        </span>
+                      </p>
+                      <div *ngIf="showcoin">
+                        <p> {{ item.coin_balance }} ${{coin}}</p>
+                      </div>
+                      <div *ngIf="!showcoin">
+                        <p> {{ convert(item.minutes) }} </p>
+                      </div>
+
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-card>
+          </div>
         </div>
-        <div *ngIf="!showonlyone">
-          <ion-card>
-            <ion-card-header class="ion-margin-bottom">
-              <ion-card-subtitle>
-                <span class="ion-float-left">
-                  Speakers <span class="badge"> ({{ modSpeaker.length}}) </span>
-                </span>
+        <div *ngIf="!displayFilter">
+          <div *ngIf="showonlyone">
+            <ion-card>
+              <ion-grid fixed>
+                <ion-row>
+                  <ion-col size="3" (click)="gotoUser(randomElement?.user_id)">
+                    <div class="userlist">
+                      <div class="flex justify-center">
+                        <div class="relative">
+                          <span class="overflow-hidden block  ">
+                            <img [src]="randomElement?.photo_url || 'https://via.placeholder.com/500'" alt="photo"
+                              class="userImg">
+                          </span>
 
-                <span class="ion-float-right">
-                  <a fill="clear" color="primary" (click)="export6()">Export</a>
-                </span>
-                <span class="clear"></span>
-              </ion-card-subtitle>
-            </ion-card-header>
-            <ion-grid fixed>
-              <ion-row>
-                <ion-col size="3" *ngFor="let  item of modSpeaker| orderBy: sortKey:rrverse">
-                  <div class="userlist" (click)="gotoUser(item.user_id)">
-                    <div class="flex justify-center">
-                      <div class="relative">
-                        <span class="overflow-hidden block  ">
-                          <img [src]="item.photo_url || 'http://placehold.it/500x500'" alt="photo" class="userImg">
-                        </span>
+                          <span *ngIf="showDisplay==='superfan'">
+                            <span class="text-xs font-semibold new-user" *ngIf="randomElement?.fan === true">⭐</span>
+                          </span>
+                          <span *ngIf="showDisplay==='newuser'">
+                            <span class="text-xs font-semibold new-user"
+                              *ngIf="randomElement?.is_new === 'true'">🎉️</span>
+                          </span>
 
-                        <!-- <span class="text-xs font-semibold superfan" *ngIf="item.fan === true">⭐</span> -->
-                        <!-- <span class="text-xs font-semibold new-user" *ngIf="item.channel_emoji !== null"> {{ item.channel_emoji }} </span> -->
-                        <span *ngIf="showDisplay==='superfan'">
-                          <span class="text-xs font-semibold new-user" *ngIf="item.fan === true">⭐</span>
-                        </span>
-                        <span *ngIf="showDisplay==='newuser'">
-                          <span class="text-xs font-semibold new-user" *ngIf="item.is_new === 'true'">🎉️</span>
-                        </span>
-
+                        </div>
+                      </div>
+                      <p class="ion-text-nowrap clamp">
+                        <span class="mr-1 mb-1" *ngIf="randomElement?.is_moderator === 'true'">✳️️</span>
+                        <span style="font-weight: 600 !important; font-size: 1em !important;"> {{
+                          randomElement?.first_name
+                          }} </span>
+                      </p>
+                      <div *ngIf="showcoin">
+                        <p> {{ randomElement?.coin_balance }} ${{coin}}</p>
+                      </div>
+                      <div *ngIf="!showcoin">
+                        <p> {{ convert(randomElement?.minutes) }} </p>
                       </div>
                     </div>
-                    <p class="ion-text-nowrap clamp">
-                      <span class="mr-1 mb-1" *ngIf="item.is_moderator === 'true'">✳️️</span>
-                      <span style="font-weight: 600 !important; font-size: 1em !important;"> {{ item.first_name }}
-                      </span>
-                    </p>
-                    <p> {{ convert(item.minutes) }} </p>
-                  </div>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-card>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-card>
+          </div>
+          <div *ngIf="!showonlyone">
+            <div>
+              <ion-card>
+                <ion-card-header class="ion-margin-bottom">
+                  <ion-card-subtitle>
+                    <span class="ion-float-left">
+                      Speakers <span class="badge"> ({{ modSpeaker.length}}) </span>
+                    </span>
 
-          <ion-card>
-            <ion-card-header>
-              <ion-card-subtitle class="ion-margin-bottom">
-                <span class="ion-float-left">
-                  Followed by the speakers <span class="badge"> ({{ followedBySpeaker.length}}) </span>
-                </span>
+                    <span class="ion-float-right">
+                      <a fill="clear" color="primary" (click)="export6()">Export</a>
+                    </span>
+                    <span class="clear"></span>
+                  </ion-card-subtitle>
+                </ion-card-header>
+                <ion-grid fixed>
+                  <ion-row>
+                    <ion-col size="3" *ngFor="let  item of modSpeaker| orderBy: sortKey:rrverse">
+                      <div class="userlist" (click)="gotoUser(item.user_id)">
+                        <div class="flex justify-center">
+                          <div class="relative">
+                            <span class="overflow-hidden block  ">
+                              <img [src]="item.photo_url || 'https://via.placeholder.com/500'" alt="photo"
+                                class="userImg">
+                            </span>
 
-                <span class="ion-float-right">
-                  <a fill="clear" color="primary" (click)="exportFollowedBySpeakers()">Export</a>
-                </span>
-                <span class="clear"></span>
+                            <!-- <span class="text-xs font-semibold superfan" *ngIf="item.fan === true">⭐</span> -->
+                            <!-- <span class="text-xs font-semibold new-user" *ngIf="item.channel_emoji !== null"> {{ item.channel_emoji }} </span> -->
+                            <span *ngIf="showDisplay==='superfan'">
+                              <span class="text-xs font-semibold new-user" *ngIf="item.fan === true">⭐</span>
+                            </span>
+                            <span *ngIf="showDisplay==='newuser'">
+                              <span class="text-xs font-semibold new-user" *ngIf="item.is_new === 'true'">🎉️</span>
+                            </span>
 
-              </ion-card-subtitle>
-            </ion-card-header>
-            <ion-grid fixed>
-              <ion-row>
-                <ion-col size="3" *ngFor="let  item of followedBySpeaker | orderBy: sortKey:rrverse">
-                  <div class="userlist" [ngClass]="{blink_me: item.is_invited_as_speaker === 'true'}"
-                    (click)="gotoUser(item.user_id)">
-                    <div class="flex justify-center">
-                      <div class="relative">
-                        <span class="overflow-hidden block  ">
-                          <img [src]="item.photo_url || 'http://placehold.it/500x500'" alt="photo" class="userImg">
-                        </span>
-                        <!-- <span class="text-xs font-semibold superfan" *ngIf="item.fan === true">⭐</span> -->
-
-                        <!-- <span class="text-xs font-semibold new-user" *ngIf="item.channel_emoji !== null">
-                                      {{ item.channel_emoji }} </span> -->
-                        <!-- <span class="text-xs font-semibold new-user" *ngIf="item.fan === true">⭐</span>
-                                    <span class="text-xs font-semibold new-user" *ngIf="item.is_new === '1'">🎉️</span> -->
-                        <span *ngIf="showDisplay==='superfan'">
-                          <span class="text-xs font-semibold new-user" *ngIf="item.fan === true">⭐</span>
-                        </span>
-                        <span *ngIf="showDisplay==='newuser'">
-                          <span class="text-xs font-semibold new-user" *ngIf="item.is_new === 'true'">🎉️</span>
-                        </span>
+                          </div>
+                        </div>
+                        <p class="ion-text-nowrap clamp">
+                          <span class="mr-1 mb-1" *ngIf="item.is_moderator === 'true'">✳️️</span>
+                          <span style="font-weight: 600 !important; font-size: 1em !important;"> {{ item.first_name }}
+                          </span>
+                        </p>
+                        <div *ngIf="showcoin">
+                          <p> {{ item.coin_balance }} ${{coin}}</p>
+                        </div>
+                        <div *ngIf="!showcoin">
+                          <p> {{ convert(item.minutes) }} </p>
+                        </div>
                       </div>
-                    </div>
-                    <p class="ion-text-nowrap clamp">
-                      <!-- <span class="mr-1 mb-1" *ngIf="item.is_moderator === 'true'">✳️️</span> -->
-                      <span style="font-weight: 600 !important; font-size: 1em !important;"> {{ item.first_name }}
-                      </span>
-                    </p>
-                    <p> {{ convert(item.minutes) }} </p>
-                  </div>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-card>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-card>
 
-          <ion-card>
-            <ion-card-header>
-              <!-- <ion-card-subtitle>Awesome Subtitle</ion-card-subtitle> -->
-              <ion-card-subtitle class="ion-margin-bottom">
-                <span class="ion-float-left">
-                  Others in the room <span class="badge"> ({{ othersInRoom.length}}) </span>
-                </span>
+              <ion-card *ngIf="followedBySpeaker.length > 0">
+                <ion-card-header>
+                  <ion-card-subtitle class="ion-margin-bottom">
+                    <span class="ion-float-left">
+                      Followed by the speakers <span class="badge"> ({{ followedBySpeaker.length}}) </span>
+                    </span>
 
-                <span class="ion-float-right">
-                  <a fill="clear" color="primary" (click)="exportOthers()">Export</a>
-                </span>
-                <span class="clear"></span>
+                    <span class="ion-float-right">
+                      <a fill="clear" color="primary" (click)="exportFollowedBySpeakers()">Export</a>
+                    </span>
+                    <span class="clear"></span>
 
-              </ion-card-subtitle>
-            </ion-card-header>
-            <ion-grid fixed>
-              <ion-row>
-                <ion-col size="3" *ngFor="let  item of othersInRoom | orderBy: sortKey:rrverse">
-                  <div class="userlist" [ngClass]="{blink_me: item.is_invited_as_speaker === 'true'}"
-                    (click)="gotoUser(item.user_id)">
-                    <div class="flex justify-center">
-                      <div class="relative">
-                        <span class="overflow-hidden block  ">
-                          <img [src]="item.photo_url || 'http://placehold.it/500x500'" alt="photo" class="userImg">
+                  </ion-card-subtitle>
+                </ion-card-header>
+                <ion-grid fixed>
+                  <ion-row>
+                    <ion-col size="3" *ngFor="let  item of followedBySpeaker | orderBy: sortKey:rrverse">
+                      <div class="userlist" [ngClass]="{blink_me: item.is_invited_as_speaker === 'true'}"
+                        (click)="gotoUser(item.user_id)">
+                        <div class="flex justify-center">
+                          <div class="relative">
+                            <span class="overflow-hidden block  ">
+                              <img [src]="item.photo_url || 'https://via.placeholder.com/500'" alt="photo"
+                                class="userImg">
+                            </span>
+                            <!-- <span class="text-xs font-semibold superfan" *ngIf="item.fan === true">⭐</span> -->
 
-
-                        </span>
-
-                        <!-- <span class="text-xs font-semibold new-user" *ngIf="item.channel_emoji !== null" >
-                                      {{ item.channel_emoji }} </span> -->
-                        <!-- <span class="text-xs font-semibold new-user" *ngIf="item.fan === true">⭐</span>-->
-                        <!-- <span class="text-xs font-semibold new-user" *ngIf="item.is_new === 'true'">🎉️</span> -->
-                        <span *ngIf="showDisplay==='superfan'">
-                          <span class="text-xs font-semibold new-user" *ngIf="item.fan === true">⭐</span>
-                        </span>
-                        <span *ngIf="showDisplay==='newuser'">
-                          <span class="text-xs font-semibold new-user" *ngIf="item.is_new === 'true'">🎉️</span>
-                        </span>
+                            <!-- <span class="text-xs font-semibold new-user" *ngIf="item.channel_emoji !== null">
+                                                        {{ item.channel_emoji }} </span> -->
+                            <!-- <span class="text-xs font-semibold new-user" *ngIf="item.fan === true">⭐</span>
+                                                      <span class="text-xs font-semibold new-user" *ngIf="item.is_new === '1'">🎉️</span> -->
+                            <span *ngIf="showDisplay==='superfan'">
+                              <span class="text-xs font-semibold new-user" *ngIf="item.fan === true">⭐</span>
+                            </span>
+                            <span *ngIf="showDisplay==='newuser'">
+                              <span class="text-xs font-semibold new-user" *ngIf="item.is_new === 'true'">🎉️</span>
+                            </span>
+                          </div>
+                        </div>
+                        <p class="ion-text-nowrap clamp">
+                          <!-- <span class="mr-1 mb-1" *ngIf="item.is_moderator === 'true'">✳️️</span> -->
+                          <span style="font-weight: 600 !important; font-size: 1em !important;"> {{ item.first_name }}
+                          </span>
+                        </p>
+                        <div *ngIf="showcoin">
+                          <p> {{ item.coin_balance }} ${{coin}} </p>
+                        </div>
+                        <div *ngIf="!showcoin">
+                          <p> {{ convert(item.minutes) }} </p>
+                        </div>
+                        <!-- <p> {{ convert(item.minutes) }} </p> -->
                       </div>
-                    </div>
-                    <p class="ion-text-nowrap clamp">
-                      <!-- <span class="mr-1 mb-1">✳️️</span> -->
-                      <span style="font-weight: 600 !important; font-size: 1em !important;">{{ item.first_name }}
-                      </span>
-                    </p>
-                    <p> {{ convert(item.minutes) }} </p>
-                  </div>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-card>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-card>
+
+              <ion-card *ngIf=" othersInRoom.length > 0">
+                <ion-card-header>
+                  <!-- <ion-card-subtitle>Awesome Subtitle</ion-card-subtitle> -->
+                  <ion-card-subtitle class="ion-margin-bottom">
+                    <span class="ion-float-left">
+                      Others in the room <span class="badge"> ({{ othersInRoom.length}}) </span>
+                    </span>
+
+                    <span class="ion-float-right">
+                      <a fill="clear" color="primary" (click)="exportOthers()">Export</a>
+                    </span>
+                    <span class="clear"></span>
+
+                  </ion-card-subtitle>
+                </ion-card-header>
+                <ion-grid fixed>
+                  <ion-row>
+                    <ion-col size="3" *ngFor="let  item of othersInRoom | orderBy: sortKey:rrverse">
+                      <div class="userlist" [ngClass]="{blink_me: item.is_invited_as_speaker === 'true'}"
+                        (click)="gotoUser(item.user_id)">
+                        <div class="flex justify-center">
+                          <div class="relative">
+                            <span class="overflow-hidden block  ">
+                              <img [src]="item.photo_url || 'https://via.placeholder.com/500'" alt="photo"
+                                class="userImg">
+
+
+                            </span>
+
+                            <!-- <span class="text-xs font-semibold new-user" *ngIf="item.channel_emoji !== null" >
+                                                        {{ item.channel_emoji }} </span> -->
+                            <!-- <span class="text-xs font-semibold new-user" *ngIf="item.fan === true">⭐</span>-->
+                            <!-- <span class="text-xs font-semibold new-user" *ngIf="item.is_new === 'true'">🎉️</span> -->
+                            <span *ngIf="showDisplay==='superfan'">
+                              <span class="text-xs font-semibold new-user" *ngIf="item.fan === true">⭐</span>
+                            </span>
+                            <span *ngIf="showDisplay==='newuser'">
+                              <span class="text-xs font-semibold new-user" *ngIf="item.is_new === 'true'">🎉️</span>
+                            </span>
+                          </div>
+                        </div>
+                        <p class="ion-text-nowrap clamp">
+                          <!-- <span class="mr-1 mb-1">✳️️</span> -->
+                          <span style="font-weight: 600 !important; font-size: 1em !important;">{{ item.first_name }}
+                          </span>
+                        </p>
+                        <!-- <p> {{ convert(item.minutes) }} </p> -->
+                        <div *ngIf="showcoin">
+                          <p> {{ item.coin_balance }} ${{coin}} </p>
+                        </div>
+                        <div *ngIf="!showcoin">
+                          <p> {{ convert(item.minutes) }} </p>
+                        </div>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-card>
+            </div>
+          </div>
         </div>
       </div>
+
+      <div *ngIf="displayFilter">
+
+      </div>
+
+      <div *ngIf="showonlyone">
+
+      </div>
+
+
 
     </div>
 
@@ -1504,25 +1681,28 @@
                 <h3 *ngIf="item.name">
                   Name: <span style="font-weight: bold"> {{ item.name }} </span>
                 </h3>
-                <p>
+                <p> Users joined: <span style="font-weight: bold"> {{ item.total_joined }} </span> </p>
+                <p> New Users: <span style="font-weight: bold"> {{ item.total_joined_new }} </span> </p>
+                <p> Old Users: <span style="font-weight: bold"> {{ item.total_joined_old }} </span> </p>
+                <!-- <p>
                   Username:
                   <span style="font-weight: bold"> {{ item.username }} </span>
-                </p>
-                <p>
+                </p> -->
+                <!-- <p>
                   User ID:
                   <span style="font-weight: bold"> {{ item.user_id }} </span>
-                </p>
-                <p *ngIf="speakersshowTwitter">
+                </p> -->
+                <!-- <p *ngIf="speakersshowTwitter">
                   Twitter:
                   <span style="font-weight: bold">
                     {{ item.twitter || "_" }}
                   </span>
-                </p>
-                <p *ngIf="speakershowInsta">
+                </p> -->
+                <!-- <p *ngIf="speakershowInsta">
                   Instagram:
                   <span style="font-weight: bold">
                     {{ item.instagram || "_" }}</span>
-                </p>
+                </p> -->
               </ion-label>
             </ion-item>
           </ion-list>

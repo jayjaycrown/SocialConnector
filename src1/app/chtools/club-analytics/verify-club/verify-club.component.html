@@ -1,0 +1,46 @@
+<ion-header class="ion-no-border" mode="ios">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/chtools/club-analytics"></ion-back-button>
+    </ion-buttons>
+    <ion-title> Verify Club </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <!-- <ion-label> -->
+            <h3>We need to verify you have permissions to manage this club.</h3>
+          <!-- </ion-label> -->
+        </ion-item>
+        <ion-item>
+          <!-- <ion-label> -->
+            <h3>Open your Clubhouse app.</h3>
+          <!-- </ion-label> -->
+        </ion-item>
+        <ion-item>
+          <!-- <ion-label> -->
+            <h3>Enter the code below this line and paste it anywhere in your Club Description:</h3>
+          <!-- </ion-label> -->
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h1>{{ code }}</h1>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <!-- <ion-label> -->
+            <h3>After saving your club description, click the "I DID IT" button below:* After completing the verification process,
+              you can
+              remove the code from your club description.</h3>
+          <!-- </ion-label> -->
+        </ion-item>
+        	<ion-button expand="full" color="primary" (click)="verifyClub()">
+        	  I DID IT</ion-button>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

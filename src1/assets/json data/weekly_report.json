@@ -1,0 +1,56 @@
+{
+    "status": "success",
+    "message": "",
+    "result": {
+        "week1": {
+            "total_rooms": 7,
+            "total_listeners": 36619,
+            "total_listened": 270375,
+            "avg_max_listeners": "5,231",
+            "avg": "13.81",
+            "new": "247",
+            "start_date": "2021-06-28",
+            "end_date": "2021-07-04"
+        },
+        "week2": {
+            "total_rooms": 1,
+            "total_listeners": 631,
+            "total_listened": 4534,
+            "avg_max_listeners": "631",
+            "avg": "7.19",
+            "new": "10",
+            "start_date": "2021-07-05",
+            "end_date": "2021-07-11"
+        },
+        "week3": {
+            "total_rooms": 0,
+            "total_listeners": 0,
+            "total_listened": 0,
+            "avg_max_listeners": 0,
+            "avg": 0,
+            "new": null,
+            "start_date": "2021-07-12",
+            "end_date": "2021-07-18"
+        },
+        "week4": {
+            "total_rooms": 0,
+            "total_listeners": 0,
+            "total_listened": 0,
+            "avg_max_listeners": 0,
+            "avg": 0,
+            "new": null,
+            "start_date": "2021-07-19",
+            "end_date": "2021-07-25"
+        },
+        "week5": {
+            "total_rooms": 0,
+            "total_listeners": 0,
+            "total_listened": 0,
+            "avg_max_listeners": 0,
+            "avg": 0,
+            "new": null,
+            "start_date": "2021-07-26",
+            "end_date": "2021-08-01"
+        }
+    }
+}

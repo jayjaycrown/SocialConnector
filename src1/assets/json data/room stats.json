@@ -1,0 +1,126 @@
+{
+  "status": "success",
+  "message": "",
+  "result": [
+    {
+      "id": "51174",
+      "channel": "M1WEK8V2",
+      "date_entered": "2021-07-08 11:50:03",
+      "listeners": "165",
+      "last_listeners": "",
+      "new_listeners": ""
+    },
+    {
+      "id": "51242",
+      "channel": "M1WEK8V2",
+      "date_entered": "2021-07-08 11:55:01",
+      "listeners": "154",
+      "last_listeners": "",
+      "new_listeners": ""
+    },
+    {
+      "id": "51310",
+      "channel": "M1WEK8V2",
+      "date_entered": "2021-07-08 12:00:02",
+      "listeners": "188",
+      "last_listeners": "",
+      "new_listeners": ""
+    },
+    {
+      "id": "51376",
+      "channel": "M1WEK8V2",
+      "date_entered": "2021-07-08 12:05:02",
+      "listeners": "204",
+      "last_listeners": "",
+      "new_listeners": ""
+    },
+    {
+      "id": "51441",
+      "channel": "M1WEK8V2",
+      "date_entered": "2021-07-08 12:10:04",
+      "listeners": "190",
+      "last_listeners": "",
+      "new_listeners": ""
+    },
+    {
+      "id": "51505",
+      "channel": "M1WEK8V2",
+      "date_entered": "2021-07-08 12:15:02",
+      "listeners": "232",
+      "last_listeners": "",
+      "new_listeners": ""
+    },
+    {
+      "id": "51568",
+      "channel": "M1WEK8V2",
+      "date_entered": "2021-07-08 12:20:02",
+      "listeners": "243",
+      "last_listeners": "",
+      "new_listeners": ""
+    },
+    {
+      "id": "51653",
+      "channel": "M1WEK8V2",
+      "date_entered": "2021-07-08 12:25:02",
+      "listeners": "240",
+      "last_listeners": "",
+      "new_listeners": ""
+    },
+    {
+      "id": "51747",
+      "channel": "M1WEK8V2",
+      "date_entered": "2021-07-08 12:30:03",
+      "listeners": "257",
+      "last_listeners": "",
+      "new_listeners": ""
+    },
+    {
+      "id": "51838",
+      "channel": "M1WEK8V2",
+      "date_entered": "2021-07-08 12:35:06",
+      "listeners": "270",
+      "last_listeners": "",
+      "new_listeners": ""
+    },
+    {
+      "id": "51927",
+      "channel": "M1WEK8V2",
+      "date_entered": "2021-07-08 12:40:03",
+      "listeners": "256",
+      "last_listeners": "",
+      "new_listeners": ""
+    },
+    {
+      "id": "52015",
+      "channel": "M1WEK8V2",
+      "date_entered": "2021-07-08 12:45:02",
+      "listeners": "264",
+      "last_listeners": "",
+      "new_listeners": ""
+    },
+    {
+      "id": "52102",
+      "channel": "M1WEK8V2",
+      "date_entered": "2021-07-08 12:50:02",
+      "listeners": "266",
+      "last_listeners": "",
+      "new_listeners": ""
+    },
+    {
+      "id": "52189",
+      "channel": "M1WEK8V2",
+      "date_entered": "2021-07-08 12:55:02",
+      "listeners": "275",
+      "last_listeners": "",
+      "new_listeners": ""
+    },
+    {
+      "id": "52273",
+      "channel": "M1WEK8V2",
+      "date_entered": "2021-07-08 13:00:01",
+      "listeners": "248",
+      "last_listeners": "",
+      "new_listeners": ""
+    }
+  ]
+}

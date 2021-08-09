@@ -1,0 +1,56 @@
+<ion-content class="ion-padding">
+
+  <div class="logo">
+
+  </div>
+  <ion-card>
+    <ion-card-header>
+      <!-- <ion-card-title>Welcome</ion-card-title> -->
+      <ion-card-subtitle class="ion-text-center">Please Enter the reset code sent to your email</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <form name="form" #resetForm="ngForm" (ngSubmit)="resetForm.valid && onSubmit()">
+        <ion-item>
+          <ion-label position="floating">Reset Code</ion-label>
+          <ion-input name="resetCode" [(ngModel)]="model.resetCode" #resetCode="ngModel" minlength="6"
+            [ngClass]="{ 'is-invalid': resetForm.submitted && resetCode.invalid }" type="password" autocomplete="off"
+            required></ion-input>
+        </ion-item>
+        <div *ngIf="resetCode.invalid && (resetCode.dirty || resetCode.touched)" class="errors">
+          <span *ngIf="resetCode.errors?.required">Reset Code is required</span>
+          <span *ngIf="resetCode.errors?.minlength">Reset Code cannot be less than 6 characters</span>
+          <!-- <span *ngIf="email.errors?.pattern">Email is invalid</span> -->
+        </div>
+
+        <ion-item>
+          <ion-label position="floating">New password</ion-label>
+          <ion-input minlength="6" name="newPassword" [(ngModel)]="model.newPassword" #newPassword="ngModel"
+            [ngClass]="{ 'is-invalid': resetForm.submitted && newPassword.invalid }" required
+            type="{{showPass ? 'text' : 'password'}}" autocomplete="off"></ion-input>
+          <ion-icon size="large" style="margin-top: 16px;" item-end slot="end" name="{{showPass ? 'eye-off' : 'eye'}}"
+            (click)="showPass=!showPass"></ion-icon>
+        </ion-item>
+        <div *ngIf="newPassword.invalid && (newPassword.dirty || newPassword.touched)" class="errors">
+          <span *ngIf="newPassword.errors?.minlength">Password cannot be less than 6 characters</span>
+          <span *ngIf="newPassword.errors?.required">Password is required</span>
+        </div>
+        <br>
+
+        <ion-button type="submit" [disabled]="!resetForm.valid" expand="full" color="primary">Submit</ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="6">
+
+      </ion-col>
+      <ion-col size="6">
+        <h5 class="ion-text-center" style="font-size: .9em !important;">
+          <a [routerLink]="['/auth']" routerLinkActive="router-link-active">Back to login</a>
+        </h5>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>
