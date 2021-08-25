@@ -43,7 +43,7 @@ export class ClubDetailsComponent implements OnInit {
 
   public barChartData: ChartDataSets[] = [
     { data: this.newMember, label: 'New Members' },
-    { data: this.newFollower, label: 'New Followers' },
+    // { data: this.newFollower, label: 'New Followers' },
   ];
   results: any = {};
   durationDays: string;
