@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Notification Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+ 
+<ion-content>
+  <!-- My Id from push: {{ id }} -->
+ <div [innerHtml]="id" style="text-align: center;padding: 10px;">
+
+ </div>
+  <!-- <ion-button (click)="resetBadgeCount()" expand="block">
+    Reset Badge Count
+  </ion-button> -->
+</ion-content>

@@ -1301,7 +1301,6 @@ ion-list {
   --border-radius: 10px !important;
 }
 ion-item.nocolor {
-  --background: #fff;
   --border-radius: 0 0 !important;
 }
 a {

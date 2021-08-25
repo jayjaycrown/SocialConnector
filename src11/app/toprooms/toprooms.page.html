@@ -1,0 +1,253 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>Rooms Stats</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <form name="form" #maxroomForm="ngForm" (ngSubmit)="maxroomForm.valid && onSubmit(maxroomForm.value)">
+      <ion-item>
+        <ion-label position="fixed">Select Date</ion-label>
+        <ion-datetime name="selectedDate" [(ngModel)]="model.date" #selectedDate="ngModel" displayFormat="MM/DD/YYYY"
+          min="2016-01-01" [max]="date" required>
+        </ion-datetime>
+      </ion-item>
+      <ion-button type="submit" [disabled]="!maxroomForm.valid" expand="full" color="primary">Submit
+      </ion-button>
+    </form>
+  </ion-card>
+  <br>
+
+  <div style="margin: 16px 9px !important">
+    <ion-text color="primary">
+      <h5 style="margin-bottom: 0">
+        <span> Max. tracked rooms for the week </span>
+      </h5>
+    </ion-text>
+    <div class="clear"></div>
+    <!-- <br> -->
+  </div>
+  <ion-card>
+    <ion-card-header>
+      <div class="tabbar">
+        <ion-segment [(ngModel)]="type" (ionChange)="segmentChanged($event)" swipeGesture="true">
+          <ion-segment-button value="ch">
+            <ion-label>Clubhouse</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="gr">
+            <ion-label>GreenRoom</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </div>
+
+      <div class="clear"></div>
+    </ion-card-header>
+    <div [ngSwitch]="type">
+      <div *ngSwitchCase="'ch'">
+        <canvas baseChart height="300" [datasets]="lineChartData" [labels]="lineChartLabels"
+          [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType"
+          [plugins]="lineChartPlugins"></canvas>
+        <div style="text-align: center !important; padding: 10px" (click)="randomize()">
+          <a>
+            <ion-icon slot="start" name="swap-horizontal" color="primary"></ion-icon>
+          </a>
+          <ion-text color="primary" style="display: block !important">
+            <p style="font-size: 0.6em !important; margin: 0; padding: 0">
+              Change Style
+            </p>
+          </ion-text>
+        </div>
+      </div>
+
+      <div *ngSwitchCase="'gr'">
+        <canvas baseChart height="300" [datasets]="lineChartDatagr" [labels]="lineChartLabelsgr"
+          [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType"
+          [plugins]="lineChartPlugins"></canvas>
+        <div style="text-align: center !important; padding: 10px" (click)="randomize()">
+          <a>
+            <ion-icon slot="start" name="swap-horizontal" color="primary"></ion-icon>
+          </a>
+          <ion-text color="primary" style="display: block !important">
+            <p style="font-size: 0.6em !important; margin: 0; padding: 0">
+              Change Style
+            </p>
+          </ion-text>
+        </div>
+      </div>
+    </div>
+  </ion-card>
+
+  <br>
+
+  <div style="margin: 16px 9px !important">
+    <ion-text color="primary">
+      <h5 style="margin-bottom: 0">
+        <span>Max. users for the week </span>
+      </h5>
+    </ion-text>
+    <div class="clear"></div>
+    <!-- <br> -->
+  </div>
+  <ion-card>
+    <ion-card-header>
+      <div class="tabbar">
+        <ion-segment [(ngModel)]="type" (ionChange)="segmentChanged($event)" swipeGesture="true">
+          <ion-segment-button value="ch">
+            <ion-label>Clubhouse</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="gr">
+            <ion-label>GreenRoom</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </div>
+
+      <div class="clear"></div>
+    </ion-card-header>
+    <div [ngSwitch]="type">
+      <div *ngSwitchCase="'ch'">
+        <canvas baseChart height="300" [datasets]="lineChartData4" [labels]="lineChartLabels4"
+          [options]="lineChartOptions" [colors]="lineChartColors4" [legend]="lineChartLegend"
+          [chartType]="lineChartType4" [plugins]="lineChartPlugins"></canvas>
+      </div>
+
+      <div *ngSwitchCase="'gr'">
+        <canvas baseChart height="300" [datasets]="lineChartData4gr" [labels]="lineChartLabels4gr"
+          [options]="lineChartOptions" [colors]="lineChartColors4" [legend]="lineChartLegend"
+          [chartType]="lineChartType4" [plugins]="lineChartPlugins"></canvas>
+
+      </div>
+    </div>
+    <div style="text-align: center !important; padding: 10px" (click)="randomize4()">
+      <a>
+        <ion-icon slot="start" name="swap-horizontal" color="primary"></ion-icon>
+      </a>
+      <ion-text color="primary" style="display: block !important">
+        <p style="font-size: 0.6em !important; margin: 0; padding: 0">
+          Change Style
+        </p>
+      </ion-text>
+    </div>
+  </ion-card>
+
+  <br>
+
+
+
+  <div style="margin: 16px 9px !important">
+    <ion-text color="primary">
+      <h5 style="margin-bottom: 0">
+        <span>Tracked rooms count </span>
+      </h5>
+    </ion-text>
+    <div class="clear"></div>
+    <!-- <br> -->
+  </div>
+  <ion-card>
+    <ion-card-header>
+      <div class="tabbar">
+        <ion-segment [(ngModel)]="type" (ionChange)="segmentChanged($event)" swipeGesture="true">
+          <ion-segment-button value="ch">
+            <ion-label>Clubhouse</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="gr">
+            <ion-label>GreenRoom</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </div>
+
+      <div class="clear"></div>
+    </ion-card-header>
+    <div [ngSwitch]="type">
+      <div *ngSwitchCase="'ch'">
+        <canvas baseChart height="300" [datasets]="lineChartData2" [labels]="lineChartLabels2"
+          [options]="lineChartOptions" [colors]="lineChartColors2" [legend]="lineChartLegend"
+          [chartType]="lineChartType2" [plugins]="lineChartPlugins"></canvas>
+        <!-- <div style="text-align: center !important; padding: 10px" (click)="randomize()">
+          <a>
+            <ion-icon slot="start" name="swap-horizontal" color="primary"></ion-icon>
+          </a>
+          <ion-text color="primary" style="display: block !important">
+            <p style="font-size: 0.6em !important; margin: 0; padding: 0">
+              Change Style
+            </p>
+          </ion-text>
+        </div> -->
+      </div>
+
+      <div *ngSwitchCase="'gr'">
+        <canvas baseChart height="300" [datasets]="lineChartData2gr" [labels]="lineChartLabels2gr"
+          [options]="lineChartOptions" [colors]="lineChartColors2" [legend]="lineChartLegend"
+          [chartType]="lineChartType2" [plugins]="lineChartPlugins"></canvas>
+
+      </div>
+    </div>
+    <div style="text-align: center !important; padding: 10px" (click)="randomize2()">
+      <a>
+        <ion-icon slot="start" name="swap-horizontal" color="primary"></ion-icon>
+      </a>
+      <ion-text color="primary" style="display: block !important">
+        <p style="font-size: 0.6em !important; margin: 0; padding: 0">
+          Change Style
+        </p>
+      </ion-text>
+    </div>
+  </ion-card>
+
+  <br>
+
+
+  <div style="margin: 16px 9px !important">
+    <ion-text color="primary">
+      <h5 style="margin-bottom: 0">
+        <span>Users in tracked rooms </span>
+      </h5>
+    </ion-text>
+    <div class="clear"></div>
+    <!-- <br> -->
+  </div>
+  <ion-card>
+    <ion-card-header>
+      <div class="tabbar">
+        <ion-segment [(ngModel)]="type" (ionChange)="segmentChanged($event)" swipeGesture="true">
+          <ion-segment-button value="ch">
+            <ion-label>Clubhouse</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="gr">
+            <ion-label>GreenRoom</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </div>
+
+      <div class="clear"></div>
+    </ion-card-header>
+    <div [ngSwitch]="type">
+      <div *ngSwitchCase="'ch'">
+        <canvas baseChart height="300" [datasets]="lineChartData3" [labels]="lineChartLabels3"
+          [options]="lineChartOptions" [colors]="lineChartColors3" [legend]="lineChartLegend"
+          [chartType]="lineChartType3" [plugins]="lineChartPlugins"></canvas>
+      </div>
+
+      <div *ngSwitchCase="'gr'">
+        <canvas baseChart height="300" [datasets]="lineChartData3gr" [labels]="lineChartLabels3gr"
+          [options]="lineChartOptions" [colors]="lineChartColors3" [legend]="lineChartLegend"
+          [chartType]="lineChartType3" [plugins]="lineChartPlugins"></canvas>
+
+      </div>
+    </div>
+    <div style="text-align: center !important; padding: 10px" (click)="randomize3()">
+      <a>
+        <ion-icon slot="start" name="swap-horizontal" color="primary"></ion-icon>
+      </a>
+      <ion-text color="primary" style="display: block !important">
+        <p style="font-size: 0.6em !important; margin: 0; padding: 0">
+          Change Style
+        </p>
+      </ion-text>
+    </div>
+  </ion-card>
+
+  <br>
+
+
+</ion-content>

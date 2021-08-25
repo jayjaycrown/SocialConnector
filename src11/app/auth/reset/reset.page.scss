@@ -1,0 +1,23 @@
+ion-content {
+  .logo {
+    /* width: 30vh; */
+    height: 30vh;
+    margin: 0vh auto;
+    text-align: center;
+    // background-color: black;
+    background: url("../../../assets/img/socialConnector.jpeg") 0px 0%/100% 100% no-repeat;
+  }
+}
+
+ion-item.mb {
+  margin-bottom: 20px !important;
+}
+
+.errors {
+  font-size: small;
+  color: red !important;
+  // background: var(--ion-color-danger);
+  padding-left: 15px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}

@@ -1,0 +1,26 @@
+.header {
+  width: 100%;
+  height: 20vh;
+  margin: 0 auto;
+  padding: 10px;
+  // background: var(--ion-color-primary);
+  background: url("../../../assets/img/gr.jpg") 0px 0%/100% 100% no-repeat;
+  color: #fff !important;
+}
+
+ion-item,
+ion-list {
+  --background: var(--ion-background-color) !important;
+  --border-radius: 10px 10px 0 0 !important;
+  color: var(--ion-color-primary) !important;
+}
+
+.selected {
+  // border-left: 3px solid var(--ion-color-primary);
+  border-left: 3px solid var(--ion-color-primary);
+  color: #000 !important;
+  // background: var(--ion-color-primary) !important;
+}
+.selected ion-icon {
+  color: #000 !important;
+}

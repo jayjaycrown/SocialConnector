@@ -1,0 +1,526 @@
+<ion-header class="ion-no-border" mode="md">
+  <ion-toolbar>
+    <ion-title>Hello {{ name }} </ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear">
+        <ion-icon slot="icon-only" name="notifications"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-card style="border-radius: 20px">
+    <ion-card-header>
+      <ion-card-subtitle>
+        <ion-item>
+          <ion-label>
+            <p>{{ date | date: 'dd MMMM, YYYY' }}</p>
+            <h1></h1>
+          </ion-label>
+        </ion-item>
+      </ion-card-subtitle>
+      <ion-card-subtitle>
+        <div class="tabbar">
+          <ion-segment [(ngModel)]="type2" (ionChange)="segmentChanged($event)" swipeGesture="true">
+            <ion-segment-button value="ch">
+              <ion-label>Clubhouse</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="gr">
+              <ion-label>GreenRoom</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+        </div>
+
+        <div class="clear"></div>
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content [ngSwitch]="type2" class="ion-no-padding">
+      <div *ngSwitchCase="'ch'">
+        <ion-grid class="noPM" *ngIf="show">
+          <ion-row>
+            <ion-col size="6">
+              <ion-item class="ion-text-center" lines="none">
+                <ion-label>
+                  <p>No of Rooms</p>
+                  <h1>{{ current.total_rooms }}</h1>
+                  <ion-button expand="full" fill="clear">
+                    <span [class]="totalColor[0]">
+                      <ion-icon [name]="totalColor[1]"></ion-icon>{{ percTotal
+                      }}%
+                    </span>
+                  </ion-button>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+
+            <ion-col size="6">
+              <ion-item class="ion-text-center" lines="none">
+                <ion-label>
+                  <p>Total Listeners</p>
+                  <h1>{{ current.total_listeners | number}}</h1>
+                  <!-- <h2><span class="red"><ion-icon name="arrow-down-outline"></ion-icon>34%</span></h2> -->
+                  <ion-button expand="full" fill="clear">
+                    <span [class]="listenerColor[0]">
+                      <ion-icon [name]="listenerColor[1]"></ion-icon>{{
+                      total_listeners }}%
+                    </span>
+                  </ion-button>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="6">
+              <ion-item class="ion-text-center" lines="none">
+                <ion-label>
+                  <p>Avg Listened time</p>
+                  <h1>{{ convert(current.avg) }}</h1>
+                  <ion-button expand="block" fill="clear" shape="round">
+                    <span [class]="avgColor[0]">
+                      <ion-icon [name]="avgColor[1]"></ion-icon>{{ avg }}%
+                    </span>
+                  </ion-button>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+
+            <ion-col size="6">
+              <ion-item class="ion-text-center" lines="none">
+                <ion-label>
+                  <p>New Followers</p>
+                  <h1>{{ current.new || 0 | number}}</h1>
+                  <h2>
+                    <ion-button expand="block" fill="clear" shape="round">
+                      <span [class]="newColor[0]">
+                        <ion-icon [name]="newColor[1]"></ion-icon>{{ new}}%
+                      </span>
+                    </ion-button>
+                  </h2>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+
+      <div *ngSwitchCase="'gr'">
+        <ion-grid class="noPM" *ngIf="!shownone">
+          <ion-row>
+            <ion-col size="6">
+              <ion-item class="ion-text-center" lines="none">
+                <ion-label>
+                  <p>No of Rooms</p>
+                  <h1>{{ currentgr.total_rooms }}</h1>
+                  <ion-button expand="full" fill="clear">
+                    <span [class]="totalColorgr[0]">
+                      <ion-icon [name]="totalColorgr[1]"></ion-icon>{{
+                      percTotalgr }}%
+                    </span>
+                  </ion-button>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+
+            <ion-col size="6">
+              <ion-item class="ion-text-center" lines="none">
+                <ion-label>
+                  <p>Total Listeners</p>
+                  <h1>{{ currentgr.total_listeners | number}}</h1>
+                  <!-- <h2><span class="red"><ion-icon name="arrow-down-outline"></ion-icon>34%</span></h2> -->
+                  <ion-button expand="full" fill="clear">
+                    <span [class]="listenerColorgr[0]">
+                      <ion-icon [name]="listenerColorgr[1]"></ion-icon>{{
+                      total_listenersgr }}%
+                    </span>
+                  </ion-button>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="6">
+              <ion-item class="ion-text-center" lines="none">
+                <ion-label>
+                  <p>Avg Listened time</p>
+                  <h1>{{ convert(currentgr.avg) }}</h1>
+                  <ion-button expand="block" fill="clear" shape="round">
+                    <span [class]="avgColorgr[0]">
+                      <ion-icon [name]="avgColorgr[1]"></ion-icon>{{ avggr }}%
+                    </span>
+                  </ion-button>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+
+            <ion-col size="6">
+              <ion-item class="ion-text-center" lines="none">
+                <ion-label>
+                  <p>New Followers</p>
+                  <h1>{{ currentgr.new | number}}</h1>
+                  <h2>
+                    <ion-button expand="block" fill="clear" shape="round">
+                      <span [class]="newColorgr[0]">
+                        <ion-icon [name]="newColorgr[1]"></ion-icon>{{ newgr}}%
+                      </span>
+                    </ion-button>
+                  </h2>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+      <div class="ion-text-center">
+        <p style="font-size: .7em !important;">All % data are compared to last week</p>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- tools -->
+  <div style="margin-top: 4vh">
+    <ion-text color="primary">
+      <h4 style="margin-bottom: 0, margin" class="ion-margin-start">TOOLS</h4>
+    </ion-text>
+    <ion-grid fixed>
+      <ion-row class="mt0">
+        <ion-col size="6">
+          <ion-card color="light" class="toolscard bgCh" [routerLink]="['/tabs/chtools']"
+            routerLinkActive="router-link-active">
+            <ion-img src="assets/img/ch.jpg"></ion-img>
+          </ion-card>
+        </ion-col>
+        <ion-col size="6">
+          <ion-card color="success" class="toolscard bgGr" [routerLink]="['/tabs/grtools']"
+            routerLinkActive="router-link-active">
+            <ion-img src="assets/img/gr.jpg"></ion-img>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <!-- Canva -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>
+        <div class="tabbar">
+          <ion-segment [(ngModel)]="type3" (ionChange)="segmentChanged($event)" swipeGesture="true">
+            <ion-segment-button value="ch">
+              <ion-label>Clubhouse</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="gr">
+              <ion-label>GreenRoom</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+        </div>
+
+        <div class="clear"></div>
+      </ion-card-subtitle>
+      <!-- <ion-card-subtitle>
+
+      </ion-card-subtitle> -->
+    </ion-card-header>
+    <div [ngSwitch]="type3">
+      <div *ngSwitchCase="'ch'">
+        <div *ngIf="show">
+          <div class="ion-text-center">
+            <p>Weekly Report for {{ month1 }}</p>
+          </div>
+
+          <ion-grid fixed>
+            <ion-row>
+              <ion-col size="6">
+                <ion-item lines="none" class="selectFilter">
+                  <ion-select mode="ios" value="month" [interfaceOptions]="customActionSheetOptions"
+                    interface="action-sheet" placeholder="Select Month" ngModel="month1"
+                    (ngModelChange)="selectAMonth($event)">
+                    <ion-select-option *ngFor="let item of selectMonth" [value]="item.value">
+                      {{ item.name }}
+                    </ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-col>
+              <ion-col size="6">
+                <ion-item lines="none" class="selectFilter">
+                  <ion-select mode="md" [interfaceOptions]="customPopoverOptions" interface="popover"
+                    value="selectedData" placeholder="Filter" [(ngModel)]="selectedData"
+                    (ngModelChange)="changedData($event)">
+                    <ion-select-option value="total_rooms" selected="true">Total Rooms</ion-select-option>
+                    <ion-select-option value="total_listeners">Total Listeners</ion-select-option>
+                    <ion-select-option value="total_listened">Total Listened Time</ion-select-option>
+                    <ion-select-option value="avg_max_listeners">Avg Max Listeners</ion-select-option>
+
+                    <ion-select-option value="avg">Avg Listened Time</ion-select-option>
+                    <ion-select-option value="new">New Followers</ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+
+
+          <div *ngIf="showData === 'total_rooms'">
+            <canvas baseChart height="300" [datasets]="lineChartData" [labels]="lineChartLabels"
+              [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend"
+              [chartType]="lineChartType" [plugins]="lineChartPlugins"></canvas>
+          </div>
+          <div *ngIf="showData === 'total_listeners'">
+            <canvas baseChart height="300" [datasets]="lineChartData2" [labels]="lineChartLabels"
+              [options]="lineChartOptions" [colors]="lineChartColors2" [legend]="lineChartLegend"
+              [chartType]="lineChartType" [plugins]="lineChartPlugins"></canvas>
+          </div>
+
+          <div *ngIf="showData === 'total_listened'">
+            <canvas baseChart height="300" [datasets]="lineChartData3" [labels]="lineChartLabels"
+              [options]="lineChartOptions" [colors]="lineChartColors3" [legend]="lineChartLegend"
+              [chartType]="lineChartType" [plugins]="lineChartPlugins"></canvas>
+          </div>
+
+          <div *ngIf="showData === 'avg_max_listeners'">
+            <canvas baseChart height="300" [datasets]="lineChartData4" [labels]="lineChartLabels"
+              [options]="lineChartOptions" [colors]="lineChartColors4" [legend]="lineChartLegend"
+              [chartType]="lineChartType" [plugins]="lineChartPlugins"></canvas>
+          </div>
+
+          <div *ngIf="showData === 'avg'">
+            <canvas baseChart height="300" [datasets]="lineChartData5" [labels]="lineChartLabels"
+              [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend"
+              [chartType]="lineChartType" [plugins]="lineChartPlugins"></canvas>
+          </div>
+
+          <div *ngIf="showData === 'new'">
+            <canvas baseChart height="300" [datasets]="lineChartData6" [labels]="lineChartLabels"
+              [options]="lineChartOptions" [colors]="lineChartColors2" [legend]="lineChartLegend"
+              [chartType]="lineChartType" [plugins]="lineChartPlugins"></canvas>
+          </div>
+          <div style="text-align: center !important; padding: 10px" (click)="randomize()">
+            <a>
+              <ion-icon slot="start" name="swap-horizontal" color="primary"></ion-icon>
+            </a>
+            <ion-text color="primary" style="display: block !important">
+              <p style="font-size: 0.6em !important; margin: 0; padding: 0">
+                Change Style
+              </p>
+            </ion-text>
+          </div>
+        </div>
+      </div>
+      <div *ngSwitchCase="'gr'">
+        <div *ngIf="!shownone">
+          <div class="ion-text-center">
+            <p>Weekly Report for {{ month2 }}</p>
+          </div>
+          <ion-grid fixed>
+            <ion-row>
+              <ion-col size="6">
+                <ion-item lines="none" class="selectFilter">
+                  <ion-select mode="ios" value="month" [interfaceOptions]="customActionSheetOptions"
+                    interface="action-sheet" placeholder="Select Month" ngModel="month2"
+                    (ngModelChange)="selectAMonthgr($event)">
+                    <ion-select-option *ngFor="let item of selectMonth" [value]="item.value">
+                      {{ item.name }}
+                    </ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-col>
+              <ion-col size="6">
+                <ion-item lines="none" class="selectFilter">
+                  <ion-select mode="md" [interfaceOptions]="customPopoverOptions" interface="popover"
+                    value="selectedData" placeholder="Filter" [(ngModel)]="selectedData"
+                    (ngModelChange)="changedData($event)">
+                    <ion-select-option value="total_rooms" selected="true">Total Rooms</ion-select-option>
+                    <ion-select-option value="total_listeners">Total Listeners</ion-select-option>
+                    <ion-select-option value="total_listened">Total Listened Time</ion-select-option>
+                    <ion-select-option value="avg_max_listeners">Avg Max Listeners</ion-select-option>
+
+                    <ion-select-option value="avg">Avg Listened Time</ion-select-option>
+                    <ion-select-option value="new">New Followers</ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          <div *ngIf="showData === 'total_rooms'">
+            <canvas baseChart height="300" [datasets]="lineChartDatagr" [labels]="lineChartLabels"
+              [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend"
+              [chartType]="lineChartType" [plugins]="lineChartPlugins"></canvas>
+          </div>
+          <div *ngIf="showData === 'total_listeners'">
+            <canvas baseChart height="300" [datasets]="lineChartData2gr" [labels]="lineChartLabels"
+              [options]="lineChartOptions" [colors]="lineChartColors2" [legend]="lineChartLegend"
+              [chartType]="lineChartType" [plugins]="lineChartPlugins"></canvas>
+          </div>
+
+          <div *ngIf="showData === 'total_listened'">
+            <canvas baseChart height="300" [datasets]="lineChartData3gr" [labels]="lineChartLabels"
+              [options]="lineChartOptions" [colors]="lineChartColors3" [legend]="lineChartLegend"
+              [chartType]="lineChartType" [plugins]="lineChartPlugins"></canvas>
+          </div>
+
+          <div *ngIf="showData === 'avg_max_listeners'">
+            <canvas baseChart height="300" [datasets]="lineChartData4gr" [labels]="lineChartLabels"
+              [options]="lineChartOptions" [colors]="lineChartColors4" [legend]="lineChartLegend"
+              [chartType]="lineChartType" [plugins]="lineChartPlugins"></canvas>
+          </div>
+
+          <div *ngIf="showData === 'avg'">
+            <canvas baseChart height="300" [datasets]="lineChartData5gr" [labels]="lineChartLabels"
+              [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend"
+              [chartType]="lineChartType" [plugins]="lineChartPlugins"></canvas>
+          </div>
+
+          <div *ngIf="showData === 'new'">
+            <canvas baseChart height="300" [datasets]="lineChartData6gr" [labels]="lineChartLabels"
+              [options]="lineChartOptions" [colors]="lineChartColors2" [legend]="lineChartLegend"
+              [chartType]="lineChartType" [plugins]="lineChartPlugins"></canvas>
+          </div>
+          <div style="text-align: center !important; padding: 10px" (click)="randomize()">
+            <a>
+              <ion-icon slot="start" name="swap-horizontal" color="primary"></ion-icon>
+            </a>
+            <ion-text color="primary" style="display: block !important">
+              <p style="font-size: 0.6em !important; margin: 0; padding: 0">
+                Change Style
+              </p>
+            </ion-text>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </ion-card>
+
+  <!-- tOP ROOMS -->
+  <div style="margin: 5vh 16px 16px !important">
+    <ion-text color="primary">
+      <h4 style="margin-bottom: 0">
+        <span class="ion-float-left"> TOP ROOMS </span>
+        <!-- <span class="ion-float-right">
+          <a [routerLink]="['/tabs/toprooms']" routerLinkActive="router-link-active" class="moreButton">More</a></span> -->
+      </h4>
+    </ion-text>
+    <div class="clear"></div>
+    <br>
+
+    <div class="tabbar">
+      <ion-segment [(ngModel)]="type" (ionChange)="segmentChanged($event)" swipeGesture="true">
+        <ion-segment-button value="ch">
+          <ion-label>Clubhouse</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="gr">
+          <ion-label>GreenRoom</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+
+    <div class="clear"></div>
+  </div>
+
+  <div [ngSwitch]="type">
+    <div *ngSwitchCase="'ch'">
+      <div *ngIf="show">
+        <div *ngFor="let item of fullData">
+          <ion-card (click)="onClick(item.channel)">
+            <ion-card-content>
+              <ion-item lines="none">
+                <ion-label class="ion-text-wrap">
+                  <h2>{{ item.topic }}</h2>
+                </ion-label>
+              </ion-item>
+              <ion-item lines="none">
+                <ion-label>
+                  <span class="ion-align-items-center">
+                    <ion-icon name="chatbox-ellipses-outline"></ion-icon>
+                  </span>
+                  {{ item.end_total_speakers }}
+                </ion-label>
+                <ion-label>
+                  <ion-icon name="people-outline"></ion-icon> {{
+                  item.end_total_listeners }}
+                </ion-label>
+                <ion-label>
+                  <ion-icon name="time-outline"></ion-icon> {{
+                  getDateDiff(item.date_started, item.date_ended)}}
+                </ion-label>
+              </ion-item>
+              <ion-item lines="none">
+
+                <ion-label>
+                  <p>Date: {{ item.date_ended }}</p>
+                </ion-label>
+              </ion-item>
+              <!-- <div class="image">
+                      <span *ngFor="let moderator of allmoderators">
+                        <img
+                          [src]="moderator.photo_url"
+                          class="creators"
+                          alt=""
+                          srcset=""
+                        />
+                      </span>
+                      <span
+                        style="
+                          float: right;
+                          color: #fff !important;
+                          background-color: rgb(122, 121, 121);
+                          border-radius: 50%;
+                          margin-top: 12px;
+                          padding: 5px;
+                        "
+                        *ngIf="modLength > 5"
+                        >+{{ modLength - 5 }}
+                      </span>
+                      <div class="clear"></div>
+                    </div> -->
+            </ion-card-content>
+          </ion-card>
+        </div>
+      </div>
+    </div>
+
+    <div *ngSwitchCase="'gr'">
+      <div *ngIf="!shownone">
+        <div *ngFor="let item of fullDatagr">
+          <ion-card (click)="onClick2(item.channel)">
+            <ion-card-content>
+              <ion-item lines="none">
+                <ion-label class="ion-text-wrap">
+                  <h2>{{ item.topic }}</h2>
+                </ion-label>
+              </ion-item>
+              <ion-item lines="none">
+                <ion-label>
+                  <span class="ion-align-items-center">
+                    <ion-icon name="chatbox-ellipses-outline"></ion-icon>
+                  </span>
+                  {{ item.end_total_speakers }}
+                </ion-label>
+                <ion-label>
+                  <ion-icon name="people-outline"></ion-icon> {{
+                  item.end_total_listeners }}
+                </ion-label>
+                <ion-label>
+                  <ion-icon name="time-outline"></ion-icon> {{
+                  getDateDiff(item.date_started, item.date_ended)}}
+                </ion-label>
+              </ion-item>
+              <ion-item lines="none">
+
+                <ion-label>
+                  <p>Date: {{ item.date_ended }}</p>
+                </ion-label>
+              </ion-item>
+            </ion-card-content>
+          </ion-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

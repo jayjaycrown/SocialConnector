@@ -1,0 +1,129 @@
+<ion-header class="ion-no-border" mode="ios">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button autoHide="false"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      History
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" [routerLink]="['/tabs']" routerLinkActive="router-link-active" routerDirection="back">
+        <ion-icon name="close" slot="icon-only" style="width: 36px !important; height: 36px !important;"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<!-- <ion-content *ngIf="!setDisplay">
+  <ion-progress-bar [type]="'indeterminate'"></ion-progress-bar>
+</ion-content> -->
+<ion-content>
+  <div class="ion-padding">
+    <ion-card>
+      <ion-card-content>
+        <form name="form" #historyForm="ngForm" (ngSubmit)="historyForm.valid && onSubmit()">
+          <ion-item>
+            <ion-label position="floating">MM/DD/YYYY</ion-label>
+            <ion-datetime name="date" [(ngModel)]="model.date" #email="ngModel" displayFormat="MM/DD/YYYY"
+              min="2016-01-01" max="2022-12-31" required>
+            </ion-datetime>
+          </ion-item>
+          <ion-button type="submit" [disabled]="!historyForm.valid" expand="full" color="primary">Get History
+          </ion-button>
+        </form>
+
+      </ion-card-content>
+    </ion-card>
+  </div>
+  <br>
+  <ion-item lines="none" *ngFor="let allRoom of allRooms">
+    <ion-card (click)="analyze(allRoom.channel)" class="test">
+      <ion-card-header class="ion-text-center">
+        <ion-card-title>{{ allRoom.topic }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-label>
+              <!-- <p></p> -->
+              <h3>
+                <span class="ion-float-left">Total Listeners</span>
+                <span class="ion-float-right">{{ allRoom.end_total_listeners }}</span>
+              </h3>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <!-- <p></p> -->
+              <h3>
+                <span class="ion-float-left">Total Speakers</span>
+                <span class="ion-float-right">{{ allRoom.end_total_speakers }}</span>
+              </h3>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <h3>
+                <span class="ion-float-left">Room Started</span>
+                <span class="ion-float-right">{{ allRoom.date_started }}</span>
+              </h3>
+            </ion-label>
+          </ion-item>
+          <div *ngIf="allRoom.date_ended;else templateName">
+            <ion-item>
+              <ion-label>
+                <!-- <p></p> -->
+                <h3>
+                  <span class="ion-float-left">Room Status</span>
+                  <span class="ion-float-right">Ended</span>
+                </h3>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <!-- <p>Room Status</p> -->
+                <h3>
+                  <span class="ion-float-left">Ended on </span>
+                  <span class="ion-float-right"> {{ allRoom.date_ended }} </span>
+                </h3>
+              </ion-label>
+            </ion-item>
+          </div>
+          <ng-template #templateName>
+            <ion-item>
+              <ion-label>
+                <!-- <p>Room Status</p> -->
+                <h3>
+                  <span class="ion-float-left">Room Status</span>
+                  <span class="ion-float-right">Active</span>
+                </h3>
+              </ion-label>
+            </ion-item>
+          </ng-template>
+
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+  </ion-item>
+
+  <ion-item *ngIf="allRooms?.length > 0">
+    <ion-grid class="ion-text-center" style="background:#fff !important">
+      <ion-row>
+        <ion-col size="3"></ion-col>
+        <ion-col size="3">
+          <ion-button fill="clear" (click)="next('back')">
+            <ion-icon slot="icon-only" name="play-back-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+        <ion-col size="3">
+          <ion-button fill="clear" (click)="next('forward')">
+            <ion-icon slot="icon-only" name="play-forward-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+        <ion-col size="3"></ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-item>
+
+</ion-content>

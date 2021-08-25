@@ -1883,23 +1883,32 @@ let TrackDetailsComponent = class TrackDetailsComponent {
     getAllCoinHolder() {
         // coin_balance
         this.coinHoders = [];
+        let total = 0;
         for (let i = 0; i < this.top.length; i++) {
             const element = this.newTop[i];
-            let total = 0;
+            // alert(element.user_id);
             // total += element.coin_balance;
             // this.totalCoins = total;
             if (parseFloat(element.coin_balance) > 0) {
                 this.coinHoders.push(element);
             }
-            //
-            for (const key in this.coinHoders) {
-                if (Object.prototype.hasOwnProperty.call(this.coinHoders, key)) {
-                    const test = this.coinHoders[key];
-                    total += test.coin_balance;
-                    this.totalCoins = total;
-                }
+            // alert(this.userId);
+            if (parseInt(element.user_id) !== parseInt(this.userId)) {
+                total += parseFloat(element.coin_balance);
             }
+            //
+            // for (const key in this.coinHoders) {
+            //   if (Object.prototype.hasOwnProperty.call(this.coinHoders, key)) {
+            //     const test = this.coinHoders[key];
+            //     alert(test.user_id);
+            //     if (test.user_id !== this.userId) {
+            //       total += test.coin_balance;
+            //       this.totalCoins = total;
+            //     }
+            //   }
+            // }
         }
+        this.totalCoins = total;
         // console.log(this.totalCoins);
         // console.log(this.coinHoders);
     }

@@ -1,0 +1,140 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <!-- <ion-title> CH TOOLS </ion-title> -->
+    <ion-buttons slot="end">
+      <ion-button fill="clear" [routerLink]="['/tabs']" routerLinkActive="router-link-active" routerDirection="back">
+        <ion-icon name="close" slot="icon-only" style="width: 36px !important; height: 36px !important"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="loaddata">
+    <ion-card *ngIf="showResult">
+      <ion-card-header style="padding-bottom: 0px !important">
+        <ion-grid fixed>
+          <ion-row>
+            <ion-col size="4">
+              <img [src]="profile?.photo_url || 'https://via.placeholder.com/500'"
+                style="border-radius: 30% !important;" />
+            </ion-col>
+            <ion-col size="8">
+              <ion-card-title class="ion-text-center">
+                {{ profile?.name }}
+              </ion-card-title>
+              <ion-card-subtitle class="ion-text-center" (click)="openCh(profile.username)" color="primary">
+                @{{ profile?.username }}
+              </ion-card-subtitle>
+              <ion-card-subtitle>
+                <ion-item lines="none" class="ion-text-center">
+                  <ion-label>
+                    <p style="font-size: .8em !important; text-transform: capitalize !important;">Followers</p>
+                    <h2>{{ profile?.no_followers| number }}</h2>
+                  </ion-label>
+                  <ion-label>
+                    <p style="font-size: .8em !important; text-transform: capitalize !important;">Following</p>
+                    <h2>{{ profile?.no_following | number }}</h2>
+                  </ion-label>
+                </ion-item>
+              </ion-card-subtitle>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-header>
+      <div>
+        <ion-item lines="none" *ngIf="profile?.bio">
+          <ion-label class="ion-text-wrap">
+            <p style="font-size: .8em !important;" [innerHTML]="profile?.bio | replaceLinebreaks"></p>
+          </ion-label>
+        </ion-item>
+        <ion-grid fixed>
+          <ion-row class="ion-text-center">
+            <ion-col size="6" *ngIf="profile?.twitter">
+              <p (click)="openTwitter(profile?.twitter)" color="primary">
+                <ion-icon name="logo-twitter"></ion-icon> {{ profile?.twitter }}
+              </p>
+
+            </ion-col>
+            <ion-col size="6" *ngIf="profile?.instagram">
+              <p (click)="openInsta(profile?.instagram)" color="primary">
+                <ion-icon name="logo-instagram"></ion-icon> {{ profile?.instagram }}
+              </p>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="6">
+              <ion-item lines="none" class="ion-text-center">
+                <ion-label class="ion-text-wrap">
+                  <p style="font-size: .7em !important; text-transform: capitalize !important;">Avg Time in your
+                    rooms[this week]
+                  </p>
+                  <h3> {{ convert(details.avg) }} </h3>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+            <ion-col size="6">
+              <ion-item lines="none" class="ion-text-center">
+                <ion-label class="ion-text-wrap">
+                  <p style="font-size: .7em !important; text-transform: capitalize !important;">Rooms entered[this week]
+                  </p>
+                  <h3> {{ details.total_rooms }} </h3>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+            <ion-col size="12">
+              <ion-item lines="none" class="ion-text-center">
+                <ion-label class="ion-text-wrap">
+                  <p style="font-size: .7em !important; text-transform: capitalize !important;">All-time rooms entered
+                  </p>
+                  <h3> {{ details.alltime_rooms }} </h3>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+    </ion-card>
+
+    <div class="ion-padding-horizontal">
+      <ion-item-divider color="secondary" *ngIf="rooms?.length !== 0">
+        <ion-label>
+          <h2>All Rooms</h2>
+        </ion-label>
+      </ion-item-divider>
+    </div>
+
+    <div *ngFor="let item of rooms">
+      <ion-card (click)="onClick(item.channel)">
+        <ion-card-content>
+          <ion-item lines="none">
+            <ion-label class="ion-text-wrap">
+              <h2>{{ item.topic }}</h2>
+            </ion-label>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-label>
+              <span class="ion-align-items-center">
+                <ion-icon name="chatbox-ellipses-outline"></ion-icon>
+              </span>
+              {{ item.end_total_speakers }}
+            </ion-label>
+            <ion-label>
+              <ion-icon name="people-outline"></ion-icon>
+              {{ item.end_total_listeners }}
+            </ion-label>
+            <ion-label>
+              <ion-icon name="time-outline"></ion-icon>
+              {{ getDateDiff(item.date_started, item.date_ended) }}
+            </ion-label>
+          </ion-item>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+
+
+</ion-content>

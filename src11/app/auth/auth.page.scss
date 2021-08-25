@@ -1,0 +1,40 @@
+ion-content {
+  .logo {
+    /* width: 30vh; */
+    height: 30vh;
+    margin: 0vh auto;
+    text-align: center;
+    // background-color: black;
+    background: url("../../assets/img/socialConnector.jpeg") 0px 0%/100% 100% no-repeat;
+  }
+}
+
+ion-item.mb {
+  margin-bottom: 20px !important;
+}
+
+.errors {
+  font-size: small;
+  color: red !important;
+  // background: var(--ion-color-danger);
+  padding-left: 15px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.captchaspace{
+  // background-color: black;
+  width: 100%;
+  overflow: hidden !important;
+  // height: 50px;
+  text-align:center !important;
+  background-color: transparent !important;
+
+}
+.white{
+  // background-color: green;
+  // height: 40px !important;
+  // width: 50vw !important;
+  margin:0 auto !important;
+  background-color: transparent !important;
+}

@@ -1,0 +1,135 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import "~@ionic/angular/css/display.css";
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+
+ion-item,
+ion-list {
+  // --background: #f1eee3;
+  // --border-color: var(--ion-border-color);
+  --border-radius: 10px !important;
+  // --border-width: 1px;
+}
+ion-item.nocolor {
+  // --background: transparent !important;
+  --border-radius: 0 0 !important;
+}
+a {
+  text-decoration: none !important;
+}
+ion-toolbar {
+  --min-height: 10vh !important;
+  padding: 0 10px;
+}
+
+ion-tabs {
+  --backgound: var(--ion-background-color) !important;
+  background: var(--ion-background-color) !important;
+}
+
+ion-segment.data > ion-segment-button.segment-button-checked {
+  border-width: 2px !important;
+  border-style: solid !important;
+  border-color: var(--ion-color-primary) !important;
+}
+.mt0 {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+ion-loading.custom-loading {
+  .loading-wrapper {
+    background: url("./assets/test.gif") no-repeat center;
+    // background: transparent !important;
+    box-shadow: none !important;
+
+    background-size: 50px 50px; /* to change dimension of background */
+    padding-top: 36px; /* padding top of white square */
+    padding-bottom: 36px; /* padding bottom of white square */
+    border-radius: 0.8rem; /* border-radius white square */
+  }
+}
+
+.ion-border-radius {
+  border-radius: 10px !important;
+}
+.noMargin {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Set the width to the full container and center the content */
+ion-select {
+  width: 100%;
+
+  justify-content: left;
+}
+
+/* Set the flex in order to size the text width to its content */
+ion-select::part(placeholder),
+ion-select::part(text) {
+  flex: 0 0 auto;
+}
+
+/* Set the placeholder color and opacity */
+// ion-select::part(placeholder) {
+//   color: #20a08a;
+//   opacity: 1;
+// }
+
+/*
+ * Set the font of the first letter of the placeholder
+ * Shadow parts work with pseudo-elements, too!
+ * https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-elements
+ */
+// ion-select::part(placeholder)::first-letter {
+//   font-size: 24px;
+//   font-weight: 500;
+// }
+
+/* Set the text color */
+// ion-select::part(text) {
+//   color: #545ca7;
+// }
+
+/* Set the icon color and opacity */
+// ion-select::part(icon) {
+//   color: #971e49;
+//   opacity: 1;
+// }
+
+ul {
+  display: block;
+  list-style-type: disc;
+  margin-block-start: 1em !important;
+  margin-block-end: 1em !important;
+  margin-inline-start: 0px !important;
+  margin-inline-end: 0px !important;
+  padding-inline-start: 0 !important;
+}
+
+ion-select::part(icon) {
+    display: none !important;
+   }

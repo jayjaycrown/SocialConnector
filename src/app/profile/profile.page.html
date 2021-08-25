@@ -29,21 +29,21 @@
         </ion-label>
       </ion-item>
 
-      <ion-item>
+      <!-- <ion-item>
         <ion-icon slot="start" name="cash-outline"></ion-icon>
         <ion-label>
           <p>Current Plan</p>
           <h2>{{result.package | titlecase}} <span *ngIf="upgrade">(Expired)</span></h2>
         </ion-label>
-      </ion-item>
+      </ion-item> -->
 
-      <ion-item *ngIf="result?.balance">
+      <!-- <ion-item *ngIf="result?.balance">
         <ion-icon slot="start" name="cash"></ion-icon>
         <ion-label>
           <p>$GARY Balance</p>
           <h2>{{ result?.balance }}</h2>
         </ion-label>
-      </ion-item>
+      </ion-item> -->
 
       <ion-item *ngIf="upgrade">
         <ion-label class="ion-padding-left">
@@ -56,13 +56,13 @@
           <ion-button expand="full" color="primary" (click)="freetrial()">Start free Trial</ion-button>
         </ion-label>
       </ion-item>
-      <ion-item *ngIf="!upgrade">
+      <!-- <ion-item *ngIf="!upgrade">
         <ion-icon slot="start" name="timer-outline"></ion-icon>
         <ion-label>
           <p>Expires on</p>
           <h2>{{result.subscription_expiry}} </h2>
         </ion-label>
-      </ion-item>
+      </ion-item> -->
 
       <ion-item *ngIf="showLinkCh">
         <ion-label>
